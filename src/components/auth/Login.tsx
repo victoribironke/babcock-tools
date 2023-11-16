@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
-  browserSessionPersistence,
   browserLocalPersistence,
   setPersistence,
   signInWithEmailAndPassword,
