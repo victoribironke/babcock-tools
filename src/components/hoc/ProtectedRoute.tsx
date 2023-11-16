@@ -1,4 +1,5 @@
 import { PAGES } from "@/constants/pages";
+import { auth } from "@/services/firebase";
 import { getCurrentUser } from "@/utils/firebase";
 import { useRouter } from "next/router";
 import { useState, useEffect, JSX } from "react";
@@ -11,15 +12,15 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
     const router = useRouter();
 
     useEffect(() => {
-      (async () => {
+      setTimeout(() => {
         if (getCurrentUser() === null) {
           router.push(PAGES.login);
           return null;
         }
 
         setIsLoading(false);
-      })();
-    });
+      }, 2000);
+    }, [auth.currentUser]);
 
     if (isLoading) {
       return <PageLoader type="full" />;
@@ -36,15 +37,15 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
     const router = useRouter();
 
     useEffect(() => {
-      (async () => {
+      setTimeout(async () => {
         if (getCurrentUser()) {
           router.push(PAGES.dashboard);
           return null;
         }
 
         setIsLoading(false);
-      })();
-    });
+      }, 2000);
+    }, [auth.currentUser]);
 
     if (isLoading) {
       return <PageLoader type="small" />;

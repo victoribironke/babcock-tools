@@ -3,7 +3,11 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  setPersistence,
+} from "firebase/auth";
 import { auth, db } from "@/services/firebase";
 import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
@@ -54,7 +58,11 @@ const Signup = () => {
       setLoading(true);
       setDisabled(true);
 
-      const user = await createUserWithEmailAndPassword(auth, email, password);
+      const user = await setPersistence(auth, browserLocalPersistence).then(
+        () => {
+          return createUserWithEmailAndPassword(auth, email, password);
+        }
+      );
 
       await setDoc(doc(db, "users", user.user.uid), {
         email,
@@ -65,7 +73,7 @@ const Signup = () => {
       });
 
       toast.success("Account created.");
-      router.push(PAGES.home);
+      router.push(PAGES.dashboard);
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {

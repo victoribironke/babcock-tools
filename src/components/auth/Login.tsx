@@ -3,7 +3,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  browserLocalPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
@@ -37,14 +42,16 @@ const Login = () => {
       return;
     }
 
-    setLoading(true);
-    setDisabled(true);
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      setLoading(true);
+      setDisabled(true);
+
+      await setPersistence(auth, browserLocalPersistence).then(() => {
+        return signInWithEmailAndPassword(auth, email, password);
+      });
 
       toast.success("Logged in.");
-      router.push(PAGES.home);
+      router.push(PAGES.dashboard);
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {
