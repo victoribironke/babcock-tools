@@ -12,6 +12,10 @@
 #__next {
   width: 100%;
   height: auto;
+
+  background-color: #ffffff;
+  background-image: radial-gradient(#3b82f6 0.65px, #ffffff 0.65px);
+  background-size: 13px 13px;
 }
 
 html {
@@ -36,10 +40,6 @@ html::-webkit-scrollbar-thumb {
 
 html::-webkit-scrollbar-track {
   background: #000;
-}
-
-input {
-  color-scheme: dark;
 }
 
 /* Chrome, Safari, Edge, Opera */

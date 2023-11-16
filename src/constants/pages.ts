@@ -4,7 +4,7 @@ export const PAGES = {
 
   dashboard: "/dashboard",
 
-  signin: "/signin",
-  signup: "/signup",
-  forgot_password: "/forgot-password",
+  login: "/auth/login",
+  signup: "/auth/signup",
+  forgot_password: "/auth/forgot-password",
 };
