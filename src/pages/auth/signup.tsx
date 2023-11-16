@@ -1,7 +1,5 @@
-import Login from "@/components/auth/Login";
 import Signup from "@/components/auth/Signup";
 import HeadTemplate from "@/components/general/HeadTemplate";
-import { EmailInput } from "@/components/general/Input";
 import { alreadyLoggedIn } from "@/components/hoc/ProtectedRoute";
 
 const SignupPage = () => {

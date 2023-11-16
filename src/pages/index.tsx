@@ -1,7 +1,6 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { PAGES } from "@/constants/pages";
 import { getCurrentUser, signOutUser } from "@/utils/firebase";
-import { signOut } from "firebase/auth";
 
 const Home = () => {
   return (

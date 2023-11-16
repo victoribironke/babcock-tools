@@ -3,10 +3,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/services/firebase";
 import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";

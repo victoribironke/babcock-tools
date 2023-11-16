@@ -73,7 +73,7 @@ const Login = () => {
 
       <div className="mt-4 flex justify-between items-center flex-col rs:flex-row gap-2">
         <p>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href={PAGES.signup} className="text-blue">
             signup
           </Link>
