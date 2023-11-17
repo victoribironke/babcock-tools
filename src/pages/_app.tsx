@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { classNames } from "@/utils/helpers";
 import { Toaster } from "react-hot-toast";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/react";
 
 const gt = localFont({
   src: [
@@ -41,6 +42,7 @@ const gt = localFont({
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
+      <Analytics />
       <Toaster toastOptions={{ className: gt.className }} />
       <main
         className={classNames(
