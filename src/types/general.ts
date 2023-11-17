@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from "react";
+import React, { ChangeEventHandler, FocusEventHandler } from "react";
 
 export type ModalProps = {
   header: string;
@@ -15,7 +15,15 @@ export type PageLoaderProps = {
 };
 
 export type InputProps = {
-  placeholder: string;
+  placeholder?: string;
   value: string;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  maxLength?: number;
+};
+
+export type SelectInputProps = {
+  value: string;
+  onChange: ChangeEventHandler<HTMLSelectElement>;
+  options: { value: string; text: string }[];
 };

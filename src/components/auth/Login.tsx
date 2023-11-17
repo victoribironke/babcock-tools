@@ -60,17 +60,17 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-lg w-full bg-white p-4 rounded-lg shadow-md">
+    <div className="max-w-lg w-full bg-white p-4 rounded-lg border shadow-md">
       <p className="text-2xl font-medium mb-5">Login to your account</p>
 
-      <p className="text-lg font-medium mb-1">Email</p>
+      <p className="text-lg mb-1">Email</p>
       <EmailInput
         onChange={(e) => updateFormData(e.target.value, "email")}
         placeholder="Email"
         value={formData.email}
       />
 
-      <p className="text-lg font-medium mt-4 mb-1">Password</p>
+      <p className="text-lg mt-4 mb-1">Password</p>
       <PasswordInput
         onChange={(e) => updateFormData(e.target.value, "password")}
         placeholder="Password"

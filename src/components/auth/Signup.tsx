@@ -1,4 +1,10 @@
-import { EmailInput, PasswordInput, TextInput } from "../general/Input";
+import {
+  EmailInput,
+  NumberInput,
+  PasswordInput,
+  SelectInput,
+  TextInput,
+} from "../general/Input";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
@@ -13,6 +19,7 @@ import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { doc, setDoc } from "firebase/firestore";
+import { HALLS_OF_RESIDENCE } from "@/constants/babcock";
 
 const Signup = () => {
   const router = useRouter();
@@ -22,6 +29,8 @@ const Signup = () => {
     full_name: "",
     email: "",
     password: "",
+    phone: "",
+    hall_of_residence: "Winslow",
     id: "", // Matric No / App ID
   });
 
@@ -32,7 +41,8 @@ const Signup = () => {
   };
 
   const signUpUser = async () => {
-    const { email, password, id, full_name } = formData;
+    const { email, password, id, full_name, hall_of_residence, phone } =
+      formData;
 
     if (!full_name) {
       toast.error("Please input your full name.");
@@ -41,6 +51,11 @@ const Signup = () => {
 
     if (!id) {
       toast.error("Please input your matric no or app id.");
+      return;
+    }
+
+    if (!phone) {
+      toast.error("Please input your phone number.");
       return;
     }
 
@@ -67,6 +82,8 @@ const Signup = () => {
       await setDoc(doc(db, "users", user.user.uid), {
         email,
         full_name,
+        phone_number: phone,
+        hall_of_residence,
         matric_no: id,
         email_verified: user.user.emailVerified,
         uid: user.user.uid,
@@ -83,31 +100,48 @@ const Signup = () => {
   };
 
   return (
-    <div className="max-w-lg w-full bg-white p-4 rounded-lg shadow-md">
+    <div className="max-w-lg w-full bg-white p-4 rounded-lg border shadow-md">
       <p className="text-2xl font-medium mb-5">Create a new account</p>
 
-      <p className="text-lg font-medium mb-1">Full name</p>
+      <p className="text-lg mb-1">Full name</p>
       <TextInput
         onChange={(e) => updateFormData(e.target.value, "full_name")}
         placeholder="Full name"
         value={formData.full_name}
       />
 
-      <p className="text-lg font-medium mb-1 mt-4">Matric No / App ID</p>
+      <p className="text-lg mb-1 mt-4">Matric no / App ID</p>
       <TextInput
         onChange={(e) => updateFormData(e.target.value, "id")}
         placeholder="Matric No / App ID"
         value={formData.id}
       />
 
-      <p className="text-lg font-medium mb-1 mt-4">Email</p>
+      <p className="text-lg mb-1 mt-4">Hall of residence</p>
+      <SelectInput
+        onChange={(e) => updateFormData(e.target.value, "hall_of_residence")}
+        value={formData.hall_of_residence}
+        options={HALLS_OF_RESIDENCE.map((h) => {
+          return { value: h, text: h };
+        })}
+      />
+
+      <p className="text-lg mb-1 mt-4">Email</p>
       <EmailInput
         onChange={(e) => updateFormData(e.target.value, "email")}
         placeholder="Email"
         value={formData.email}
       />
 
-      <p className="text-lg font-medium mt-4 mb-1">Password</p>
+      <p className="text-lg mb-1 mt-4">Phone number</p>
+      <NumberInput
+        onChange={(e) => updateFormData(e.target.value, "phone")}
+        placeholder="Phone number"
+        value={formData.phone}
+        maxLength={11}
+      />
+
+      <p className="text-lg mt-4 mb-1">Password</p>
       <PasswordInput
         onChange={(e) => updateFormData(e.target.value, "password")}
         placeholder="Password"

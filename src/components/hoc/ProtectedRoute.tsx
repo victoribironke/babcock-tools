@@ -48,7 +48,7 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
     }, [auth.currentUser]);
 
     if (isLoading) {
-      return <PageLoader type="small" />;
+      return <PageLoader type="full" />;
     }
 
     return <ProtectedComponent {...props} />;

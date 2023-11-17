@@ -37,10 +37,10 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="max-w-lg w-full bg-white p-4 rounded-lg shadow-md">
+    <div className="max-w-lg w-full bg-white p-4 rounded-lg border shadow-md">
       <p className="text-2xl font-medium mb-5">Send a password reset link</p>
 
-      <p className="text-lg font-medium mb-1 mt-4">Email</p>
+      <p className="text-lg mb-1 mt-4">Email</p>
       <EmailInput
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"

@@ -13,9 +13,8 @@ export const months = [
   "December",
 ];
 
-export const classNames = (...classes: (string | number | boolean)[]) => {
-  return classes.filter(Boolean).join(" ");
-};
+export const classNames = (...classes: (string | number | boolean)[]) =>
+  classes.filter(Boolean).join(" ");
 
 export const parseDate = (date: string, type: "text" | "object" = "text") => {
   const splitted = date.split("-").map((a) => parseInt(a));
@@ -41,9 +40,8 @@ export const parseDate = (date: string, type: "text" | "object" = "text") => {
   return `${day}${suffix} ${month}, ${year}`;
 };
 
-export const isValidEmail = (email: string) => {
-  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(email);
-};
+export const isValidEmail = (email: string) =>
+  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(email);
 
 export const isValidURL = (url: string) => {
   try {
@@ -85,9 +83,7 @@ export const checkPasswordStrength = (
   return { hasMinChar, hasNum, hasSym, hasUpp };
 };
 
-export const formatNumber = (num: number) => {
-  return num.toLocaleString("en-US");
-};
+export const formatNumber = (num: number) => num.toLocaleString("en-US");
 
 export const generateRandomString = (len: number) => {
   const letters = "abcdefghijklmnopqrstuvwxyz";
@@ -105,3 +101,6 @@ export const generateUniqueURL = () => {
 
   return `${generateRandomString(2)}${now}${generateRandomString(2)}`;
 };
+
+export const pickRandomFromArray = (array: any[]) =>
+  array[Math.floor(Math.random() * array.length)];
