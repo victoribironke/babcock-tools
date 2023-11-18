@@ -4,11 +4,14 @@ import { classNames, formatNumber, pickRandomFromArray } from "@/utils/helpers";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { IoTicketOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
+import { useEffect, useRef } from "react";
 
 const Ticket = ({ ticket }: TicketProps) => {
   const colors = ["blue", "red", "green"];
   const random_color = pickRandomFromArray(colors);
   const cls = `bg-${random_color} text-${random_color}`;
+  const ticketIconRef = useRef<HTMLDivElement>(null);
+  console.log(cls);
 
   const dt = new Date(ticket.ticket_date).toDateString().split(" ").slice(0, 3);
   const date = `${dt[0]}, ${dt[2]} ${dt[1]}`;
@@ -39,10 +42,15 @@ const Ticket = ({ ticket }: TicketProps) => {
     }
   };
 
+  useEffect(() => {
+    ticketIconRef.current?.classList.add(cls.split(" ")[0], cls.split(" ")[1]);
+  }, []);
+
   return (
     <div className="bg-white shadow-md border rounded-lg p-2 flex gap-2 overflow-hidden group relative">
       <div
-        className={classNames("bg-opacity-10 p-3.5 rounded-md text-4xl", cls)}
+        className="bg-opacity-10 p-3.5 rounded-md text-4xl"
+        ref={ticketIconRef}
       >
         <IoTicketOutline />
       </div>
