@@ -37,6 +37,7 @@ const SellYourMealTicketPage = () => {
         return;
       }
 
+      setNoTickets(false);
       setTickets(full_tickets);
     });
 

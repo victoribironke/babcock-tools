@@ -1,7 +1,7 @@
 import { InputProps, SelectInputProps } from "@/types/general";
 
 const input_classes =
-  "w-full border-2 border-blue outline-none py-2 px-3 rounded-lg";
+  "w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white";
 
 export const SelectInput = ({ options, onChange, value }: SelectInputProps) => {
   return (

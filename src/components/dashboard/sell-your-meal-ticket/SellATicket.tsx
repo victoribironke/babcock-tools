@@ -12,6 +12,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
@@ -49,10 +50,15 @@ const SellATicket = () => {
       setLoading(true);
       setDisabled(true);
 
+      const hall_of_owner = await (
+        await getDoc(doc(db, "users", auth.currentUser?.uid!))
+      ).data()?.hall_of_residence;
+
       const docRef = await addDoc(collection(db, "meal-tickets"), {
         ...formData,
         uid: auth.currentUser?.uid,
         sold: false,
+        hall_of_owner,
       });
 
       await updateDoc(doc(db, "users", auth.currentUser?.uid!), {

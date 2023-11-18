@@ -1,18 +1,11 @@
 import { db } from "@/services/firebase";
 import { TicketProps } from "@/types/dashboard";
-import { classNames, formatNumber, pickRandomFromArray } from "@/utils/helpers";
+import { classNames, formatNumber } from "@/utils/helpers";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { IoTicketOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
-import { useEffect, useRef } from "react";
 
 const Ticket = ({ ticket }: TicketProps) => {
-  const colors = ["blue", "red", "green"];
-  const random_color = pickRandomFromArray(colors);
-  const cls = `bg-${random_color} text-${random_color}`;
-  const ticketIconRef = useRef<HTMLDivElement>(null);
-  console.log(cls);
-
   const dt = new Date(ticket.ticket_date).toDateString().split(" ").slice(0, 3);
   const date = `${dt[0]}, ${dt[2]} ${dt[1]}`;
 
@@ -42,53 +35,47 @@ const Ticket = ({ ticket }: TicketProps) => {
     }
   };
 
-  useEffect(() => {
-    ticketIconRef.current?.classList.add(cls.split(" ")[0], cls.split(" ")[1]);
-  }, []);
-
   return (
-    <div className="bg-white shadow-md border rounded-lg p-2 flex gap-2 overflow-hidden group relative">
-      <div
-        className="bg-opacity-10 p-3.5 rounded-md text-4xl"
-        ref={ticketIconRef}
+    <div className="bg-white shadow-md border rounded-lg p-2 flex flex-col gap-2">
+      <div className="flex gap-2">
+        <div className="bg-opacity-10 p-3.5 rounded-md text-4xl bg-yellow text-yellow">
+          <IoTicketOutline />
+        </div>
+
+        <div className="flex flex-col justify-between">
+          <div className="flex gap-1 text-sm">
+            <p className="opacity-70">For:</p>
+            <p>{ticket.meal_type}</p>
+          </div>
+
+          <div className="flex gap-1 text-sm">
+            <p className="opacity-70">On:</p>
+            <p>{date}</p>
+          </div>
+
+          <div className="flex gap-1 text-sm">
+            <p className="opacity-70">Price:</p>
+            <p>₦{formatNumber(parseInt(ticket.price))}</p>
+          </div>
+        </div>
+      </div>
+
+      <button
+        className={classNames(
+          "text-white rounded-md py-1 px-3",
+          ticket.sold ? "bg-green" : "bg-yellow"
+        )}
+        onClick={markAndUnmark}
       >
-        <IoTicketOutline />
-      </div>
+        {ticket.sold ? "Unmark as sold" : "Mark as sold"}
+      </button>
 
-      <div className="flex flex-col justify-between">
-        <div className="flex gap-1 text-sm">
-          <p className="opacity-70">For:</p>
-          <p>{ticket.meal_type}</p>
-        </div>
-
-        <div className="flex gap-1 text-sm">
-          <p className="opacity-70">On:</p>
-          <p>{date}</p>
-        </div>
-
-        <div className="flex gap-1 text-sm">
-          <p className="opacity-70">Price:</p>
-          <p>₦{formatNumber(parseInt(ticket.price))}</p>
-        </div>
-      </div>
-
-      <div className="w-full h-full opacity-0 group-hover:opacity-100 flex items-center flex-col gap-1 justify-center bg-gray-300 bg-opacity-80 absolute left-0 top-0">
-        <button
-          className={classNames(
-            "text-white rounded-md py-1 px-3",
-            ticket.sold ? "bg-green" : "bg-yellow"
-          )}
-          onClick={markAndUnmark}
-        >
-          {ticket.sold ? "Unmark as sold" : "Mark as sold"}
-        </button>
-        <button
-          className="bg-red text-white rounded-md py-1 px-3"
-          onClick={deleteTicket}
-        >
-          Delete
-        </button>
-      </div>
+      <button
+        className="bg-red text-white rounded-md py-1 px-3"
+        onClick={deleteTicket}
+      >
+        Delete
+      </button>
     </div>
   );
 };

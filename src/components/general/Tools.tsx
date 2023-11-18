@@ -11,17 +11,16 @@ const Tools = () => {
         </div>
 
         <div className="flex flex-col justify-between gap-1">
-          <div className="flex text-lg font-medium">
-            <p>Buy or sell meal tickets</p>
-          </div>
+          <p className="flex text-lg font-medium">Buy or sell meal tickets</p>
 
-          <div className="flex">
-            <p>Sell your meal ticket whenever you are unable to use it.</p>
-          </div>
+          <p>Sell your meal ticket whenever you are unable to use it.</p>
 
-          <div className="flex bg-blue text-white py-1 px-3 rounded-md w-fit">
-            <Link href={PAGES.meal_ticket}>Check out the tool</Link>
-          </div>
+          <Link
+            href={PAGES.meal_ticket}
+            className="flex bg-blue text-white py-1 px-3 rounded-md w-fit"
+          >
+            Check out the tool
+          </Link>
         </div>
       </div>
     </div>

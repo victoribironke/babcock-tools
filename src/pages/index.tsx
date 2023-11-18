@@ -7,7 +7,7 @@ const Home = () => {
     <>
       <HeadTemplate />
 
-      <section className="w-full max-w-5xl px-4 sm:px-8 pt-12">
+      <section className="w-full max-w-5xl px-4 sm:px-8 py-12">
         <Hero />
         <Tools />
       </section>

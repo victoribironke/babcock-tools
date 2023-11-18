@@ -16,6 +16,7 @@ export type ATicket = {
   sold?: boolean;
   uid?: string;
   id?: string;
+  hall_of_owner?: string;
 };
 
 export type TicketProps = {
