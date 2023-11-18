@@ -5,8 +5,11 @@ import { IoTicketOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import PageLoader from "../general/PageLoader";
 import { formatNumber, shuffleArray } from "@/utils/helpers";
+import { useSetRecoilState } from "recoil";
+import { getEmailModal } from "@/atoms/atoms";
 
 const Tickets = () => {
+  const setEmailModal = useSetRecoilState(getEmailModal);
   const [loading, setLoading] = useState(true);
   const [noTickets, setNoTickets] = useState(false);
   const [tickets, setTickets] = useState<ATicket[]>([]);
@@ -19,7 +22,7 @@ const Tickets = () => {
 
       const full_tickets: ATicket[] = [];
 
-      querySnapshot.forEach(async (document) => {
+      querySnapshot.forEach((document) => {
         full_tickets.push({
           id: document.id,
           ...(document.data() as any),
@@ -97,9 +100,9 @@ const Tickets = () => {
 
             <button
               className="bg-green text-white rounded-md py-1 px-3"
-              // onClick={deleteTicket}
+              onClick={() => setEmailModal({ ticket_id: tk.id! })}
             >
-              Buy this ticket
+              Get owner's details
             </button>
           </div>
         );

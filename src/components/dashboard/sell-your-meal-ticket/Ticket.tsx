@@ -1,7 +1,13 @@
-import { db } from "@/services/firebase";
+import { auth, db } from "@/services/firebase";
 import { TicketProps } from "@/types/dashboard";
 import { classNames, formatNumber } from "@/utils/helpers";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  deleteDoc,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { IoTicketOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 
@@ -28,6 +34,10 @@ const Ticket = ({ ticket }: TicketProps) => {
   const deleteTicket = async () => {
     try {
       await deleteDoc(doc(db, "meal-tickets", ticket.id!));
+
+      await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
+        my_tickets: arrayRemove(ticket.id),
+      });
 
       toast.success("Ticket deleted.");
     } catch (e: any) {

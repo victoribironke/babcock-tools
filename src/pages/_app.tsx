@@ -4,6 +4,7 @@ import { classNames } from "@/utils/helpers";
 import { Toaster } from "react-hot-toast";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
+import { RecoilRoot } from "recoil";
 
 const gt = localFont({
   src: [
@@ -41,18 +42,18 @@ const gt = localFont({
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <>
+    <RecoilRoot>
       <Analytics />
       <Toaster toastOptions={{ className: gt.className }} />
       <main
         className={classNames(
           gt.className,
-          "min-h-screen w-full flex items-center justify-start flex-col"
+          "min-h-screen w-full flex items-center justify-start flex-col relative"
         )}
       >
         <Component {...pageProps} />
       </main>
-    </>
+    </RecoilRoot>
   );
 };
 
