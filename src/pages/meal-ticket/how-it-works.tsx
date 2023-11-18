@@ -19,26 +19,26 @@ const HowItWorksPage = () => {
         <h1 className={text_cls}>
           To buy a ticket, navigate to{" "}
           <Link href={PAGES.meal_ticket} className={link_cls}>
-            the tool's page
+            the tool&apos;s page
           </Link>
           .
         </h1>
 
         <h1 className={text_cls}>
-          Browse the directory to find a ticket, ideally one where the owner's
-          hostel is the same as yours (not necessary).
+          Browse the directory to find a ticket, ideally one where the
+          owner&apos;s hostel is the same as yours (not necessary).
         </h1>
 
         <h1 className={text_cls}>
-          When you've selected your ticket, click "Get owner's details" which
-          would open a modal for you to put in your email and pay the platform
-          fee (₦100).
+          When you&apos;ve selected your ticket, click &quot;Get owner&apos;s
+          details&quot; which would open a modal for you to put in your email
+          and pay the platform fee (₦100).
         </h1>
 
         <h1 className={text_cls}>
-          After payment, the owner's details is sent to the email you provided
-          which you can then use to find the owner to pay for and collect the
-          ticket.
+          After payment, the owner&apos;s details is sent to the email you
+          provided which you can then use to find the owner to pay for and
+          collect the ticket.
         </h1>
 
         <h1 className="text-blue text-3xl sm:text-4xl w-full text-center my-6 font-semibold">
@@ -60,14 +60,14 @@ const HowItWorksPage = () => {
         <h1 className={text_cls}>
           Navigate to{" "}
           <Link href={PAGES.sell_your_meal_ticket} className={link_cls}>
-            the tool's page
+            the tool&apos;s page
           </Link>{" "}
           on your dashboard
         </h1>
 
         <h1 className={text_cls}>
-          Click "Sell a ticket", fill in the details of the ticket and click
-          "Save".
+          Click &quot;Sell a ticket&quot;, fill in the details of the ticket and
+          click &quot;Save&quot;.
         </h1>
 
         <h1 className={text_cls}>
@@ -83,7 +83,8 @@ const HowItWorksPage = () => {
 
         <h1 className={text_cls}>
           You currently cannot edit a ticket so if you put in the wrong details,
-          you'll have to delete it and add it again with the correct details.
+          you&apos;ll have to delete it and add it again with the correct
+          details.
         </h1>
 
         <h1 className={classNames(text_cls, "mt-10")}>
