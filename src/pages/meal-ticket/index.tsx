@@ -10,7 +10,6 @@ import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
-import MealTicketDetails from "@/components/email-templates/MealTicketDetails";
 
 const MealTicketPage = () => {
   const [emailModal, setEmailModal] = useRecoilState(getEmailModal);

@@ -1,12 +1,10 @@
 import {
   Body,
-  Button,
   Container,
   Column,
   Head,
   Heading,
   Html,
-  Img,
   Preview,
   Row,
   Section,
@@ -61,19 +59,19 @@ export const MealTicketDetails = ({
                 </Heading>
 
                 <Text style={paragraph}>
-                  <b>Owner's name: </b>
+                  <b>Owner&apos;s name: </b>
                   {details.full_name}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Matric no: </b>
+                  <b>Owner&apos;s matric no: </b>
                   {details.matric_no}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Phone number: </b>
+                  <b>Owner&apos;s phone number: </b>
                   {details.phone}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Owner's hostel: </b>
+                  <b>Owner&apos;s hostel: </b>
                   {details.hall_of_residence}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
@@ -85,7 +83,7 @@ export const MealTicketDetails = ({
                   {details.ticket_date}
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Ticket's price: </b>₦{details.price}
+                  <b>Ticket&apos;s price: </b>₦{details.price}
                 </Text>
 
                 <Text style={paragraph}>
@@ -117,26 +115,6 @@ const paragraph = {
   fontSize: 16,
 };
 
-const logo = {
-  padding: "30px 20px",
-};
-
-const containerButton = {
-  display: "flex",
-  justifyContent: "center",
-  width: "100%",
-};
-
-const button = {
-  backgroundColor: "#e00707",
-  padding: "12px 30px",
-  borderRadius: 3,
-  color: "#FFF",
-  fontWeight: "bold",
-  border: "1px solid rgb(0,0,0, 0.1)",
-  cursor: "pointer",
-};
-
 const content = {
   border: "1px solid rgb(0,0,0, 0.1)",
   borderRadius: "3px",
@@ -145,8 +123,4 @@ const content = {
 
 const boxInfos = {
   padding: "20px 40px",
-};
-
-const containerImageFooter = {
-  padding: "45px 0 0 0",
 };

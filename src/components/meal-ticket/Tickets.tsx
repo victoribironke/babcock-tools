@@ -102,7 +102,7 @@ const Tickets = () => {
               className="bg-green text-white rounded-md py-1 px-3"
               onClick={() => setEmailModal({ ticket_id: tk.id! })}
             >
-              Get owner's details
+              Get owner&apos;s details
             </button>
           </div>
         );
