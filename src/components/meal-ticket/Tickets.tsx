@@ -57,7 +57,7 @@ const Tickets = () => {
   }
 
   return (
-    <section className="w-full flex items-center justify-center flex-wrap mt-10">
+    <section className="w-full flex items-center justify-center flex-wrap mt-10 gap-2">
       {tickets.map((tk, i) => {
         const dt = new Date(tk.ticket_date)
           .toDateString()
