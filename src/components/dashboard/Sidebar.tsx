@@ -55,7 +55,7 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
 
       <div className="flex flex-col w-full gap-2">
         <Link
-          href={PAGES.dashboard}
+          href={PAGES.how_does_the_meal_ticket_tool_work}
           className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
         >
           <FiHelpCircle />
