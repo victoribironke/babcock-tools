@@ -62,7 +62,7 @@ const HowItWorksPage = () => {
           <Link href={PAGES.sell_your_meal_ticket} className={link_cls}>
             the tool&apos;s page
           </Link>{" "}
-          on your dashboard
+          on your dashboard.
         </h1>
 
         <h1 className={text_cls}>
