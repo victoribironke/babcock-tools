@@ -77,7 +77,9 @@ const MealTicketPage = () => {
           header="Buy a ticket"
           dismiss={() => setEmailModal({ ticket_id: "" })}
         >
-          <p className="text-lg mb-1">Enter your email address to continue</p>
+          <p className="sm:text-lg mb-1">
+            Enter your email address to continue
+          </p>
           <EmailInput
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
