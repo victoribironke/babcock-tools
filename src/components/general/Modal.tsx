@@ -4,7 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 const Modal = ({ header, dismiss, children }: ModalProps) => {
   return (
     <div
-      className="absolute w-full min-h-screen flex items-end rs:items-center justify-center bg-gray-500 bg-opacity-20 transition-opacity p-0 rs:p-6"
+      className="fixed w-full h-screen flex items-end rs:items-center justify-center bg-gray-500 bg-opacity-20 transition-opacity p-0 rs:p-6"
       onClick={dismiss}
     >
       <div
