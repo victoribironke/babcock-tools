@@ -117,7 +117,7 @@ const MealTicketPage = () => {
             onClick={sendOwnersDetails}
             className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
           >
-            Get owner's details
+            Get owner&apos;s details
             {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
           </button>
         </Modal>
