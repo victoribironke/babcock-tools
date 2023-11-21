@@ -21,6 +21,7 @@ export const HALLS_OF_RESIDENCE = [
   "Gamaliel",
   "White",
   "Nybergr",
+  "Diamond",
   "Ogden",
   "Iperu",
 ].sort((a, b) => (a > b ? 1 : -1));
