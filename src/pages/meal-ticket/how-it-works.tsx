@@ -31,15 +31,22 @@ const HowItWorksPage = () => {
 
         <h1 className={text_cls}>
           When you&apos;ve selected your ticket, click &quot;Get owner&apos;s
-          details&quot; which would open a modal for you to put in your email
-          and pay the platform fee (₦100).
+          details&quot; which would open a modal for you to put in your email.
+          Just input your email, click &quot;Get owner&apos;s details&quot; and
+          the details would be sent to the email address.
         </h1>
 
-        <h1 className={text_cls}>
+        {/* <h1 className={text_cls}>
+          When you&apos;ve selected your ticket, click &quot;Get owner&apos;s
+          details&quot; which would open a modal for you to put in your email
+          and pay the platform fee (₦100).
+        </h1> */}
+
+        {/* <h1 className={text_cls}>
           After payment, the owner&apos;s details is sent to the email you
           provided which you can then use to find the owner to pay for and
           collect the ticket.
-        </h1>
+        </h1> */}
 
         <h1 className="text-blue text-3xl sm:text-4xl w-full text-center my-6 font-semibold">
           How to sell a ticket
