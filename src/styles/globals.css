@@ -14,8 +14,8 @@
   height: auto;
 
   background-color: #ffffff;
-  background-image: radial-gradient(#3b82f6 0.65px, #ffffff 0.65px);
-  background-size: 13px 13px;
+  background-image: radial-gradient(#3b82f6 0.6px, #ffffff 0.6px);
+  background-size: 12px 12px;
 }
 
 html {

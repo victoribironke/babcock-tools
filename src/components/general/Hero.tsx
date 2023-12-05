@@ -15,22 +15,20 @@ const Hero = () => {
       <div className="mt-2 flex flex-col sm:flex-row gap-2 items-center justify-center">
         <Link
           href={PAGES.mailto}
-          className="bg-green text-white py-2 px-4 rounded-md sm:text-lg"
+          className="bg-green text-white py-1 px-3 rounded-md"
         >
           Give feedback
         </Link>
 
-        <MdOutlinePlayArrow className="-rotate-90 sm:rotate-180 text-lg" />
+        <MdOutlinePlayArrow className="-rotate-90 sm:rotate-180" />
 
-        <Link href={PAGES.mailto} className="sm:text-lg">
-          hello@babcock.tools
-        </Link>
+        <Link href={PAGES.mailto}>hello@babcock.tools</Link>
 
-        <MdOutlinePlayArrow className="rotate-90 sm:rotate-0 text-lg" />
+        <MdOutlinePlayArrow className="rotate-90 sm:rotate-0" />
 
         <Link
           href={PAGES.mailto}
-          className="bg-green text-white py-2 px-4 rounded-md sm:text-lg"
+          className="bg-green text-white py-1 px-3 rounded-md"
         >
           Suggest a tool
         </Link>

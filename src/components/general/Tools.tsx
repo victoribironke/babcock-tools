@@ -17,7 +17,7 @@ const Tools = () => {
 
           <Link
             href={PAGES.meal_ticket}
-            className="flex bg-blue text-white py-1 px-3 rounded-md w-fit"
+            className="flex bg-blue text-white py-1 px-3 my-1 rounded-md w-fit"
           >
             Check out the tool
           </Link>
