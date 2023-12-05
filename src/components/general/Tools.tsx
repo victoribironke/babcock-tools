@@ -1,13 +1,14 @@
 import { TOOLS } from "@/constants/babcock";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
+import { BsStars } from "react-icons/bs";
 
 const Tools = () => {
   return (
-    <div className="w-full flex flex-col gap-4 mt-8 items-center justify-center">
+    <div className="w-full flex flex-col gap-6 mt-8 items-center justify-center">
       {TOOLS.map((t, i) => (
         <div
-          className="p-3 rounded-xl border bg-white shadow-md flex gap-4 w-full max-w-[600px] pr-6"
+          className="p-3 rounded-xl border bg-white shadow-md flex gap-4 w-full max-w-[600px] pr-6 relative"
           key={i}
         >
           <div className="bg-opacity-10 text-blue bg-blue p-3.5 grid place-items-center rounded-md text-5xl w-fit">
@@ -26,6 +27,11 @@ const Tools = () => {
               Check out the tool
             </Link>
           </div>
+          {t.is_new && (
+            <div className="bg-green self-center text-white rounded py-0.5 px-2 absolute right-4 -top-3 flex gap-1 items-center justify-center">
+              <BsStars /> New
+            </div>
+          )}
         </div>
       ))}
     </div>
