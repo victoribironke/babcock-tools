@@ -1,4 +1,8 @@
-import React, { ChangeEventHandler, FocusEventHandler } from "react";
+import React, {
+  ChangeEventHandler,
+  FocusEventHandler,
+  HTMLInputTypeAttribute,
+} from "react";
 
 export type ModalProps = {
   header: string;
@@ -20,6 +24,7 @@ export type InputProps = {
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onChange: ChangeEventHandler<HTMLInputElement>;
   maxLength?: number;
+  type?: HTMLInputTypeAttribute;
 };
 
 export type SelectInputProps = {

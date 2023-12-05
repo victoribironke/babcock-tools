@@ -20,11 +20,14 @@ import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { doc, setDoc } from "firebase/firestore";
 import { HALLS_OF_RESIDENCE } from "@/constants/babcock";
+import { LuEye, LuEyeOff } from "react-icons/lu";
+import { useToggle } from "@/hooks/general";
 
 const Signup = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [showPassword, toggleShowPassword] = useToggle(false);
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -142,11 +145,24 @@ const Signup = () => {
       />
 
       <p className="text-lg mt-4 mb-1">Password</p>
-      <PasswordInput
-        onChange={(e) => updateFormData(e.target.value, "password")}
-        placeholder="Password"
-        value={formData.password}
-      />
+      <div className="relative flex items-center justify-center">
+        <PasswordInput
+          onChange={(e) => updateFormData(e.target.value, "password")}
+          placeholder="Password"
+          value={formData.password}
+          type={showPassword ? "text" : "password"}
+        />
+        <button
+          className="absolute right-2 text-blue"
+          onClick={toggleShowPassword}
+        >
+          {showPassword ? (
+            <LuEyeOff className="text-lg" />
+          ) : (
+            <LuEye className="text-lg" />
+          )}
+        </button>
+      </div>
 
       <div className="mt-4 flex justify-between items-center flex-col rs:flex-row gap-2">
         <p>

@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import PageLoader from "../general/PageLoader";
 import { formatNumber, shuffleArray } from "@/utils/helpers";
 import { useSetRecoilState } from "recoil";
-import { getEmailModal } from "@/atoms/atoms";
+import { get_ticket_details } from "@/atoms/atoms";
 
 const Tickets = () => {
-  const setEmailModal = useSetRecoilState(getEmailModal);
+  const setGetTicketDetails = useSetRecoilState(get_ticket_details);
   const [loading, setLoading] = useState(true);
   const [noTickets, setNoTickets] = useState(false);
   const [tickets, setTickets] = useState<ATicket[]>([]);
@@ -107,7 +107,7 @@ const Tickets = () => {
 
             <button
               className="bg-green text-white rounded-md py-1 px-3"
-              onClick={() => setEmailModal({ ticket_id: tk.id! })}
+              onClick={() => setGetTicketDetails({ ticket_id: tk.id! })}
             >
               Get owner&apos;s details
             </button>

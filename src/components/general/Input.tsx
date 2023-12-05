@@ -51,10 +51,15 @@ export const EmailInput = ({ placeholder, value, onChange }: InputProps) => {
   );
 };
 
-export const PasswordInput = ({ placeholder, value, onChange }: InputProps) => {
+export const PasswordInput = ({
+  placeholder,
+  value,
+  onChange,
+  type,
+}: InputProps) => {
   return (
     <input
-      type="password"
+      type={type ? type : "password"}
       className={input_classes}
       placeholder={placeholder}
       value={value}
