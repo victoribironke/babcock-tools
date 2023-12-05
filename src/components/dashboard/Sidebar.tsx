@@ -7,9 +7,12 @@ import { LuHome } from "react-icons/lu";
 import { FiHelpCircle, FiLogOut } from "react-icons/fi";
 import { signOutUser } from "@/utils/firebase";
 import { IoTicketOutline } from "react-icons/io5";
+import { useSetRecoilState } from "recoil";
+import { get_help } from "@/atoms/atoms";
 
 const Sidebar = ({ show, setShow }: SidebarProps) => {
   const router = useRouter();
+  const setGetHelp = useSetRecoilState(get_help);
 
   const signOut = async () => {
     await signOutUser();
@@ -54,13 +57,13 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
       </div>
 
       <div className="flex flex-col w-full gap-2">
-        <Link
-          href={PAGES.how_does_the_meal_ticket_tool_work}
+        <button
           className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
+          onClick={() => setGetHelp(true)}
         >
           <FiHelpCircle />
           <p className="-mb-0.5">Help</p>
-        </Link>
+        </button>
 
         <button
           className="flex items-center gap-2 bg-red text-white pt-1.5 pb-2 px-3 rounded-lg text-left"

@@ -1,3 +1,7 @@
+import { IoTicketOutline } from "react-icons/io5";
+import { BsCardText } from "react-icons/bs";
+import { PAGES } from "./pages";
+
 export const MEAL_TYPES = ["Breakfast", "Lunch", "Dinner"];
 
 export const HALLS_OF_RESIDENCE = [
@@ -25,3 +29,18 @@ export const HALLS_OF_RESIDENCE = [
   "Ogden",
   "Iperu",
 ].sort((a, b) => (a > b ? 1 : -1));
+
+export const TOOLS = [
+  {
+    title: "Buy or sell meal tickets",
+    desc: "Sell your meal ticket whenever you are unable to use it.",
+    icon: IoTicketOutline,
+    link: PAGES.meal_ticket,
+  },
+  {
+    title: "Digital flashcards",
+    desc: "Create digital flashcards to help you study better.",
+    icon: BsCardText,
+    link: PAGES.digital_flashcards,
+  },
+];

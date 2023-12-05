@@ -1,4 +1,4 @@
-import { getEmailModal } from "@/atoms/atoms";
+import { get_ticket_details } from "@/atoms/atoms";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import Modal from "@/components/general/Modal";
 import Header from "@/components/meal-ticket/Header";
@@ -12,7 +12,8 @@ import { toast } from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
 
 const MealTicketPage = () => {
-  const [emailModal, setEmailModal] = useRecoilState(getEmailModal);
+  const [getTicketDetails, setGetTicketDetails] =
+    useRecoilState(get_ticket_details);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -73,7 +74,7 @@ const MealTicketPage = () => {
     setDisabled(true);
 
     fetch(
-      `/api/send-meal-ticket-info?email=${email}&ticket_id=${emailModal.ticket_id}`
+      `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}`
     )
       .then(() => {
         toast.success("Please check your email.");
@@ -82,7 +83,7 @@ const MealTicketPage = () => {
         toast.error("A server error occured.");
       })
       .finally(() => {
-        setEmailModal({ ticket_id: "" });
+        setGetTicketDetails({ ticket_id: "" });
         setEmail("");
 
         setLoading(false);
@@ -99,10 +100,10 @@ const MealTicketPage = () => {
         <Tickets />
       </section>
 
-      {emailModal.ticket_id && (
+      {getTicketDetails.ticket_id && (
         <Modal
           header="Buy a ticket"
-          dismiss={() => setEmailModal({ ticket_id: "" })}
+          dismiss={() => setGetTicketDetails({ ticket_id: "" })}
         >
           <p className="sm:text-lg mb-1">
             Enter your email address to continue

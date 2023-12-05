@@ -99,7 +99,7 @@ const HowItWorksPage = () => {
           directory whether it has been sold or not.
         </h1>
 
-        <h1 className={classNames(text_cls, "mt-10")}>
+        {/* <h1 className={classNames(text_cls, "mt-10")}>
           Note: It is possible for more than two people to request a ticket, so
           if a ticket is already sold when you meet the owner, you can request a
           refund from us by sending an email to{" "}
@@ -107,7 +107,7 @@ const HowItWorksPage = () => {
             hello@babcock.tools
           </Link>
           .
-        </h1>
+        </h1> */}
       </section>
     </>
   );
