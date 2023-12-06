@@ -11,13 +11,13 @@ import PageLoader from "@/components/general/PageLoader";
 import { SummarizedCard } from "@/types/dashboard";
 import Modal from "@/components/general/Modal";
 import CreateFlashcard from "@/components/dashboard/digital-flashcards/CreateFlashcard";
+import { PAGES } from "@/constants/pages";
 
 const DigitalFlashcardsDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [cards, setCards] = useState<SummarizedCard[]>([]);
   const cards_cont_ref = useRef<HTMLDivElement>(null);
-
   const [createFlashcard, setCreateFlashcard] =
     useRecoilState(create_flashcard);
 
@@ -81,7 +81,8 @@ const DigitalFlashcardsDashboardPage = () => {
               ref={cards_cont_ref}
             >
               {cards.map((c, i) => (
-                <button
+                <Link
+                  href={PAGES.flashcards_for_course(c.course_code)}
                   className="p-4 w-fit rounded-lg border bg-white hover:shadow-md cursor-pointer"
                   key={i}
                 >
@@ -92,7 +93,7 @@ const DigitalFlashcardsDashboardPage = () => {
                   <div className="w-full text-center text-3xl sm:text-4xl font-semibold mt-4 text-blue">
                     {c.count}
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
           )

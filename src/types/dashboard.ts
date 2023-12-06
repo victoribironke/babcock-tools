@@ -30,3 +30,4 @@ export type YourTicketsProps = {
 };
 
 export type SummarizedCard = { course_code: string; count: number };
+export type FullFlashcard = { answer: string; id: number; question: string };

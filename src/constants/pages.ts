@@ -11,6 +11,8 @@ export const PAGES = {
   dashboard: "/dashboard",
   sell_your_meal_ticket: "/dashboard/sell-your-meal-ticket",
   digital_flashcards_dashboard: "/dashboard/digital-flashcards",
+  flashcards_for_course: (id: string) =>
+    `/dashboard/digital-flashcards/${id.toLowerCase().split(" ").join("-")}`,
 
   login: "/auth/login",
   signup: "/auth/signup",
