@@ -27,6 +27,14 @@ export type InputProps = {
   type?: HTMLInputTypeAttribute;
 };
 
+export type TextareaProps = {
+  placeholder?: string;
+  value: string;
+  onBlur?: FocusEventHandler<HTMLTextAreaElement>;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  maxLength?: number;
+};
+
 export type SelectInputProps = {
   value: string;
   onChange: ChangeEventHandler<HTMLSelectElement>;

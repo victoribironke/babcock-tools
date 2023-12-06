@@ -1,4 +1,4 @@
-import { InputProps, SelectInputProps } from "@/types/general";
+import { InputProps, SelectInputProps, TextareaProps } from "@/types/general";
 
 const input_classes =
   "w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white";
@@ -84,6 +84,19 @@ export const NumberInput = ({
       onChange={onChange}
       onBlur={onBlur}
       maxLength={maxLength}
+    />
+  );
+};
+
+export const Textarea = ({ onChange, value, placeholder }: TextareaProps) => {
+  return (
+    <textarea
+      cols={10}
+      rows={5}
+      onChange={onChange}
+      value={value}
+      placeholder={placeholder}
+      className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white resize-y"
     />
   );
 };

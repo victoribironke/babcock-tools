@@ -28,3 +28,5 @@ export type YourTicketsProps = {
   noTickets: boolean;
   tickets: ATicket[];
 };
+
+export type SummarizedCard = { course_code: string; count: number };

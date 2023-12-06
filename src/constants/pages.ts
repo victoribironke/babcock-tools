@@ -10,6 +10,7 @@ export const PAGES = {
 
   dashboard: "/dashboard",
   sell_your_meal_ticket: "/dashboard/sell-your-meal-ticket",
+  digital_flashcards_dashboard: "/dashboard/digital-flashcards",
 
   login: "/auth/login",
   signup: "/auth/signup",

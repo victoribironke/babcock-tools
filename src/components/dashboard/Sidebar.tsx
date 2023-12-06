@@ -9,6 +9,7 @@ import { signOutUser } from "@/utils/firebase";
 import { IoTicketOutline } from "react-icons/io5";
 import { useSetRecoilState } from "recoil";
 import { get_help } from "@/atoms/atoms";
+import { BsCardText, BsStars } from "react-icons/bs";
 
 const Sidebar = ({ show, setShow }: SidebarProps) => {
   const router = useRouter();
@@ -53,6 +54,14 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
         >
           <IoTicketOutline />
           <p className="-mb-0.5">Sell your meal ticket</p>
+        </Link>
+        <Link
+          href={PAGES.digital_flashcards_dashboard}
+          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
+        >
+          <BsCardText />
+          <p className="-mb-0.5 mr-auto">Digital flashcards</p>
+          <BsStars className="text-yellow" />
         </Link>
       </div>
 

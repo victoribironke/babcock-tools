@@ -1,4 +1,4 @@
-import { get_help } from "@/atoms/atoms";
+import { create_flashcard, get_help } from "@/atoms/atoms";
 import { PAGES } from "@/constants/pages";
 import { useToggle } from "@/hooks/general";
 import { DashboardTemplateProps } from "@/types/dashboard";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useRecoilState } from "recoil";
 import Modal from "../general/Modal";
+import CreateFlashcard from "./digital-flashcards/CreateFlashcard";
 import Sidebar from "./Sidebar";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {

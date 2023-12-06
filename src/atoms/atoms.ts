@@ -11,3 +11,8 @@ export const get_help = atom({
   key: "get help",
   default: false,
 });
+
+export const create_flashcard = atom({
+  key: "create flashcard",
+  default: false,
+});
