@@ -1,13 +1,10 @@
-import { create_flashcard } from "@/atoms/atoms";
-import { SelectInput, Textarea, TextInput } from "@/components/general/Input";
+import { Textarea } from "@/components/general/Input";
 import { auth, db } from "@/services/firebase";
 import { FullFlashcard } from "@/types/dashboard";
 import { arrayRemove, arrayUnion, doc, setDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
 import { useState, Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useSetRecoilState } from "recoil";
 
 const EditFlashcard = ({
   details,

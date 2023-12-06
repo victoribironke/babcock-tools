@@ -1,6 +1,4 @@
-import { create_flashcard } from "@/atoms/atoms";
 import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
-import CreateFlashcard from "@/components/dashboard/digital-flashcards/CreateFlashcard";
 import CreateFlashcardWithoutCourseSelect from "@/components/dashboard/digital-flashcards/CreateFlashcardWithoutCourseSelect";
 import DeleteFlashcard from "@/components/dashboard/digital-flashcards/DeleteFlashcard";
 import EditFlashcard from "@/components/dashboard/digital-flashcards/EditFlashcard";
@@ -12,8 +10,7 @@ import { auth, db } from "@/services/firebase";
 import { FullFlashcard } from "@/types/dashboard";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
 const CourseCards = () => {
   const router = useRouter();

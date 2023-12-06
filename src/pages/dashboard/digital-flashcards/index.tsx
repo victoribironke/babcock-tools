@@ -3,7 +3,7 @@ import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import Link from "next/link";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useEffect, useState, useRef } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";

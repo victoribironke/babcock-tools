@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
-import { useSetRecoilState } from "recoil";
-import { arrayRemove, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { arrayRemove, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
 import { FullFlashcard } from "@/types/dashboard";
 
@@ -48,8 +47,7 @@ const DeleteFlashcard = ({
   return (
     <>
       <p>
-        Are you sure you want to delete this card? This action cannont be
-        undone.
+        Are you sure you want to delete this card? This action cannot be undone.
       </p>
 
       <div className="flex gap-4 mt-4">

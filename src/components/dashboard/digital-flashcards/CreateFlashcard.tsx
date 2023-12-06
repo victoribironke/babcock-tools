@@ -2,7 +2,6 @@ import { create_flashcard } from "@/atoms/atoms";
 import { SelectInput, Textarea, TextInput } from "@/components/general/Input";
 import { auth, db } from "@/services/firebase";
 import { arrayUnion, doc, setDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";

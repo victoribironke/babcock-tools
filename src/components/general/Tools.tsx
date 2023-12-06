@@ -1,5 +1,4 @@
 import { TOOLS } from "@/constants/babcock";
-import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { BsStars } from "react-icons/bs";
 
