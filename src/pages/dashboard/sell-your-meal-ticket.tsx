@@ -21,7 +21,7 @@ const SellYourMealTicketPage = () => {
       where("uid", "==", auth.currentUser?.uid)
     );
 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const unsub = onSnapshot(q, (querySnapshot) => {
       setLoading(true);
 
       const full_tickets: ATicket[] = [];
@@ -41,7 +41,7 @@ const SellYourMealTicketPage = () => {
       setTickets(full_tickets);
     });
 
-    return unsubscribe;
+    return unsub;
   }, []);
 
   return (

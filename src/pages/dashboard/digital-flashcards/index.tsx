@@ -4,7 +4,7 @@ import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import Link from "next/link";
 import { useRecoilState } from "recoil";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
 import PageLoader from "@/components/general/PageLoader";
@@ -17,7 +17,6 @@ const DigitalFlashcardsDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [cards, setCards] = useState<SummarizedCard[]>([]);
-  const cards_cont_ref = useRef<HTMLDivElement>(null);
   const [createFlashcard, setCreateFlashcard] =
     useRecoilState(create_flashcard);
 
@@ -31,12 +30,6 @@ const DigitalFlashcardsDashboardPage = () => {
           setIsEmpty(true);
           setIsLoading(false);
           return;
-        }
-
-        while (cards_cont_ref.current?.firstChild) {
-          cards_cont_ref.current?.removeChild(
-            cards_cont_ref.current?.firstChild
-          );
         }
 
         const flashcards = doc.data();
@@ -58,6 +51,7 @@ const DigitalFlashcardsDashboardPage = () => {
   return (
     <>
       <HeadTemplate title="Digital flashcards" />
+
       <DashboardTemplate>
         <div className="flex justify-between items-center w-full">
           <p className="font-medium text-lg">Your flashcards</p>
@@ -76,17 +70,14 @@ const DigitalFlashcardsDashboardPage = () => {
               You don&apos;t have any flashcards.
             </p>
           ) : (
-            <div
-              className="w-full flex flex-wrap items-center justify-center mt-5 gap-2"
-              ref={cards_cont_ref}
-            >
+            <div className="w-full grid grid-cols-1 rs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
               {cards.map((c, i) => (
                 <Link
                   href={PAGES.flashcards_for_course(c.course_code)}
-                  className="p-4 w-fit rounded-lg border bg-white hover:shadow-md cursor-pointer"
+                  className="p-4 w-full rounded-lg border bg-white hover:shadow-md cursor-pointer"
                   key={i}
                 >
-                  <p className="text-lg sm:text-xl font-medium">
+                  <p className="text-lg sm:text-xl font-medium w-full text-center">
                     {c.course_code}
                   </p>
 

@@ -44,8 +44,7 @@ const Tickets = () => {
       }
 
       setNoTickets(false);
-      shuffleArray(full_tickets);
-      setTickets(full_tickets);
+      setTickets(shuffleArray(full_tickets));
     });
 
     return unsubscribe;

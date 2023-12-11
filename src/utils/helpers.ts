@@ -105,9 +105,13 @@ export const generateUniqueURL = () => {
 export const pickRandomFromArray = (array: any[]) =>
   array[Math.floor(Math.random() * array.length)];
 
-export const shuffleArray = (array: any) => {
-  for (let i = array.length - 1; i > 0; i--) {
+export const shuffleArray = (array: any[]) => {
+  const a = array.slice();
+
+  for (let i = a.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
+
+  return a;
 };

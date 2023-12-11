@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export type SidebarProps = {
   show: boolean;
@@ -30,4 +30,11 @@ export type YourTicketsProps = {
 };
 
 export type SummarizedCard = { course_code: string; count: number };
+
 export type FullFlashcard = { answer: string; id: number; question: string };
+
+export type PracticeModalProps = {
+  header: string;
+  dismiss: () => void;
+  cards: FullFlashcard[];
+};
