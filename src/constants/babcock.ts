@@ -42,7 +42,7 @@ export const TOOLS = [
     title: "Digital flashcards",
     desc: "Create digital flashcards to help you study efficiently.",
     icon: BsCardText,
-    link: PAGES.digital_flashcards,
+    link: PAGES.digital_flashcards_dashboard,
     is_new: true,
   },
 ];
