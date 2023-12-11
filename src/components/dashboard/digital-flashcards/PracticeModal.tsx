@@ -1,8 +1,6 @@
 import { PracticeModalProps } from "@/types/dashboard";
-import { shuffleArray } from "@/utils/helpers";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
-import { useToggle } from "@/hooks/general";
 
 const PracticeModal = ({ header, dismiss, cards }: PracticeModalProps) => {
   const [showA, setShowA] = useState(false);
