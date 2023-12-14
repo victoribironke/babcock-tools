@@ -38,3 +38,11 @@ export type PracticeModalProps = {
   dismiss: () => void;
   cards: FullFlashcard[];
 };
+
+export type UserDetails = {
+  email: string;
+  full_name: string;
+  hall_of_residence: string;
+  matric_no: string;
+  phone_number: string;
+};

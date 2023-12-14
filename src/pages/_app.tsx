@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { RecoilRoot } from "recoil";
+import { useRouter } from "next/router";
 
 const gt = localFont({
   src: [
@@ -41,6 +42,8 @@ const gt = localFont({
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
+
   return (
     <RecoilRoot>
       <Analytics />
@@ -48,7 +51,8 @@ const App = ({ Component, pageProps }: AppProps) => {
       <main
         className={classNames(
           gt.className,
-          "min-h-screen w-full flex items-center justify-start flex-col relative"
+          "min-h-screen w-full flex items-center justify-start flex-col relative",
+          router.pathname.includes("dashboard") && "bg-dark-blue"
         )}
       >
         <Component {...pageProps} />

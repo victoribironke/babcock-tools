@@ -53,7 +53,7 @@ const DigitalFlashcardsDashboardPage = () => {
       <HeadTemplate title="Digital flashcards" />
 
       <DashboardTemplate>
-        <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full max-w-5xl">
           <p className="font-medium text-lg">Your flashcards</p>
 
           <button
@@ -70,7 +70,7 @@ const DigitalFlashcardsDashboardPage = () => {
               You don&apos;t have any flashcards.
             </p>
           ) : (
-            <div className="w-full grid grid-cols-1 rs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
+            <div className="w-full grid max-w-5xl grid-cols-1 rs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
               {cards.map((c, i) => (
                 <Link
                   href={PAGES.flashcards_for_course(c.course_code)}

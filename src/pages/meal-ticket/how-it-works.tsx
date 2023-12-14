@@ -12,7 +12,7 @@ const HowItWorksPage = () => {
       <HeadTemplate title="How does the meal ticket tool work?" />
 
       <section className="w-full max-w-3xl px-4 sm:px-8 py-12">
-        <h1 className="text-blue text-3xl sm:text-4xl w-full text-center mb-6 font-semibold">
+        <h1 className="text-white bg-blue p-4 rounded-xl text-3xl sm:text-4xl w-full text-center mb-6 font-semibold">
           How to buy a ticket
         </h1>
 
@@ -48,7 +48,7 @@ const HowItWorksPage = () => {
           collect the ticket.
         </h1> */}
 
-        <h1 className="text-blue text-3xl sm:text-4xl w-full text-center my-6 font-semibold">
+        <h1 className="text-white bg-blue p-4 rounded-xl text-3xl sm:text-4xl w-full text-center my-6 font-semibold">
           How to sell a ticket
         </h1>
 

@@ -49,10 +49,10 @@ const SellYourMealTicketPage = () => {
       <HeadTemplate title="Sell your meal ticket" />
 
       <DashboardTemplate>
-        <div className="w-fit flex items-center p-1 justify-center rounded-full bg-gray-100">
+        <div className="w-fit flex items-center p-1 justify-center rounded-xl bg-gray-100">
           <button
             className={classNames(
-              "rounded-full py-2 px-4",
+              "rounded-lg py-2 px-4",
               tab === "see" && "bg-white"
             )}
             onClick={() => setTab("see")}
@@ -61,7 +61,7 @@ const SellYourMealTicketPage = () => {
           </button>
           <button
             className={classNames(
-              "rounded-full py-2 px-4",
+              "rounded-lg py-2 px-4",
               tab === "sell" && "bg-white"
             )}
             onClick={() => setTab("sell")}
