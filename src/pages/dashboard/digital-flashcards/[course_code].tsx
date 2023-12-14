@@ -66,7 +66,7 @@ const CourseCards = () => {
       <HeadTemplate title={`Digital flashcards — ${new_course_code}`} />
 
       <DashboardTemplate>
-        <div className="flex gap-2 items-center w-full flex-wrap">
+        <div className="flex gap-2 items-center w-full flex-wrap max-w-5xl">
           <p className="font-medium md:text-lg mr-auto">Your flashcards</p>
 
           <button
@@ -84,7 +84,7 @@ const CourseCards = () => {
         </div>
 
         {!isLoading ? (
-          <div className="w-full mt-5 gap-3 grid grid-cols-1 rs:grid-cols-2 lg:grid-cols-3">
+          <div className="w-full mt-5 gap-3 grid grid-cols-1 rs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-5xl">
             {cards.map((c, i) => (
               <div className="bg-white rounded-lg shadow-md p-2 border" key={i}>
                 <p className="w-full h-28 bg-green text-white text-center rounded flex items-center justify-center mb-2 p-4">

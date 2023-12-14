@@ -24,7 +24,7 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
   return (
     <div
       className={classNames(
-        "w-64 sm:w-80 self-start bg-white border shadow-md rounded-xl max-h-[600px] overflow-scroll p-2 absolute z-20 sm:z-0 sm:translate-x-0 sm:static flex flex-col",
+        "w-64 sm:w-80 self-start bg-dark-blue min-h-screen overflow-scroll p-2 sm:pr-0 absolute z-20 sm:z-0 sm:translate-x-0 sm:static flex flex-col",
         show ? "translate-x-0" : "-translate-x-full"
       )}
     >
@@ -38,36 +38,38 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
       <div className="flex flex-col w-full gap-2 mb-8">
         <Link
           href={PAGES.dashboard}
-          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
+          className={classNames(
+            "flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
+          )}
         >
           <LuHome />
           <p className="-mb-0.5">Home</p>
         </Link>
       </div>
 
-      <p className="mb-2 text-lg opacity-70 ml-3">Tools</p>
+      <p className="mb-2 text-lg opacity-70 ml-3 text-white">Tools</p>
 
-      <div className="flex flex-col w-full gap-2 mb-14">
+      <div className="flex flex-col w-full gap-2 mb-auto">
         <Link
           href={PAGES.sell_your_meal_ticket}
-          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
+          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
         >
           <IoTicketOutline />
           <p className="-mb-0.5">Sell your meal ticket</p>
         </Link>
         <Link
           href={PAGES.digital_flashcards_dashboard}
-          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
+          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
         >
           <BsCardText />
           <p className="-mb-0.5 mr-auto">Digital flashcards</p>
-          <BsStars className="text-yellow" />
+          <BsStars className="text-blue" />
         </Link>
       </div>
 
       <div className="flex flex-col w-full gap-2">
         <button
-          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-blue bg-opacity-10 bg-blue hover:bg-opacity-20"
+          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
           onClick={() => setGetHelp(true)}
         >
           <FiHelpCircle />
