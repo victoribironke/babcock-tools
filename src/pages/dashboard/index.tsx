@@ -2,14 +2,7 @@ import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 import { useEffect, useState } from "react";
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { auth, db } from "@/services/firebase";
 import PageLoader from "@/components/general/PageLoader";
