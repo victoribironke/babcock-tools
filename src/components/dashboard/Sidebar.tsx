@@ -27,11 +27,9 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
         "w-64 sm:w-80 self-start bg-dark-blue min-h-screen overflow-scroll p-2 sm:pr-0 absolute z-20 sm:z-0 sm:translate-x-0 sm:static flex flex-col",
         show ? "translate-x-0" : "-translate-x-full"
       )}
+      onClick={setShow}
     >
-      <button
-        className="bg-red text-white py-0.5 px-3 rounded-lg sm:hidden w-fit mb-8 self-end"
-        onClick={setShow}
-      >
+      <button className="bg-red text-white py-0.5 px-3 rounded-lg sm:hidden w-fit mb-8 self-end">
         Close
       </button>
 
