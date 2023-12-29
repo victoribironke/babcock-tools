@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { RecoilRoot } from "recoil";
 import { useRouter } from "next/router";
+import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 
 const gt = localFont({
   src: [
@@ -55,7 +56,13 @@ const App = ({ Component, pageProps }: AppProps) => {
           router.pathname.includes("dashboard") && "bg-dark-blue"
         )}
       >
-        <Component {...pageProps} />
+        {router.pathname.includes("dashboard") ? (
+          <DashboardTemplate>
+            <Component {...pageProps} />
+          </DashboardTemplate>
+        ) : (
+          <Component {...pageProps} />
+        )}
       </main>
     </RecoilRoot>
   );

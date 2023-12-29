@@ -1,39 +1,37 @@
-import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
-import CreateFlashcardWithoutCourseSelect from "@/components/dashboard/digital-flashcards/CreateFlashcardWithoutCourseSelect";
-import DeleteFlashcard from "@/components/dashboard/digital-flashcards/DeleteFlashcard";
-import EditFlashcard from "@/components/dashboard/digital-flashcards/EditFlashcard";
-import PracticeModal from "@/components/dashboard/digital-flashcards/PracticeModal";
+import {
+  create_new_flashcard,
+  delete_flashcard,
+  edit_flashcard,
+  flashcards_for_practice,
+  start_practice,
+} from "@/atoms/atoms";
 import HeadTemplate from "@/components/general/HeadTemplate";
-import Modal from "@/components/general/Modal";
 import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import NotFound from "@/pages/404";
 import { auth, db } from "@/services/firebase";
 import { FullFlashcard } from "@/types/dashboard";
-import { shuffleArray } from "@/utils/helpers";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const CourseCards = () => {
   const router = useRouter();
   const { course_code } = router.query;
-  const [cards, setCards] = useState<FullFlashcard[]>([]);
-  const [editFlashcard, setEditFlashcard] = useState<FullFlashcard | null>(
-    null
-  );
+  const [cards, setCards] = useRecoilState(flashcards_for_practice);
+  const setEditFlashcard = useSetRecoilState(edit_flashcard);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [createFlashcard, setCreateFlashcard] = useState(false);
-  const [startPractice, setStartPractice] = useState("");
-  const [deleteFlashcard, setDeleteFlashcard] = useState<FullFlashcard | null>(
-    null
+  const setCreateFlashcard = useSetRecoilState(create_new_flashcard);
+  const setStartPractice = useSetRecoilState(start_practice);
+  const setDeleteFlashcard = useSetRecoilState<FullFlashcard | null>(
+    delete_flashcard
   );
   const new_course_code = (course_code as string)
     ?.split("-")
     .join(" ")
     .toUpperCase();
-  const new_cards = shuffleArray(cards);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -65,7 +63,7 @@ const CourseCards = () => {
     <>
       <HeadTemplate title={`Digital flashcards — ${new_course_code}`} />
 
-      <DashboardTemplate>
+      <>
         <div className="flex gap-2 items-center w-full flex-wrap max-w-5xl">
           <p className="font-medium md:text-lg mr-auto">Your flashcards</p>
 
@@ -112,50 +110,7 @@ const CourseCards = () => {
         ) : (
           <PageLoader type="small" />
         )}
-      </DashboardTemplate>
-
-      {createFlashcard && (
-        <Modal
-          header="Create a new flashcard"
-          dismiss={() => setCreateFlashcard(false)}
-        >
-          <CreateFlashcardWithoutCourseSelect
-            course_code={new_course_code}
-            close={setCreateFlashcard}
-          />
-        </Modal>
-      )}
-
-      {deleteFlashcard && (
-        <Modal
-          header="Delete a flashcard"
-          dismiss={() => setDeleteFlashcard(null)}
-        >
-          <DeleteFlashcard
-            details={deleteFlashcard}
-            close={setDeleteFlashcard}
-            course_code={new_course_code}
-          />
-        </Modal>
-      )}
-
-      {editFlashcard && (
-        <Modal header="Edit a flashcard" dismiss={() => setEditFlashcard(null)}>
-          <EditFlashcard
-            course_code={new_course_code}
-            details={editFlashcard}
-            close={setEditFlashcard}
-          />
-        </Modal>
-      )}
-
-      {startPractice && (
-        <PracticeModal
-          dismiss={() => setStartPractice("")}
-          header={startPractice}
-          cards={new_cards}
-        />
-      )}
+      </>
     </>
   );
 };

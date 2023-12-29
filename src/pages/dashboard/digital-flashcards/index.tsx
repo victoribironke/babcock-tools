@@ -1,24 +1,20 @@
 import { create_flashcard } from "@/atoms/atoms";
-import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import Link from "next/link";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
 import PageLoader from "@/components/general/PageLoader";
 import { SummarizedCard } from "@/types/dashboard";
-import Modal from "@/components/general/Modal";
-import CreateFlashcard from "@/components/dashboard/digital-flashcards/CreateFlashcard";
 import { PAGES } from "@/constants/pages";
 
 const DigitalFlashcardsDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [cards, setCards] = useState<SummarizedCard[]>([]);
-  const [createFlashcard, setCreateFlashcard] =
-    useRecoilState(create_flashcard);
+  const setCreateFlashcard = useSetRecoilState(create_flashcard);
 
   useEffect(() => {
     const temp_cards: SummarizedCard[] = [];
@@ -52,13 +48,13 @@ const DigitalFlashcardsDashboardPage = () => {
     <>
       <HeadTemplate title="Digital flashcards" />
 
-      <DashboardTemplate>
+      <>
         <div className="flex justify-between items-center w-full max-w-5xl">
           <p className="font-medium text-lg">Your flashcards</p>
 
           <button
             className="bg-green text-white py-1 px-3 rounded-md"
-            onClick={() => setCreateFlashcard(true)}
+            onClick={() => setCreateFlashcard(cards)}
           >
             Create flashcard
           </button>
@@ -91,7 +87,7 @@ const DigitalFlashcardsDashboardPage = () => {
         ) : (
           <PageLoader type="small" />
         )}
-      </DashboardTemplate>
+      </>
 
       <Link
         href="https://www.twinkl.com.ng/teaching-wiki/flashcards"
@@ -100,15 +96,6 @@ const DigitalFlashcardsDashboardPage = () => {
       >
         What are flashcards?
       </Link>
-
-      {createFlashcard && (
-        <Modal
-          header="Create a new flashcard"
-          dismiss={() => setCreateFlashcard(false)}
-        >
-          <CreateFlashcard course_codes={cards.map((c) => c.course_code)} />
-        </Modal>
-      )}
     </>
   );
 };

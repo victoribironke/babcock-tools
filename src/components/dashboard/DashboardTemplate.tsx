@@ -1,16 +1,45 @@
-import { get_help } from "@/atoms/atoms";
+import {
+  create_flashcard,
+  create_new_flashcard,
+  delete_flashcard,
+  edit_flashcard,
+  get_help,
+  start_practice,
+} from "@/atoms/atoms";
 import { PAGES } from "@/constants/pages";
 import { useToggle } from "@/hooks/general";
-import { DashboardTemplateProps } from "@/types/dashboard";
+import { DashboardTemplateProps, FullFlashcard } from "@/types/dashboard";
 import Link from "next/link";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useRecoilState } from "recoil";
 import Modal from "../general/Modal";
 import Sidebar from "./Sidebar";
+import CreateFlashcard from "./digital-flashcards/CreateFlashcard";
+import CreateFlashcardWithoutCourseSelect from "./digital-flashcards/CreateFlashcardWithoutCourseSelect";
+import DeleteFlashcard from "./digital-flashcards/DeleteFlashcard";
+import EditFlashcard from "./digital-flashcards/EditFlashcard";
+import PracticeModal from "./digital-flashcards/PracticeModal";
+import { useRouter } from "next/router";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
+  const router = useRouter();
+  const { course_code } = router.query;
   const [getHelp, setGetHelp] = useRecoilState(get_help);
+  const [createFlashcard, setCreateFlashcard] =
+    useRecoilState(create_flashcard);
+  const [editFlashcard, setEditFlashcard] =
+    useRecoilState<FullFlashcard | null>(edit_flashcard);
+  const [createNewFlashcard, setCreateNewFlashcard] =
+    useRecoilState(create_new_flashcard);
+  const [startPractice, setStartPractice] = useRecoilState(start_practice);
+  const [deleteFlashcard, setDeleteFlashcard] =
+    useRecoilState<FullFlashcard | null>(delete_flashcard);
+  const new_course_code = (course_code as string)
+    ?.split("-")
+    .join(" ")
+    .toUpperCase();
+
   // classNames("w-full ml-4 sm:ml-0", show ? "" : "ml-4")
   return (
     <>
@@ -38,6 +67,59 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
             .
           </p>
         </Modal>
+      )}
+
+      {createFlashcard && (
+        <Modal
+          header="Create a new flashcard"
+          dismiss={() => setCreateFlashcard(null)}
+        >
+          <CreateFlashcard
+            course_codes={createFlashcard.map((c) => c.course_code)}
+          />
+        </Modal>
+      )}
+
+      {createNewFlashcard && (
+        <Modal
+          header="Create a new flashcard"
+          dismiss={() => setCreateNewFlashcard(false)}
+        >
+          <CreateFlashcardWithoutCourseSelect
+            course_code={new_course_code}
+            close={setCreateNewFlashcard}
+          />
+        </Modal>
+      )}
+
+      {deleteFlashcard && (
+        <Modal
+          header="Delete a flashcard"
+          dismiss={() => setDeleteFlashcard(null)}
+        >
+          <DeleteFlashcard
+            details={deleteFlashcard}
+            close={setDeleteFlashcard}
+            course_code={new_course_code}
+          />
+        </Modal>
+      )}
+
+      {editFlashcard && (
+        <Modal header="Edit a flashcard" dismiss={() => setEditFlashcard(null)}>
+          <EditFlashcard
+            course_code={new_course_code}
+            details={editFlashcard}
+            close={setEditFlashcard}
+          />
+        </Modal>
+      )}
+
+      {startPractice && (
+        <PracticeModal
+          dismiss={() => setStartPractice("")}
+          header={startPractice}
+        />
       )}
     </>
   );

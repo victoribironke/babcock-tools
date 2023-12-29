@@ -59,7 +59,7 @@ const CreateFlashcard = ({ course_codes }: { course_codes: string[] }) => {
       );
 
       toast.success("Flashcard saved.");
-      setCreateFlashcard(false);
+      setCreateFlashcard(null);
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {
