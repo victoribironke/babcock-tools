@@ -1,4 +1,3 @@
-import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 import SellATicket from "@/components/dashboard/sell-your-meal-ticket/SellATicket";
 import YourTickets from "@/components/dashboard/sell-your-meal-ticket/YourTickets";
 import HeadTemplate from "@/components/general/HeadTemplate";
@@ -48,7 +47,7 @@ const SellYourMealTicketPage = () => {
     <>
       <HeadTemplate title="Sell your meal ticket" />
 
-      <DashboardTemplate>
+      <>
         <div className="w-fit flex items-center p-1 justify-center rounded-xl bg-gray-100">
           <button
             className={classNames(
@@ -78,7 +77,7 @@ const SellYourMealTicketPage = () => {
           />
         )}
         {tab === "sell" && <SellATicket />}
-      </DashboardTemplate>
+      </>
     </>
   );
 };

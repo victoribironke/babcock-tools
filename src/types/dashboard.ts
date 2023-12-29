@@ -36,7 +36,6 @@ export type FullFlashcard = { answer: string; id: number; question: string };
 export type PracticeModalProps = {
   header: string;
   dismiss: () => void;
-  cards: FullFlashcard[];
 };
 
 export type UserDetails = {

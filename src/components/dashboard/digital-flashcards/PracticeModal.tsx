@@ -1,10 +1,14 @@
 import { PracticeModalProps } from "@/types/dashboard";
 import { AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { flashcards_for_practice } from "@/atoms/atoms";
+import { shuffleArray } from "@/utils/helpers";
 
-const PracticeModal = ({ header, dismiss, cards }: PracticeModalProps) => {
+const PracticeModal = ({ header, dismiss }: PracticeModalProps) => {
   const [showA, setShowA] = useState(false);
   const [currentQnA, setCurrentQnA] = useState(0);
+  const cards = shuffleArray(useRecoilValue(flashcards_for_practice)!);
 
   const goBack = () => {
     if (currentQnA !== 0) {

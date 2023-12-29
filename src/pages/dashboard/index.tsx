@@ -1,6 +1,5 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
-import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
@@ -51,7 +50,7 @@ const Dashboard = () => {
     <>
       <HeadTemplate title="Dashboard" />
 
-      <DashboardTemplate>
+      <>
         {loading && <PageLoader type="small" />}
 
         {!loading && (
@@ -97,7 +96,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-      </DashboardTemplate>
+      </>
     </>
   );
 };
