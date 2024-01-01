@@ -1,4 +1,4 @@
-import { IoTicketOutline } from "react-icons/io5";
+import { IoTicketOutline, IoFastFoodOutline } from "react-icons/io5";
 import { BsCardText } from "react-icons/bs";
 import { PAGES } from "./pages";
 
@@ -31,6 +31,13 @@ export const HALLS_OF_RESIDENCE = [
 ].sort((a, b) => (a > b ? 1 : -1));
 
 export const TOOLS = [
+  {
+    title: "Cafeteria delivery",
+    desc: "Have your cafeteria meal delivered to you.",
+    icon: IoFastFoodOutline,
+    link: PAGES.meal_ticket,
+    is_new: true,
+  },
   {
     title: "Buy or sell meal tickets",
     desc: "Sell your meal ticket whenever you are unable to use it.",

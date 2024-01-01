@@ -43,7 +43,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   // classNames("w-full ml-4 sm:ml-0", show ? "" : "ml-4")
   return (
     <>
-      <section className="w-full min-h-screen flex gap-2">
+      <section className="w-full min-h-screen flex">
         <Sidebar show={show} setShow={toggleShow} />
 
         <div className="w-full p-2 sm:px-2">

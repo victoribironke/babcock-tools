@@ -9,6 +9,7 @@ export const PAGES = {
   digital_flashcards: "/digital-flashcards",
 
   dashboard: "/dashboard",
+  cafeteria_delivery: "/dashboard/cafeteria-delivery",
   sell_your_meal_ticket: "/dashboard/sell-your-meal-ticket",
   digital_flashcards_dashboard: "/dashboard/digital-flashcards",
   flashcards_for_course: (id: string) =>
