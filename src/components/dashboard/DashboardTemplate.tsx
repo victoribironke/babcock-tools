@@ -51,7 +51,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
             <RxHamburgerMenu className="text-xl" onClick={toggleShow} />
           </div>
 
-          <div className="w-full rounded-xl bg-white px-4 p-6 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
+          <div className="w-full rounded-xl bg-white p-4 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
             {children}
           </div>
         </div>
