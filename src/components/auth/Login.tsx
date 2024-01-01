@@ -17,6 +17,7 @@ import { useToggle } from "@/hooks/general";
 
 const Login = () => {
   const router = useRouter();
+  const { redirect } = router.query;
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [showPassword, toggleShowPassword] = useToggle(false);
@@ -53,7 +54,7 @@ const Login = () => {
       });
 
       toast.success("Logged in.");
-      router.push(PAGES.dashboard);
+      router.push(redirect ? (redirect as string) : PAGES.dashboard);
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {

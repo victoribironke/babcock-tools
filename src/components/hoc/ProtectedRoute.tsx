@@ -14,7 +14,7 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
     useEffect(() => {
       setTimeout(() => {
         if (getCurrentUser() === null) {
-          router.push(PAGES.login);
+          router.push(`${PAGES.login}?redirect=${router.pathname}`);
           return null;
         }
 
