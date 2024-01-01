@@ -12,14 +12,14 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
     const router = useRouter();
 
     useEffect(() => {
-      setTimeout(() => {
-        if (getCurrentUser() === null) {
-          router.push(`${PAGES.login}?redirect=${router.pathname}`);
-          return null;
-        }
+      // setTimeout(() => {
+      if (getCurrentUser() === null) {
+        router.push(`${PAGES.login}?redirect=${router.pathname}`);
+        // return null;
+      }
 
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
+      // }, 2000);
     }, [auth.currentUser]);
 
     if (isLoading) {
@@ -37,14 +37,14 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
     const router = useRouter();
 
     useEffect(() => {
-      setTimeout(async () => {
-        if (getCurrentUser()) {
-          router.push(PAGES.dashboard);
-          return null;
-        }
+      // setTimeout(async () => {
+      if (getCurrentUser()) {
+        router.push(PAGES.dashboard);
+        // return null;
+      }
 
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
+      // }, 2000);
     }, [auth.currentUser]);
 
     if (isLoading) {
