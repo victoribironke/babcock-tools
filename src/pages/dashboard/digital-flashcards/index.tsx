@@ -85,7 +85,7 @@ const DigitalFlashcardsDashboardPage = () => {
             </div>
           )
         ) : (
-          <PageLoader type="small" />
+          <PageLoader type="full" />
         )}
       </>
 

@@ -4,7 +4,7 @@ import Ticket from "./Ticket";
 
 const YourTickets = ({ loading, noTickets, tickets }: YourTicketsProps) => {
   if (loading) {
-    return <PageLoader type="small" />;
+    return <PageLoader type="full" />;
   }
 
   if (noTickets) {

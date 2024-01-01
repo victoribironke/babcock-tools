@@ -51,7 +51,7 @@ const Dashboard = () => {
       <HeadTemplate title="Dashboard" />
 
       <>
-        {loading && <PageLoader type="small" />}
+        {loading && <PageLoader type="full" />}
 
         {!loading && (
           <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 max-w-5xl gap-4">
