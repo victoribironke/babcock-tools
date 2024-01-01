@@ -61,7 +61,7 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
         >
           <BsCardText />
           <p className="-mb-0.5 mr-auto">Digital flashcards</p>
-          <BsStars className="text-blue" />
+          {/* <BsStars className="text-blue" /> */}
         </Link>
       </div>
 
