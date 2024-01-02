@@ -1,6 +1,6 @@
 import { auth, db } from "@/services/firebase";
 import { TicketProps } from "@/types/dashboard";
-import { classNames, formatNumber } from "@/utils/helpers";
+import { classNames, formatNumber, parseDate } from "@/utils/helpers";
 import {
   arrayRemove,
   deleteDoc,
@@ -12,17 +12,10 @@ import { IoTicketOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 
 const Ticket = ({ ticket }: TicketProps) => {
-  const dt = new Date(ticket.ticket_date).toDateString().split(" ").slice(0, 3);
-  const date = `${dt[0]}, ${dt[2]} ${dt[1]}`;
-
   const markAndUnmark = async () => {
     try {
-      const tk = await (
-        await getDoc(doc(db, "meal-tickets", ticket.id!))
-      ).data();
-
       await updateDoc(doc(db, "meal-tickets", ticket.id!), {
-        sold: !tk?.sold,
+        sold: !ticket?.sold,
       });
 
       toast.success("Ticket updated.");
@@ -60,7 +53,7 @@ const Ticket = ({ ticket }: TicketProps) => {
 
           <div className="flex gap-1 text-sm">
             <p className="opacity-70">On:</p>
-            <p>{date}</p>
+            <p>{parseDate(ticket.ticket_date) as string}</p>
           </div>
 
           <div className="flex gap-1 text-sm">
