@@ -1,12 +1,15 @@
+import { edit_order_status } from "@/atoms/atoms";
 import { db } from "@/services/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useSetRecoilState } from "recoil";
 
 const EditOrderStatus = ({ id }: { id: string }) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const setEditOrderStatus = useSetRecoilState(edit_order_status);
 
   const changeStatus = async () => {
     try {
@@ -18,6 +21,7 @@ const EditOrderStatus = ({ id }: { id: string }) => {
       });
 
       toast.success("Order updated.");
+      setEditOrderStatus("");
     } catch (e: any) {
       toast.error("An error occured.");
     } finally {
