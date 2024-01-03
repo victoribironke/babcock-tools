@@ -11,6 +11,7 @@ import { useSetRecoilState } from "recoil";
 import { get_help } from "@/atoms/atoms";
 import { BsCardText, BsStars } from "react-icons/bs";
 import { useEffect, useState } from "react";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 
 const Sidebar = ({ show, setShow }: SidebarProps) => {
   const router = useRouter();
@@ -36,8 +37,8 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
       )}
       onClick={setShow}
     >
-      <button className="bg-red text-white py-0.5 px-3 rounded-lg sm:hidden w-fit mb-8 self-end">
-        Close
+      <button className="bg-blue text-white py-1 px-3 rounded-md sm:hidden w-fit mb-8 self-end text-lg">
+        <MdKeyboardDoubleArrowLeft />
       </button>
 
       <div className="flex flex-col w-full gap-2 mb-8">
