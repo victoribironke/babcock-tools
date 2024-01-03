@@ -64,7 +64,7 @@ const MealTicketPage = () => {
   //   initializePayment(onSuccess, onClose);
   // };
 
-  const sendOwnersDetails = () => {
+  const sendOwnersDetails = async () => {
     if (!email || !isValidEmail(email)) {
       toast.error("Please input a valid email.");
       return;
@@ -73,22 +73,20 @@ const MealTicketPage = () => {
     setLoading(true);
     setDisabled(true);
 
-    fetch(
-      `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}`
-    )
-      .then(() => {
-        toast.success("Please check your email.");
-      })
-      .catch(() => {
-        toast.error("A server error occured.");
-      })
-      .finally(() => {
-        setGetTicketDetails({ ticket_id: "" });
-        setEmail("");
+    try {
+      await fetch(
+        `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}`
+      );
+      toast.success("Please check your email.");
+    } catch (e: any) {
+      toast.error("A server error occured.");
+    } finally {
+      setGetTicketDetails({ ticket_id: "" });
+      setEmail("");
 
-        setLoading(false);
-        setDisabled(false);
-      });
+      setLoading(false);
+      setDisabled(false);
+    }
   };
 
   return (
