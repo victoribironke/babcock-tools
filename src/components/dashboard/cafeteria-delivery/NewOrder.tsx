@@ -1,4 +1,4 @@
-import { DateInput, SelectInput } from "@/components/general/Input";
+import { DateInput, SelectInput, TextInput } from "@/components/general/Input";
 import { MEAL_TYPES } from "@/constants/babcock";
 import { auth, db } from "@/services/firebase";
 import { Deliverer, NewOrderProps, Order } from "@/types/dashboard";
@@ -35,6 +35,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     status: "Not delivered",
     ticket_date: "",
     orderer_id: auth.currentUser?.uid!,
+    room_number: "",
     id: "", // meal_type, ticket_date, uid
   });
   const price = prices.find((p) => p.id === formData.deliverer_id);
@@ -161,6 +162,18 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       <DateInput
         onChange={(e) => updateFormData(e.target.value, "ticket_date")}
         value={formData.ticket_date}
+      />
+
+      <p className="mb-1 mt-5">Room number</p>
+      <TextInput
+        onChange={(e) =>
+          updateFormData(
+            e.target.value.replace(" ", "").toUpperCase(),
+            "room_number"
+          )
+        }
+        value={formData.room_number}
+        placeholder="Room number"
       />
 
       <p className="mb-1 mt-5">Select deliverer</p>
