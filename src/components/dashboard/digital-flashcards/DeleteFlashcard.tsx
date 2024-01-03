@@ -3,17 +3,13 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { arrayRemove, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
-import { FullFlashcard } from "@/types/dashboard";
+import { FullFlashcard, UpdateFlashcardProps } from "@/types/dashboard";
 
 const DeleteFlashcard = ({
   details,
   close,
   course_code,
-}: {
-  details: FullFlashcard;
-  course_code: string;
-  close: Dispatch<SetStateAction<FullFlashcard | null>>;
-}) => {
+}: UpdateFlashcardProps) => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 

@@ -39,7 +39,7 @@ const RegisterAsADeliverer = () => {
         doc(db, "deliverers", auth.currentUser?.uid!)
       );
 
-      if (!deliverer.exists()) {
+      if (deliverer.exists()) {
         toast.error("You have created a deliverer profile already.");
         return;
       }

@@ -1,6 +1,6 @@
 import { Textarea } from "@/components/general/Input";
 import { auth, db } from "@/services/firebase";
-import { FullFlashcard } from "@/types/dashboard";
+import { FullFlashcard, UpdateFlashcardProps } from "@/types/dashboard";
 import { arrayRemove, arrayUnion, doc, setDoc } from "firebase/firestore";
 import { useState, Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
@@ -10,11 +10,7 @@ const EditFlashcard = ({
   details,
   course_code,
   close,
-}: {
-  details: FullFlashcard;
-  course_code: string;
-  close: Dispatch<SetStateAction<FullFlashcard | null>>;
-}) => {
+}: UpdateFlashcardProps) => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [formData, setFormData] = useState({

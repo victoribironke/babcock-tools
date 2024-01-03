@@ -42,3 +42,8 @@ export const flashcards_for_practice = atom<FullFlashcard[]>({
   key: "flashcards for practice",
   default: [],
 });
+
+export const edit_order_status = atom({
+  key: "edit order status",
+  default: "",
+});

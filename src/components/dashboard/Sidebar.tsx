@@ -23,9 +23,10 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
     router.push(PAGES.home);
   };
 
-  useEffect(() => {
-    setUserInfo(JSON.parse(localStorage.getItem("bt_user_info")!));
-  }, []);
+  useEffect(
+    () => setUserInfo(JSON.parse(localStorage.getItem("bt_user_info")!)),
+    []
+  );
 
   return (
     <div
@@ -81,11 +82,11 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
       <div className="flex flex-col w-full gap-2">
         {userInfo?.is_deliverer && (
           <Link
-            href={PAGES.digital_flashcards_dashboard}
+            href={PAGES.deliverer_profile}
             className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
           >
             <IoFastFoodOutline />
-            <p className="-mb-0.5 mr-auto">Deliverer&apos;s profile</p>
+            <p className="-mb-0.5 mr-auto">Deliverer profile</p>
           </Link>
         )}
         <button

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export type SidebarProps = {
   show: boolean;
@@ -48,16 +48,36 @@ export type UserDetails = {
 
 export type Order = {
   meal_type: "Breakfast" | "Lunch" | "Dinner";
-  deliverer: { id: string; name: string };
+  deliverer_id: string;
   date_ordered: string;
   status: "Not delivered" | "Delivered";
   ticket_date: string;
+  orderer_id: string;
   id: string;
 };
 
 export type Deliverer = UserDetails & {
   uid: string;
-  email_verified: string;
   amount_per_order: string;
   max_number_of_orders: string;
+};
+
+export type NewOrderProps = {
+  setTab: Dispatch<SetStateAction<"new" | "past">>;
+  deliverers: Deliverer[];
+};
+
+export type PastOrdersProps = { orders: Order[]; deliverers: Deliverer[] };
+
+export type CreateFlashcardProps = { course_codes: string[] };
+
+export type CreateFlashcardWithoutCourseSelectProps = {
+  course_code: string;
+  close: Dispatch<SetStateAction<boolean>>;
+};
+
+export type UpdateFlashcardProps = {
+  details: FullFlashcard;
+  course_code: string;
+  close: Dispatch<SetStateAction<FullFlashcard | null>>;
 };

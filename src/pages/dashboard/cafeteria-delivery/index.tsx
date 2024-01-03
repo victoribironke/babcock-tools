@@ -1,23 +1,67 @@
-import NewOrders from "@/components/dashboard/cafeteria-delivery/NewOrder";
+import NewOrder from "@/components/dashboard/cafeteria-delivery/NewOrder";
 import PastOrders from "@/components/dashboard/cafeteria-delivery/PastOrders";
 import HeadTemplate from "@/components/general/HeadTemplate";
+import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { PAGES } from "@/constants/pages";
-import { Order } from "@/types/dashboard";
+import { auth, db } from "@/services/firebase";
+import { Deliverer, Order } from "@/types/dashboard";
 import { classNames } from "@/utils/helpers";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CafeteriaDeliveryPage = () => {
-  const [orders] = useState<Order[]>([
-    // {
-    //   date_ordered: "2024-11-17",
-    //   deliverer: { id: "sdadsad", name: "Dikko Chinedu" },
-    //   meal_type: "Breakfast",
-    //   status: "Delivered",
-    // },
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [deliverers, setDeliverers] = useState<Deliverer[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [tab, setTab] = useState<"new" | "past">("new");
+
+  useEffect(() => {
+    const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
+
+    const q1 = query(
+      collection(db, "deliverers"),
+      where("hall_of_residence", "==", user_info.hall_of_residence)
+    );
+
+    const q2 = query(
+      collection(db, "orders"),
+      where("orderer_id", "==", auth.currentUser?.uid)
+    );
+
+    const unsubDeliverers = onSnapshot(q1, (querySnapshot) => {
+      setLoading(true);
+
+      const temp_deliverers: Deliverer[] = [];
+
+      querySnapshot.forEach((doc) => {
+        temp_deliverers.push(doc.data() as Deliverer);
+      });
+
+      setDeliverers(temp_deliverers);
+      setLoading(false);
+    });
+
+    const unsubOrders = onSnapshot(q2, (querySnapshot) => {
+      setLoading(true);
+      const temp_orders: Order[] = [];
+
+      querySnapshot.forEach((doc) => {
+        temp_orders.push(doc.data() as Order);
+      });
+
+      setOrders(temp_orders);
+      setLoading(false);
+    });
+
+    return () => {
+      unsubDeliverers();
+      unsubOrders();
+    };
+  }, []);
+
+  if (loading) return <PageLoader type="full" />;
 
   return (
     <>
@@ -44,9 +88,8 @@ const CafeteriaDeliveryPage = () => {
         </button>
       </div>
 
-      {tab === "new" && <NewOrders setTab={setTab} />}
-      {/* WHEN THEY WANT TO PLACE AN ORDER, GENERATE AN ID THAT IS GOING TO BE THE SAME EVERYTIME FOR THAT SPECIFIC ORDER, WITH THE PERSON'S UID */}
-      {tab === "past" && <PastOrders orders={orders} />}
+      {tab === "new" && <NewOrder setTab={setTab} deliverers={deliverers} />}
+      {tab === "past" && <PastOrders orders={orders} deliverers={deliverers} />}
 
       <Link
         href={PAGES.register_as_a_deliverer}

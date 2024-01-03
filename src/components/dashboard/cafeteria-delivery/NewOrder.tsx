@@ -1,26 +1,52 @@
 import { DateInput, SelectInput } from "@/components/general/Input";
 import { MEAL_TYPES } from "@/constants/babcock";
-import { auth } from "@/services/firebase";
-import { Order } from "@/types/dashboard";
-import { getTodaysDate } from "@/utils/helpers";
+import { auth, db } from "@/services/firebase";
+import { Deliverer, NewOrderProps, Order } from "@/types/dashboard";
+import { getTodaysDate, parseDate } from "@/utils/helpers";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { usePaystackPayment } from "react-paystack";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 
-const NewOrders = ({
-  setTab,
-}: {
-  setTab: Dispatch<SetStateAction<"new" | "past">>;
-}) => {
+const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState<any>();
+  const [prices] = useState(
+    deliverers.map((d) => {
+      return { id: d.uid, price: d.amount_per_order };
+    })
+  );
   const [formData, setFormData] = useState<Order>({
     meal_type: "Breakfast",
     date_ordered: getTodaysDate(),
-    deliverer: { id: "", name: "" },
+    deliverer_id: "",
     status: "Not delivered",
     ticket_date: "",
-    id: "", // meal_type, date_ordered, ticket_date, uid
+    orderer_id: auth.currentUser?.uid!,
+    id: "", // meal_type, ticket_date, uid
+  });
+  const price = prices.find((p) => p.id === formData.deliverer_id);
+
+  const initializePayment = usePaystackPayment({
+    email: userInfo?.email,
+    reference: new Date().getTime().toString(),
+    amount: (parseInt(price ? price.price : "0") + 100) * 100,
+    publicKey:
+      process.env.NODE_ENV === "development"
+        ? process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY!
+        : process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY!,
   });
 
   const updateFormData = (text: string, which: string) => {
@@ -30,60 +56,92 @@ const NewOrders = ({
   };
 
   const placeOrder = async () => {
-    const { ticket_date } = formData;
+    const { ticket_date, deliverer_id } = formData;
 
     if (!ticket_date) {
       toast.error("Please input a ticket date.");
       return;
     }
 
-    // - get all rider's details
-    // - check if there is a rider is in the same hostel as the orderer
-    // - if empty arry:
-    //     - tell them there is no rider in their hostel
-    // - else:
-    //     - get all the riders that aren't fully booked
-    //     - if empty array:
-    //         - tell them all riders are booked
-    //     - else:
-    //         - get a random rider and place the order
+    if (!deliverer_id) {
+      toast.error("Please select a deliverer.");
+      return;
+    }
 
     try {
       setLoading(true);
       setDisabled(true);
 
-      //   const hall_of_owner = await (
-      //     await getDoc(doc(db, "users", auth.currentUser?.uid!))
-      //   ).data()?.hall_of_residence;
+      const order = await getDoc(doc(db, "orders", formData.id));
 
-      //   const docRef = await addDoc(collection(db, "meal-tickets"), {
-      //     ...formData,
-      //     uid: auth.currentUser?.uid,
-      //     sold: false,
-      //     hall_of_owner,
-      //   });
+      if (order.exists()) {
+        toast.error(
+          `You've already ordered for ${formData.meal_type} on ${parseDate(
+            formData.ticket_date
+          )}.`
+        );
+        return;
+      }
 
-      //   await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
-      //     my_tickets: arrayUnion(docRef.id),
-      //   });
+      const q = query(
+        collection(db, "orders"),
+        where("meal_type", "==", formData.meal_type),
+        where("ticket_date", "==", formData.ticket_date)
+      );
 
-      //   toast.success("Your ticket was saved.");
-      setTab("past");
+      const data = (await getDocs(q)).docs.map((d) => d.data()) as Order[];
+
+      const orders_for_selected_deliverer = data.filter(
+        (d) => d.deliverer_id === formData.deliverer_id
+      ).length;
+      const deliverers_max_number_of_orders = parseInt(
+        deliverers.find((d) => d.uid === formData.deliverer_id)
+          ?.max_number_of_orders!
+      );
+
+      if (orders_for_selected_deliverer >= deliverers_max_number_of_orders) {
+        toast.error("This deliverer is already fully booked.");
+        return;
+      }
+
+      const onSuccess = () => {
+        setDoc(doc(db, "orders", formData.id), formData).then(() => {
+          setTab("past");
+          toast.success("Payment successful. Your order has been placed.");
+
+          setLoading(false);
+          setDisabled(false);
+        });
+      };
+
+      const onClose = () => {
+        toast.error("Payment cancelled.");
+
+        setLoading(false);
+        setDisabled(false);
+      };
+
+      initializePayment(onSuccess, onClose);
     } catch (e: any) {
-      toast.error(`Error: ${e.code.split("/")[1]}.`);
+      toast.error("An error occured.");
     } finally {
       setLoading(false);
       setDisabled(false);
     }
   };
 
+  useEffect(
+    () => setUserInfo(JSON.parse(localStorage.getItem("bt_user_info")!)),
+    []
+  );
+
   useEffect(() => {
-    const { date_ordered, meal_type, ticket_date } = formData;
+    const { meal_type, ticket_date } = formData;
 
     setFormData((k) => {
       return {
         ...k,
-        id: `${meal_type}_${date_ordered}_${ticket_date}_${auth.currentUser?.uid}`.toLowerCase(),
+        id: `${meal_type}_${ticket_date}_${auth.currentUser?.uid}`.toLowerCase(),
       };
     });
   }, [formData.date_ordered, formData.meal_type, formData.ticket_date]);
@@ -105,6 +163,28 @@ const NewOrders = ({
         value={formData.ticket_date}
       />
 
+      <p className="mb-1 mt-5">Select deliverer</p>
+      <p className="mb-2 text-sm text-gray-500">
+        If the dropdown below is empty, it means that there are no deliverers in
+        your hostel.
+      </p>
+      <SelectInput
+        onChange={(e) => updateFormData(e.target.value, "deliverer_id")}
+        value={formData.deliverer_id}
+        options={[
+          {
+            value: "",
+            text: "Select deliverer",
+          },
+          ...deliverers.map((a) => {
+            return {
+              value: a.uid,
+              text: `${a.full_name} / ₦${parseInt(a.amount_per_order) + 100} `,
+            };
+          }),
+        ]}
+      />
+
       <button
         disabled={disabled}
         onClick={placeOrder}
@@ -117,4 +197,4 @@ const NewOrders = ({
   );
 };
 
-export default NewOrders;
+export default NewOrder;

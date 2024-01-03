@@ -4,7 +4,6 @@ import Modal from "@/components/general/Modal";
 import Header from "@/components/meal-ticket/Header";
 import Tickets from "@/components/meal-ticket/Tickets";
 import { useRecoilState } from "recoil";
-// import { usePaystackPayment } from "react-paystack";
 import { EmailInput } from "@/components/general/Input";
 import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -17,52 +16,6 @@ const MealTicketPage = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
-  // const config = {
-  //   email,
-  //   reference: new Date().getTime().toString(),
-  //   amount: 10000,
-  //   publicKey:
-  //     process.env.NODE_ENV === "development"
-  //       ? process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY!
-  //       : process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY!,
-  // };
-
-  // const initializePayment = usePaystackPayment(config);
-
-  // const showPaymentDialog = () => {
-  //   if (!email || !isValidEmail(email)) {
-  //     toast.error("Please input a valid email.");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   setDisabled(true);
-
-  //   const onSuccess = () => {
-  //     toast.success("Payment successful. Please check your email.");
-
-  //     fetch(
-  //       `/api/send-meal-ticket-info?email=${email}&ticket_id=${emailModal.ticket_id}`
-  //     ).catch(() => {
-  //       toast.error("A server error occured.");
-  //     });
-
-  //     setEmailModal({ ticket_id: "" });
-  //     setEmail("");
-  //     setLoading(false);
-  //     setDisabled(false);
-  //   };
-
-  //   const onClose = () => {
-  //     toast.error("Payment cancelled.");
-
-  //     setLoading(false);
-  //     setDisabled(false);
-  //   };
-
-  //   initializePayment(onSuccess, onClose);
-  // };
 
   const sendOwnersDetails = async () => {
     if (!email || !isValidEmail(email)) {

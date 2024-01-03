@@ -3,6 +3,7 @@ import {
   create_new_flashcard,
   delete_flashcard,
   edit_flashcard,
+  edit_order_status,
   get_help,
   start_practice,
 } from "@/atoms/atoms";
@@ -20,12 +21,15 @@ import DeleteFlashcard from "./digital-flashcards/DeleteFlashcard";
 import EditFlashcard from "./digital-flashcards/EditFlashcard";
 import PracticeModal from "./digital-flashcards/PracticeModal";
 import { useRouter } from "next/router";
+import EditOrderStatus from "./cafeteria-delivery/EditOrderStatus";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
   const router = useRouter();
   const { course_code } = router.query;
   const [getHelp, setGetHelp] = useRecoilState(get_help);
+  const [editOrderStatus, setEditOrderStatus] =
+    useRecoilState(edit_order_status);
   const [createFlashcard, setCreateFlashcard] =
     useRecoilState(create_flashcard);
   const [editFlashcard, setEditFlashcard] =
@@ -62,7 +66,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
 
       {getHelp && (
         <Modal header="Help" dismiss={() => setGetHelp(false)}>
-          <p className="w-full text-lg">
+          <p className="w-full">
             If you have any questions or requests, please send an email to{" "}
             <Link href={PAGES.mailto} className="text-blue">
               hello@babcock.tools
@@ -123,6 +127,12 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
           dismiss={() => setStartPractice("")}
           header={startPractice}
         />
+      )}
+
+      {editOrderStatus && (
+        <Modal header="Edit an order" dismiss={() => setEditOrderStatus("")}>
+          <EditOrderStatus id={editOrderStatus} />
+        </Modal>
       )}
     </>
   );

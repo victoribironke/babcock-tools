@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/utils/firebase";
 import { useRouter } from "next/router";
 import { useState, useEffect, JSX } from "react";
 import PageLoader from "../general/PageLoader";
+import { onAuthStateChanged } from "firebase/auth";
 
 // Check if user is logged in
 export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
@@ -13,14 +14,27 @@ export const checkAuthentication = (ProtectedComponent: () => JSX.Element) => {
 
     useEffect(() => {
       // setTimeout(() => {
-      if (getCurrentUser() === null) {
-        router.push(`${PAGES.login}?redirect=${router.pathname}`);
-        // return null;
-      }
+      //   if (getCurrentUser() === null) {
+      //     router.push(`${PAGES.login}?redirect=${router.pathname}`);
+      //     return null;
+      //   }
 
-      setIsLoading(false);
+      //   setIsLoading(false);
       // }, 2000);
-    }, [auth.currentUser]);
+      const unsub = onAuthStateChanged(auth, (user) => {
+        setIsLoading(true);
+
+        if (user === null) {
+          router.push(`${PAGES.login}?redirect=${router.pathname}`);
+          return;
+        }
+
+        setIsLoading(false);
+      });
+
+      return unsub;
+    }, []);
+    // }, [auth.currentUser]);
 
     if (isLoading) {
       return <PageLoader type="full" />;
@@ -38,14 +52,28 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
 
     useEffect(() => {
       // setTimeout(async () => {
-      if (getCurrentUser()) {
-        router.push(PAGES.dashboard);
-        // return null;
-      }
+      //   if (getCurrentUser()) {
+      //     router.push(PAGES.dashboard);
+      //     return null;
+      //   }
 
-      setIsLoading(false);
+      //   setIsLoading(false);
       // }, 2000);
-    }, [auth.currentUser]);
+
+      const unsub = onAuthStateChanged(auth, (user) => {
+        setIsLoading(true);
+
+        if (user) {
+          router.push(PAGES.dashboard);
+          return;
+        }
+
+        setIsLoading(false);
+      });
+
+      return unsub;
+    }, []);
+    // }, [auth.currentUser]);
 
     if (isLoading) {
       return <PageLoader type="full" />;

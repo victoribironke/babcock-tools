@@ -11,6 +11,7 @@ export const PAGES = {
   dashboard: "/dashboard",
   cafeteria_delivery: "/dashboard/cafeteria-delivery",
   register_as_a_deliverer: "/dashboard/cafeteria-delivery/register",
+  deliverer_profile: "/dashboard/cafeteria-delivery/deliverer-profile",
   sell_your_meal_ticket: "/dashboard/sell-your-meal-ticket",
   digital_flashcards_dashboard: "/dashboard/digital-flashcards",
   flashcards_for_course: (id: string) =>
