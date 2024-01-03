@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const CafeteriaDeliveryPage = () => {
-  const [orders, setOrders] = useState<Order[]>([
+  const [orders] = useState<Order[]>([
     // {
     //   date_ordered: "2024-11-17",
     //   deliverer: { id: "sdadsad", name: "Dikko Chinedu" },

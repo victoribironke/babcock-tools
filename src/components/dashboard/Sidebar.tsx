@@ -85,7 +85,7 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
             className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
           >
             <IoFastFoodOutline />
-            <p className="-mb-0.5 mr-auto">Deliverer's profile</p>
+            <p className="-mb-0.5 mr-auto">Deliverer&apos;s profile</p>
           </Link>
         )}
         <button

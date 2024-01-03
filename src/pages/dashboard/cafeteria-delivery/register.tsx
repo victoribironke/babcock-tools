@@ -3,14 +3,7 @@ import { NumberInput } from "@/components/general/Input";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { auth, db } from "@/services/firebase";
 import { signOutUser } from "@/utils/firebase";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";

@@ -1,10 +1,6 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import toast from "react-hot-toast";
-import { auth, db } from "@/services/firebase";
-import PageLoader from "@/components/general/PageLoader";
 import { CgProfile } from "react-icons/cg";
 import { IoMailOutline } from "react-icons/io5";
 import { LuHome } from "react-icons/lu";

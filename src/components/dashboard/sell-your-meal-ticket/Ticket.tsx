@@ -1,13 +1,7 @@
 import { auth, db } from "@/services/firebase";
 import { TicketProps } from "@/types/dashboard";
 import { classNames, formatNumber, parseDate } from "@/utils/helpers";
-import {
-  arrayRemove,
-  deleteDoc,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { IoTicketOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 

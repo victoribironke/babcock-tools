@@ -26,7 +26,7 @@ const PastOrders = ({ orders }: { orders: Order[] }) => {
                 scope="col"
                 className="px-4 py-3 font-medium whitespace-nowrap"
               >
-                Deliverer's name
+                Deliverer&apos;s name
               </th>
               <th
                 scope="col"
