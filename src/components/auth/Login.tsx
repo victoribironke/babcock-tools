@@ -8,12 +8,13 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "@/services/firebase";
+import { auth, db } from "@/services/firebase";
 import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useToggle } from "@/hooks/general";
+import { doc, getDoc } from "firebase/firestore";
 
 const Login = () => {
   const router = useRouter();
@@ -49,11 +50,28 @@ const Login = () => {
       setLoading(true);
       setDisabled(true);
 
-      await setPersistence(auth, browserLocalPersistence).then(() => {
-        return signInWithEmailAndPassword(auth, email, password);
-      });
+      const user = await setPersistence(auth, browserLocalPersistence).then(
+        () => {
+          return signInWithEmailAndPassword(auth, email, password);
+        }
+      );
+
+      const user_details = await (
+        await getDoc(doc(db, "users", user.user.uid))
+      ).data();
 
       toast.success("Logged in.");
+      localStorage.setItem(
+        "bt_user_info",
+        JSON.stringify({
+          email: user_details?.email,
+          full_name: user_details?.full_name,
+          hall_of_residence: user_details?.hall_of_residence,
+          matric_no: user_details?.matric_no,
+          phone_number: user_details?.phone_number,
+          is_deliverer: user_details?.is_deliverer ?? false,
+        })
+      );
       router.push(redirect ? (redirect as string) : PAGES.dashboard);
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);

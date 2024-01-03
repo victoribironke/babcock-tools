@@ -47,37 +47,35 @@ const SellYourMealTicketPage = () => {
     <>
       <HeadTemplate title="Sell your meal ticket" />
 
-      <>
-        <div className="w-fit flex items-center p-1 justify-center rounded-xl bg-gray-100">
-          <button
-            className={classNames(
-              "rounded-lg py-2 px-4",
-              tab === "see" && "bg-white"
-            )}
-            onClick={() => setTab("see")}
-          >
-            Your tickets
-          </button>
-          <button
-            className={classNames(
-              "rounded-lg py-2 px-4",
-              tab === "sell" && "bg-white"
-            )}
-            onClick={() => setTab("sell")}
-          >
-            Sell a ticket
-          </button>
-        </div>
+      <div className="w-fit flex items-center p-1 justify-center rounded-xl bg-gray-100">
+        <button
+          className={classNames(
+            "rounded-lg py-2 px-4",
+            tab === "see" && "bg-white"
+          )}
+          onClick={() => setTab("see")}
+        >
+          Your tickets
+        </button>
+        <button
+          className={classNames(
+            "rounded-lg py-2 px-4",
+            tab === "sell" && "bg-white"
+          )}
+          onClick={() => setTab("sell")}
+        >
+          Sell a ticket
+        </button>
+      </div>
 
-        {tab === "see" && (
-          <YourTickets
-            loading={loading}
-            noTickets={noTickets}
-            tickets={tickets}
-          />
-        )}
-        {tab === "sell" && <SellATicket />}
-      </>
+      {tab === "see" && (
+        <YourTickets
+          loading={loading}
+          noTickets={noTickets}
+          tickets={tickets}
+        />
+      )}
+      {tab === "sell" && <SellATicket />}
     </>
   );
 };

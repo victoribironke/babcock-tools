@@ -35,7 +35,7 @@ export const TOOLS = [
     title: "Cafeteria delivery",
     desc: "Have your cafeteria meal delivered to you.",
     icon: IoFastFoodOutline,
-    link: PAGES.meal_ticket,
+    link: PAGES.cafeteria_delivery,
     is_new: true,
   },
   {

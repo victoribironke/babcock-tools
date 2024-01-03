@@ -45,3 +45,19 @@ export type UserDetails = {
   matric_no: string;
   phone_number: string;
 };
+
+export type Order = {
+  meal_type: "Breakfast" | "Lunch" | "Dinner";
+  deliverer: { id: string; name: string };
+  date_ordered: string;
+  status: "Not delivered" | "Delivered";
+  ticket_date: string;
+  id: string;
+};
+
+export type Deliverer = UserDetails & {
+  uid: string;
+  email_verified: string;
+  amount_per_order: string;
+  max_number_of_orders: string;
+};

@@ -93,6 +93,17 @@ const Signup = () => {
       });
 
       toast.success("Account created.");
+      localStorage.setItem(
+        "bt_user_info",
+        JSON.stringify({
+          email,
+          full_name,
+          hall_of_residence,
+          matric_no: id,
+          phone_number: phone,
+          is_deliverer: false,
+        })
+      );
       router.push(PAGES.dashboard);
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);

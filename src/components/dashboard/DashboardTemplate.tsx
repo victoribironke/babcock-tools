@@ -47,11 +47,14 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
         <Sidebar show={show} setShow={toggleShow} />
 
         <div className="w-full p-2 sm:px-2">
-          <div className="w-full mb-2 rounded-xl bg-white px-4 py-2 sm:hidden flex justify-end">
-            <RxHamburgerMenu className="text-xl" onClick={toggleShow} />
+          <div className="w-full mb-2 rounded-lg bg-white px-4 py-2 sm:hidden flex justify-end">
+            <RxHamburgerMenu
+              className="text-xl cursor-pointer"
+              onClick={toggleShow}
+            />
           </div>
 
-          <div className="w-full rounded-xl bg-white p-4 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
+          <div className="w-full rounded-lg bg-white p-4 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
             {children}
           </div>
         </div>
