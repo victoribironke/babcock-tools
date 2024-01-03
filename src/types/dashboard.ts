@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { IconType } from "react-icons";
 
 export type SidebarProps = {
   show: boolean;
@@ -54,6 +55,7 @@ export type Order = {
   ticket_date: string;
   orderer_id: string;
   id: string;
+  room_number: string;
 };
 
 export type Deliverer = UserDetails & {
@@ -80,4 +82,10 @@ export type UpdateFlashcardProps = {
   details: FullFlashcard;
   course_code: string;
   close: Dispatch<SetStateAction<FullFlashcard | null>>;
+};
+
+export type DashboardCardProps = {
+  icon: IconType;
+  title: string;
+  value: string;
 };
