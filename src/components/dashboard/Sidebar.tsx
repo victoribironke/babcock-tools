@@ -21,6 +21,7 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
   const signOut = async () => {
     await signOutUser();
 
+    localStorage.removeItem("bt_user_info");
     router.push(PAGES.home);
   };
 
