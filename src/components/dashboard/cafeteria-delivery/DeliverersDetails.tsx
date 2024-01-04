@@ -235,7 +235,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
         </button>
       )}
 
-      <div className="mt-4 flex items-center justify-center gap-4 flex-col sm:flex-row">
+      <div className="mt-4 flex items-center justify-center gap-4 flex-col-reverse sm:flex-row">
         <button
           onClick={() => setDeleteDelivererProfile(true)}
           className="w-full bg-red py-2.5 text-white rounded-md"
