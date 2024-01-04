@@ -13,7 +13,7 @@ import { useToggle } from "@/hooks/general";
 import { DashboardTemplateProps, FullFlashcard } from "@/types/dashboard";
 import Link from "next/link";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import Modal from "../general/Modal";
 import Sidebar from "./Sidebar";
 import CreateFlashcard from "./digital-flashcards/CreateFlashcard";

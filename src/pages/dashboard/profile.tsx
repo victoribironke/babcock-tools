@@ -1,25 +1,14 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { isValidEmail } from "@/utils/helpers";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import {
-  browserLocalPersistence,
-  createUserWithEmailAndPassword,
-  setPersistence,
-} from "firebase/auth";
 import { auth, db } from "@/services/firebase";
 import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
-import Link from "next/link";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { HALLS_OF_RESIDENCE } from "@/constants/babcock";
-import { LuEye, LuEyeOff } from "react-icons/lu";
-import { useToggle } from "@/hooks/general";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import {
-  EmailInput,
   NumberInput,
-  PasswordInput,
   SelectInput,
   TextInput,
 } from "@/components/general/Input";
@@ -29,7 +18,6 @@ const AccountProfile = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [showPassword, toggleShowPassword] = useToggle(false);
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",

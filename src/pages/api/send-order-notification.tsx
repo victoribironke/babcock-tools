@@ -1,4 +1,3 @@
-import MealTicketDetails from "@/components/email-templates/MealTicketDetails";
 import OrderDetails from "@/components/email-templates/OrderDetails";
 import { db } from "@/services/firebase";
 import { Order } from "@/types/dashboard";

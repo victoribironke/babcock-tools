@@ -1,11 +1,6 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { useEffect, useState } from "react";
-import { CgProfile } from "react-icons/cg";
-import { IoMailOutline } from "react-icons/io5";
-import { LuHome } from "react-icons/lu";
-import { RiGraduationCapLine } from "react-icons/ri";
-import { FiPhone } from "react-icons/fi";
 import { DashboardCardProps, User } from "@/types/dashboard";
 import { getUserDetails } from "@/constants/dashboard";
 

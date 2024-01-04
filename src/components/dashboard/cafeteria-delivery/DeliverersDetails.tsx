@@ -1,17 +1,10 @@
 import { delete_deliverer_profile } from "@/atoms/atoms";
-import HeadTemplate from "@/components/general/HeadTemplate";
-import {
-  NumberInput,
-  SelectInput,
-  TextInput,
-} from "@/components/general/Input";
-import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
+import { NumberInput, SelectInput } from "@/components/general/Input";
 import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
 import { DelivererDetailsProps } from "@/types/dashboard";
-import { signOutUser } from "@/utils/firebase";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -51,7 +44,6 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       bank_account_details: { account_number, bank_name, account_name },
       meals_handled,
     } = formData;
-    const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
     if (
       !amount ||

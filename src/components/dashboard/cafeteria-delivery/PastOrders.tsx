@@ -1,5 +1,5 @@
 import { edit_order_status } from "@/atoms/atoms";
-import { Order, PastOrdersProps } from "@/types/dashboard";
+import { PastOrdersProps } from "@/types/dashboard";
 import { classNames, parseDate } from "@/utils/helpers";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";

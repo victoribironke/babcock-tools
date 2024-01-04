@@ -1,6 +1,6 @@
 import { PAGES } from "@/constants/pages";
 import { auth } from "@/services/firebase";
-import { getCurrentUser } from "@/utils/firebase";
+// import { getCurrentUser } from "@/utils/firebase";
 import { useRouter } from "next/router";
 import { useState, useEffect, JSX } from "react";
 import PageLoader from "../general/PageLoader";

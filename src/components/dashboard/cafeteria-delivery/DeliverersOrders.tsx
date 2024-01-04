@@ -1,12 +1,6 @@
-import { edit_order_status } from "@/atoms/atoms";
-import {
-  DeliverersOrdersProps,
-  Order,
-  PastOrdersProps,
-} from "@/types/dashboard";
+import { DeliverersOrdersProps } from "@/types/dashboard";
 import { classNames, parseDate } from "@/utils/helpers";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 const DeliverersOrders = ({ orders, users }: DeliverersOrdersProps) => {
   const [page, setPage] = useState(1);

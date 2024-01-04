@@ -1,14 +1,9 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
-import {
-  NumberInput,
-  SelectInput,
-  TextInput,
-} from "@/components/general/Input";
+import { NumberInput, SelectInput } from "@/components/general/Input";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
-import { signOutUser } from "@/utils/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

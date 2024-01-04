@@ -2,7 +2,7 @@ import { Textarea } from "@/components/general/Input";
 import { auth, db } from "@/services/firebase";
 import { CreateFlashcardWithoutCourseSelectProps } from "@/types/dashboard";
 import { arrayUnion, doc, setDoc } from "firebase/firestore";
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 

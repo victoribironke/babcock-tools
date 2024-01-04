@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { arrayRemove, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase";
-import { FullFlashcard, UpdateFlashcardProps } from "@/types/dashboard";
+import { UpdateFlashcardProps } from "@/types/dashboard";
 
 const DeleteFlashcard = ({
   details,

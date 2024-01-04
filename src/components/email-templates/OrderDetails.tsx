@@ -81,7 +81,7 @@ export const OrderDetails = ({ email, details }: OrderDetailsProps) => {
                     href="https://www.babcock.tools/dashboard/cafeteria-delivery/deliverer-profile"
                     style={{ color: "blue" }}
                   >
-                    deliverer's profile.
+                    deliverer&apos;s profile.
                   </Link>
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>

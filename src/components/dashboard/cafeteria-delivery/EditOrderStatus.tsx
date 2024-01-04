@@ -33,7 +33,7 @@ const EditOrderStatus = ({ id }: { id: string }) => {
   return (
     <>
       <p className="w-full">
-        Change the status of the order to 'Delivered'?{" "}
+        Change the status of the order to &apos;Delivered&apos;?{" "}
         <span className="font-medium">
           You won&apos;t be able edit it again.
         </span>

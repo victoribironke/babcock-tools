@@ -1,21 +1,19 @@
 import { DateInput, SelectInput, TextInput } from "@/components/general/Input";
 import { MEAL_TYPES } from "@/constants/babcock";
 import { auth, db } from "@/services/firebase";
-import { Deliverer, NewOrderProps, Order } from "@/types/dashboard";
+import { NewOrderProps, Order } from "@/types/dashboard";
 import { getTodaysDate, parseDate } from "@/utils/helpers";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
-  addDoc,
   collection,
   doc,
   getDoc,
   getDocs,
   query,
   setDoc,
-  updateDoc,
   where,
 } from "firebase/firestore";
 
