@@ -57,10 +57,15 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   };
 
   const placeOrder = async () => {
-    const { ticket_date, deliverer_id } = formData;
+    const { ticket_date, deliverer_id, room_number } = formData;
 
     if (!ticket_date) {
       toast.error("Please input a ticket date.");
+      return;
+    }
+
+    if (!room_number) {
+      toast.error("Please input your room number.");
       return;
     }
 
@@ -179,7 +184,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       <p className="mb-1 mt-5">Select deliverer</p>
       <p className="mb-2 text-sm text-gray-500">
         If the dropdown below is empty, it means that there are no deliverers in
-        your hostel.
+        your hostel or no deliverer handles the meal type you selected.
       </p>
       <SelectInput
         onChange={(e) => updateFormData(e.target.value, "deliverer_id")}
@@ -189,12 +194,16 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
             value: "",
             text: "Select deliverer",
           },
-          ...deliverers.map((a) => {
-            return {
-              value: a.uid,
-              text: `${a.full_name} / ₦${parseInt(a.amount_per_order) + 100} `,
-            };
-          }),
+          ...deliverers
+            .filter((a) => a.meals_handled.includes(formData.meal_type))
+            .map((a) => {
+              return {
+                value: a.uid,
+                text: `${a.full_name} / ₦${
+                  parseInt(a.amount_per_order) + 100
+                } `,
+              };
+            }),
         ]}
       />
 

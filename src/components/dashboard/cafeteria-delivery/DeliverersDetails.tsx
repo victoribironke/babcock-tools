@@ -5,6 +5,7 @@ import {
   TextInput,
 } from "@/components/general/Input";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
+import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
 import { DelivererDetailsProps } from "@/types/dashboard";
@@ -31,6 +32,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       bank_name: deliverer!.bank_account_details.bank_name,
       account_name: deliverer!.bank_account_details.account_name,
     },
+    meals_handled: deliverer!.meals_handled,
   });
 
   const updateFormData = (text: string, which: string) => {
@@ -39,11 +41,12 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
     });
   };
 
-  const registerDeliverer = async () => {
+  const saveDeliverer = async () => {
     const {
       amount,
       no_of_orders,
       bank_account_details: { account_number, bank_name, account_name },
+      meals_handled,
     } = formData;
     const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
@@ -55,6 +58,11 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       !account_name
     ) {
       toast.error("Please fill in all the fields.");
+      return;
+    }
+
+    if (meals_handled.length === 0) {
+      toast.error("Please select a meal to deliver.");
       return;
     }
 
@@ -85,6 +93,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
           bank_name,
           account_name,
         },
+        meals_handled,
       });
 
       await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
@@ -178,6 +187,30 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
         value={formData.amount}
       />
 
+      <p className="mb-1 mt-4">Meals to handle</p>
+      <div className="w-full flex flex-wrap justify-between">
+        {MEAL_TYPES.map((m, i) => (
+          <div key={i} className="flex items-center justify-center gap-1">
+            <input
+              type="checkbox"
+              id={`check ${i}`}
+              onChange={() =>
+                setFormData((k) => {
+                  return {
+                    ...k,
+                    meals_handled: formData.meals_handled.includes(m as never)
+                      ? k.meals_handled.filter((a) => a !== m)
+                      : [...k.meals_handled, m as never],
+                  };
+                })
+              }
+              checked={formData.meals_handled.includes(m as never)}
+            />
+            <label htmlFor={`check ${i}`}>{m}</label>
+          </div>
+        ))}
+      </div>
+
       <hr className="mt-4" />
 
       <p className="mb-1 mt-2">Account number</p>
@@ -229,10 +262,10 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
 
       <button
         disabled={disabled}
-        onClick={registerDeliverer}
+        onClick={saveDeliverer}
         className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
       >
-        Register
+        Save
         {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
       </button>
     </div>

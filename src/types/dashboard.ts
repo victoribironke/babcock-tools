@@ -69,6 +69,7 @@ export type Deliverer = User & {
     bank_name: string;
     account_name: string;
   };
+  meals_handled: string[];
 };
 
 export type NewOrderProps = {

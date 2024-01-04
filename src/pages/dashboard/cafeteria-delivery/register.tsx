@@ -5,6 +5,7 @@ import {
   TextInput,
 } from "@/components/general/Input";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
+import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
 import { signOutUser } from "@/utils/firebase";
@@ -27,6 +28,7 @@ const RegisterAsADeliverer = () => {
       bank_name: "",
       account_name: "",
     },
+    meals_handled: [],
   });
 
   const updateFormData = (text: string, which: string) => {
@@ -40,6 +42,7 @@ const RegisterAsADeliverer = () => {
       amount,
       no_of_orders,
       bank_account_details: { account_number, bank_name, account_name },
+      meals_handled,
     } = formData;
     const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
@@ -51,6 +54,11 @@ const RegisterAsADeliverer = () => {
       !account_name
     ) {
       toast.error("Please fill in all the fields.");
+      return;
+    }
+
+    if (meals_handled.length === 0) {
+      toast.error("Please select a meal to deliver.");
       return;
     }
 
@@ -81,6 +89,7 @@ const RegisterAsADeliverer = () => {
           bank_name,
           account_name,
         },
+        meals_handled,
       });
 
       await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
@@ -185,6 +194,32 @@ const RegisterAsADeliverer = () => {
             placeholder="Amount per order"
             value={formData.amount}
           />
+
+          <p className="mb-1 mt-4">Meals to handle</p>
+          <div className="w-full flex flex-wrap justify-between">
+            {MEAL_TYPES.map((m, i) => (
+              <div key={i} className="flex items-center justify-center gap-1">
+                <input
+                  type="checkbox"
+                  id={`check ${i}`}
+                  onChange={() =>
+                    setFormData((k) => {
+                      return {
+                        ...k,
+                        meals_handled: formData.meals_handled.includes(
+                          m as never
+                        )
+                          ? k.meals_handled.filter((a) => a !== m)
+                          : [...k.meals_handled, m as never],
+                      };
+                    })
+                  }
+                  checked={formData.meals_handled.includes(m as never)}
+                />
+                <label htmlFor={`check ${i}`}>{m}</label>
+              </div>
+            ))}
+          </div>
 
           <hr className="mt-4" />
 
