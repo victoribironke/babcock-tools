@@ -1,11 +1,11 @@
-import { DashboardCardProps, UserDetails } from "@/types/dashboard";
+import { DashboardCardProps, User } from "@/types/dashboard";
 import { CgProfile } from "react-icons/cg";
 import { FiPhone } from "react-icons/fi";
 import { IoMailOutline } from "react-icons/io5";
 import { LuHome } from "react-icons/lu";
 import { RiGraduationCapLine } from "react-icons/ri";
 
-export const getUserDetails = (user: UserDetails) => {
+export const getUserDetails = (user: User) => {
   const userArr: DashboardCardProps[] = [
     {
       icon: CgProfile,
