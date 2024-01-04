@@ -58,7 +58,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
             />
           </div>
 
-          <div className="w-full rounded-lg bg-white p-4 min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
+          <div className="w-full rounded-lg bg-white p-4 h-[calc(100vh-4rem)] sm:h-[calc(100vh-1rem)] overflow-scroll flex items-center flex-col">
             {children}
           </div>
         </div>
