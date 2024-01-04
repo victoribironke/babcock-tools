@@ -77,9 +77,7 @@ const Signup = () => {
       setDisabled(true);
 
       const user = await setPersistence(auth, browserLocalPersistence).then(
-        () => {
-          return createUserWithEmailAndPassword(auth, email, password);
-        }
+        () => createUserWithEmailAndPassword(auth, email, password)
       );
 
       await setDoc(doc(db, "users", user.user.uid), {

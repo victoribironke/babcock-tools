@@ -51,12 +51,10 @@ const Login = () => {
       setDisabled(true);
 
       const user = await setPersistence(auth, browserLocalPersistence).then(
-        () => {
-          return signInWithEmailAndPassword(auth, email, password);
-        }
+        () => signInWithEmailAndPassword(auth, email, password)
       );
 
-      const user_details = await (
+      const user_details = (
         await getDoc(doc(db, "users", user.user.uid))
       ).data();
 
