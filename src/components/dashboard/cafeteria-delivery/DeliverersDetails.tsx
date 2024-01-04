@@ -150,7 +150,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   }, [formData.bank_account_details.account_number, bankCode]);
 
   return (
-    <div className="max-w-sm w-full my-4">
+    <div className="max-w-md w-full my-4">
       <p className="text-2xl font-medium mb-2 text-blue">Edit your profile</p>
 
       <p className="mb-1">Max number of orders</p>

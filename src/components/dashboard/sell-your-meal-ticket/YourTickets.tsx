@@ -16,7 +16,7 @@ const YourTickets = ({ loading, noTickets, tickets }: YourTicketsProps) => {
   }
 
   return (
-    <div className="mt-6 flex flex-wrap gap-2 w-full items-center justify-center">
+    <div className="mt-6 flex flex-wrap gap-2 w-full max-w-3xl items-center justify-center">
       {tickets.map((ticket, i) => (
         <Ticket ticket={ticket} key={i} />
       ))}

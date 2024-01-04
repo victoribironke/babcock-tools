@@ -80,7 +80,7 @@ const SellATicket = () => {
   };
 
   return (
-    <div className="w-full max-w-sm mt-4">
+    <div className="w-full max-w-md mt-4">
       <p className="mb-1">Meal type</p>
       <SelectInput
         onChange={(e) => updateFormData(e.target.value, "meal_type")}

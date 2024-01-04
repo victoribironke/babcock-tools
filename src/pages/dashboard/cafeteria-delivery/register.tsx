@@ -170,7 +170,7 @@ const RegisterAsADeliverer = () => {
       <HeadTemplate title="Register as a deliverer" />
 
       <section className="w-full py-6 flex items-center justify-center p-4">
-        <div className="max-w-sm w-full">
+        <div className="max-w-md w-full">
           <p className="text-2xl font-medium mb-2 text-blue">
             Register as a cafeteria deliverer
           </p>
