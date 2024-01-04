@@ -6,11 +6,11 @@ import { IoMailOutline } from "react-icons/io5";
 import { LuHome } from "react-icons/lu";
 import { RiGraduationCapLine } from "react-icons/ri";
 import { FiPhone } from "react-icons/fi";
-import { DashboardCardProps, UserDetails } from "@/types/dashboard";
+import { DashboardCardProps, User } from "@/types/dashboard";
 import { getUserDetails } from "@/constants/dashboard";
 
 const Dashboard = () => {
-  const [user, setUser] = useState<UserDetails>({
+  const [user, setUser] = useState<User>({
     email: "",
     full_name: "",
     hall_of_residence: "",

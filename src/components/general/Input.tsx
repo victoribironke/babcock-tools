@@ -32,13 +32,19 @@ export const DateInput = ({ onChange, value }: InputProps) => {
   );
 };
 
-export const TextInput = ({ placeholder, value, onChange }: InputProps) => {
+export const TextInput = ({
+  placeholder,
+  value,
+  onChange,
+  disabled,
+}: InputProps) => {
   return (
     <input
       type="text"
       className={input_classes}
       placeholder={placeholder}
       value={value}
+      disabled={disabled}
       onChange={onChange}
     />
   );
@@ -88,7 +94,8 @@ export const NumberInput = ({
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      maxLength={maxLength}
+      // maxLength={maxLength}
+      max={maxLength}
     />
   );
 };

@@ -40,7 +40,10 @@ const EditOrderStatus = ({ id }: { id: string }) => {
       </p>
 
       <div className="mt-4 flex gap-2 items-center justify-center">
-        <button className="w-full bg-red py-2 text-white rounded-md">
+        <button
+          className="w-full bg-red py-2 text-white rounded-md"
+          onClick={() => setEditOrderStatus("")}
+        >
           Cancel
         </button>
         <button

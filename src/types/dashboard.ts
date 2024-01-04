@@ -39,12 +39,14 @@ export type PracticeModalProps = {
   dismiss: () => void;
 };
 
-export type UserDetails = {
+export type User = {
   email: string;
   full_name: string;
   hall_of_residence: string;
   matric_no: string;
   phone_number: string;
+  email_verified?: string;
+  uid?: string;
 };
 
 export type Order = {
@@ -58,10 +60,15 @@ export type Order = {
   room_number: string;
 };
 
-export type Deliverer = UserDetails & {
+export type Deliverer = User & {
   uid: string;
   amount_per_order: string;
   max_number_of_orders: string;
+  bank_account_details: {
+    account_number: string;
+    bank_name: string;
+    account_name: string;
+  };
 };
 
 export type NewOrderProps = {
@@ -70,6 +77,8 @@ export type NewOrderProps = {
 };
 
 export type PastOrdersProps = { orders: Order[]; deliverers: Deliverer[] };
+
+export type DeliverersOrdersProps = { orders: Order[]; users: User[] };
 
 export type CreateFlashcardProps = { course_codes: string[] };
 
@@ -88,4 +97,8 @@ export type DashboardCardProps = {
   icon: IconType;
   title: string;
   value: string;
+};
+
+export type DelivererDetailsProps = {
+  deliverer: Deliverer | undefined;
 };

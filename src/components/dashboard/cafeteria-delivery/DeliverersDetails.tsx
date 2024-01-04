@@ -7,25 +7,29 @@ import {
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
+import { DelivererDetailsProps } from "@/types/dashboard";
 import { signOutUser } from "@/utils/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const RegisterAsADeliverer = () => {
+const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [bankCode, setBankCode] = useState("");
+  const [bankCode, setBankCode] = useState(
+    BANKS.find((b) => b.name === deliverer!.bank_account_details.bank_name)!
+      .code
+  );
   const [formData, setFormData] = useState({
-    amount: "",
-    no_of_orders: "",
+    amount: deliverer!.amount_per_order,
+    no_of_orders: deliverer!.max_number_of_orders,
     bank_account_details: {
-      account_number: "",
-      bank_name: "",
-      account_name: "",
+      account_number: deliverer!.bank_account_details.account_number,
+      bank_name: deliverer!.bank_account_details.bank_name,
+      account_name: deliverer!.bank_account_details.account_name,
     },
   });
 
@@ -157,98 +161,82 @@ const RegisterAsADeliverer = () => {
   }, [formData.bank_account_details.account_number, bankCode]);
 
   return (
-    <>
-      <HeadTemplate title="Register as a deliverer" />
+    <div className="max-w-sm w-full my-4">
+      <p className="text-2xl font-medium mb-2 text-blue">Edit your profile</p>
 
-      <section className="w-full min-h-[calc(100vh-8rem)] sm:min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
-        <div className="max-w-sm w-full">
-          <p className="text-2xl font-medium mb-2 text-blue">
-            Register as a cafeteria deliverer
-          </p>
+      <p className="mb-1">Max number of orders</p>
+      <NumberInput
+        onChange={(e) => updateFormData(e.target.value, "no_of_orders")}
+        placeholder="Max number of orders you can take per meal time"
+        value={formData.no_of_orders}
+      />
 
-          <p className="text-gray-500 mb-5">
-            Your details from the current signed-in account together with the
-            information below will be used to create a deliverer profile for you
-            which you can edit later.
-          </p>
+      <p className="mb-1 mt-4">Amount</p>
+      <NumberInput
+        onChange={(e) => updateFormData(e.target.value, "amount")}
+        placeholder="Amount per order"
+        value={formData.amount}
+      />
 
-          <p className="mb-1">Max number of orders</p>
-          <NumberInput
-            onChange={(e) => updateFormData(e.target.value, "no_of_orders")}
-            placeholder="Max number of orders you can take per meal time"
-            value={formData.no_of_orders}
-          />
+      <hr className="mt-4" />
 
-          <p className="mb-1 mt-4">Amount</p>
-          <NumberInput
-            onChange={(e) => updateFormData(e.target.value, "amount")}
-            placeholder="Amount per order"
-            value={formData.amount}
-          />
+      <p className="mb-1 mt-2">Account number</p>
+      <NumberInput
+        onChange={(e) =>
+          setFormData((k) => {
+            return {
+              ...k,
+              bank_account_details: {
+                ...k.bank_account_details,
+                account_number: e.target.value.replace(" ", ""),
+              },
+            };
+          })
+        }
+        placeholder="Account number"
+        value={formData.bank_account_details.account_number}
+      />
 
-          <hr className="mt-4" />
+      <p className="mb-1 mt-4">Bank name</p>
+      <SelectInput
+        onChange={(e) => setBankCode(e.target.value)}
+        value={bankCode}
+        options={[
+          { value: "", text: "Select bank" },
+          ...BANKS.map((b) => {
+            return { value: b.code, text: b.name };
+          }),
+        ]}
+      />
 
-          <p className="mb-1 mt-2">Account number</p>
-          <NumberInput
-            onChange={(e) =>
-              setFormData((k) => {
-                return {
-                  ...k,
-                  bank_account_details: {
-                    ...k.bank_account_details,
-                    account_number: e.target.value.replace(" ", ""),
-                  },
-                };
-              })
-            }
-            placeholder="Account number"
-            value={formData.bank_account_details.account_number}
-          />
+      {formData.bank_account_details.account_name ? (
+        <>
+          <p className="mb-1 mt-4">Account name</p>
+          <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
+            {formData.bank_account_details.account_name}
+          </div>
+        </>
+      ) : (
+        <button
+          disabled={isDisabled}
+          onClick={getAccountName}
+          className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+        >
+          Get account name{" "}
+          {isLoading && <AiOutlineLoading3Quarters className="animate-spin" />}
+        </button>
+      )}
 
-          <p className="mb-1 mt-4">Bank name</p>
-          <SelectInput
-            onChange={(e) => setBankCode(e.target.value)}
-            value={bankCode}
-            options={[
-              { value: "", text: "Select bank" },
-              ...BANKS.map((b) => {
-                return { value: b.code, text: b.name };
-              }),
-            ]}
-          />
-
-          {formData.bank_account_details.account_name ? (
-            <>
-              <p className="mb-1 mt-4">Account name</p>
-              <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
-                {formData.bank_account_details.account_name}
-              </div>
-            </>
-          ) : (
-            <button
-              disabled={isDisabled}
-              onClick={getAccountName}
-              className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
-            >
-              Get account name{" "}
-              {isLoading && (
-                <AiOutlineLoading3Quarters className="animate-spin" />
-              )}
-            </button>
-          )}
-
-          <button
-            disabled={disabled}
-            onClick={registerDeliverer}
-            className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
-          >
-            Register
-            {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
-          </button>
-        </div>
-      </section>
-    </>
+      <button
+        disabled={disabled}
+        onClick={registerDeliverer}
+        className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+      >
+        Register
+        {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
+      </button>
+    </div>
   );
 };
 
-export default checkAuthentication(RegisterAsADeliverer);
+export default DeliverersDetails;
