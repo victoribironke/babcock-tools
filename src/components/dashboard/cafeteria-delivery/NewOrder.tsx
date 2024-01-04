@@ -111,13 +111,28 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       }
 
       const onSuccess = () => {
-        setDoc(doc(db, "orders", formData.id), formData).then(() => {
-          setTab("past");
-          toast.success("Payment successful. Your order has been placed.");
+        setDoc(doc(db, "orders", formData.id), formData)
+          .then(() => {
+            toast.success("Payment successful. Your order has been placed.");
 
-          setLoading(false);
-          setDisabled(false);
-        });
+            setLoading(false);
+            setDisabled(false);
+          })
+          .then(() => {
+            const email = deliverers.find(
+              (d) => d.uid === formData.deliverer_id
+            )?.email;
+            const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
+
+            fetch(
+              `/api/send-order-notification?email=${email}&order_id=${formData.id}&full_name=${user_info.full_name}`
+            )
+              .then(() => setTab("past"))
+              .catch(() => {});
+          })
+          .catch(() =>
+            toast.error("An error occured while placing your order.")
+          );
       };
 
       const onClose = () => {

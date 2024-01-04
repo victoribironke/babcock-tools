@@ -1,5 +1,7 @@
 import MealTicketDetails from "@/components/email-templates/MealTicketDetails";
+import OrderDetails from "@/components/email-templates/OrderDetails";
 import { db } from "@/services/firebase";
+import { Order } from "@/types/dashboard";
 import { doc, getDoc } from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
@@ -7,31 +9,24 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, ticket_id } = req.query;
+  const { email, order_id, full_name } = req.query;
 
   try {
-    const ticket_data = (
-      await getDoc(doc(db, "meal-tickets", ticket_id as string))
-    ).data();
-
-    const user_data = (
-      await getDoc(doc(db, "users", ticket_data?.uid as string))
-    ).data();
+    const order: Order = (
+      await getDoc(doc(db, "orders", order_id as string))
+    ).data() as Order;
 
     const data = await resend.emails.send({
       from: "Babcock Tools <hello@babcock.tools>",
       to: [email as string],
-      subject: "Meal ticket details",
-      react: MealTicketDetails({
+      subject: "New order for delivery",
+      react: OrderDetails({
         email: email as string,
         details: {
-          full_name: user_data?.full_name,
-          hall_of_residence: user_data?.hall_of_residence,
-          matric_no: user_data?.matric_no,
-          meal_type: ticket_data?.meal_type,
-          phone: user_data?.phone_number,
-          price: ticket_data?.price,
-          ticket_date: new Date(ticket_data?.ticket_date).toDateString(),
+          full_name: full_name as string,
+          meal_type: order.meal_type,
+          room_number: order.room_number,
+          ticket_date: order.ticket_date,
         },
       }),
     });
