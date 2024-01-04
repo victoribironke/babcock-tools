@@ -70,24 +70,9 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       setLoading(true);
       setDisabled(true);
 
-      const deliverer = await getDoc(
-        doc(db, "deliverers", auth.currentUser?.uid!)
-      );
-
-      if (deliverer.exists()) {
-        toast.error("You have created a deliverer profile already.");
-        return;
-      }
-
-      await setDoc(doc(db, "deliverers", auth.currentUser?.uid!), {
-        uid: auth.currentUser?.uid,
+      await updateDoc(doc(db, "deliverers", auth.currentUser?.uid!), {
         amount_per_order: amount,
         max_number_of_orders: no_of_orders,
-        email: user_info.email,
-        full_name: user_info.full_name,
-        hall_of_residence: user_info.hall_of_residence,
-        matric_no: user_info.matric_no,
-        phone_number: user_info.phone_number,
         bank_account_details: {
           account_number,
           bank_name,
@@ -96,12 +81,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
         meals_handled,
       });
 
-      await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
-        is_deliverer: true,
-      });
-
-      toast.success("Your profile was created.");
-      signOutUser();
+      toast.success("Your profile was saved.");
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {
