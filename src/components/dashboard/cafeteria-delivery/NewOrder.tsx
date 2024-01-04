@@ -34,6 +34,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     ticket_date: "",
     orderer_id: auth.currentUser?.uid!,
     room_number: "",
+    amount_paid: { amount: "", charges: "100" },
     id: "", // meal_type, ticket_date, uid
   });
   const price = prices.find((p) => p.id === formData.deliverer_id);
@@ -152,6 +153,17 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   useEffect(
     () => setUserInfo(JSON.parse(localStorage.getItem("bt_user_info")!)),
     []
+  );
+
+  useEffect(
+    () =>
+      setFormData((k) => {
+        return {
+          ...k,
+          amount_paid: { ...k.amount_paid, amount: price ? price.price : "0" },
+        };
+      }),
+    [price]
   );
 
   useEffect(() => {

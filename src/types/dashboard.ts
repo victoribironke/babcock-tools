@@ -58,6 +58,7 @@ export type Order = {
   orderer_id: string;
   id: string;
   room_number: string;
+  amount_paid: { amount: string; charges: string };
 };
 
 export type Deliverer = User & {
