@@ -10,6 +10,7 @@ import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
 import { signOutUser } from "@/utils/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -20,6 +21,7 @@ const RegisterAsADeliverer = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [bankCode, setBankCode] = useState("");
+  const router = useRouter();
   const [formData, setFormData] = useState({
     amount: "",
     no_of_orders: "",
@@ -97,7 +99,14 @@ const RegisterAsADeliverer = () => {
       });
 
       toast.success("Your profile was created.");
-      signOutUser();
+      localStorage.setItem(
+        "bt_user_info",
+        JSON.stringify({
+          ...user_info,
+          is_deliverer: true,
+        })
+      );
+      router.reload();
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {

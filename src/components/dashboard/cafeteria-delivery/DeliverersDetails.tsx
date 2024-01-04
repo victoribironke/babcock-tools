@@ -1,3 +1,4 @@
+import { delete_deliverer_profile } from "@/atoms/atoms";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import {
   NumberInput,
@@ -14,12 +15,14 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useSetRecoilState } from "recoil";
 
 const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const setDeleteDelivererProfile = useSetRecoilState(delete_deliverer_profile);
   const [bankCode, setBankCode] = useState(
     BANKS.find((b) => b.name === deliverer!.bank_account_details.bank_name)!
       .code
@@ -240,14 +243,23 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
         </button>
       )}
 
-      <button
-        disabled={disabled}
-        onClick={saveDeliverer}
-        className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
-      >
-        Save
-        {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
-      </button>
+      <div className="mt-4 flex items-center justify-center gap-4 flex-col sm:flex-row">
+        <button
+          onClick={() => setDeleteDelivererProfile(true)}
+          className="w-full bg-red py-2.5 text-white rounded-md"
+        >
+          Delete deliverer profile
+        </button>
+
+        <button
+          disabled={disabled}
+          onClick={saveDeliverer}
+          className="w-full bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+        >
+          Save
+          {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
+        </button>
+      </div>
     </div>
   );
 };

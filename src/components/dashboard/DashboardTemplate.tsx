@@ -1,6 +1,7 @@
 import {
   create_flashcard,
   create_new_flashcard,
+  delete_deliverer_profile,
   delete_flashcard,
   edit_flashcard,
   edit_order_status,
@@ -12,7 +13,7 @@ import { useToggle } from "@/hooks/general";
 import { DashboardTemplateProps, FullFlashcard } from "@/types/dashboard";
 import Link from "next/link";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Modal from "../general/Modal";
 import Sidebar from "./Sidebar";
 import CreateFlashcard from "./digital-flashcards/CreateFlashcard";
@@ -22,12 +23,16 @@ import EditFlashcard from "./digital-flashcards/EditFlashcard";
 import PracticeModal from "./digital-flashcards/PracticeModal";
 import { useRouter } from "next/router";
 import EditOrderStatus from "./cafeteria-delivery/EditOrderStatus";
+import DeleteProfile from "./cafeteria-delivery/DeleteProfile";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
   const router = useRouter();
   const { course_code } = router.query;
   const [getHelp, setGetHelp] = useRecoilState(get_help);
+  const [deleteDelivererProfile, setDeleteDelivererProfile] = useRecoilState(
+    delete_deliverer_profile
+  );
   const [editOrderStatus, setEditOrderStatus] =
     useRecoilState(edit_order_status);
   const [createFlashcard, setCreateFlashcard] =
@@ -132,6 +137,15 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
       {editOrderStatus && (
         <Modal header="Edit an order" dismiss={() => setEditOrderStatus("")}>
           <EditOrderStatus id={editOrderStatus} />
+        </Modal>
+      )}
+
+      {deleteDelivererProfile && (
+        <Modal
+          header="Delete your profile"
+          dismiss={() => setDeleteDelivererProfile(false)}
+        >
+          <DeleteProfile />
         </Modal>
       )}
     </>
