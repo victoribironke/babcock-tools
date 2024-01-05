@@ -14,6 +14,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [firstUpdate, setFirstUpdate] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const setDeleteDelivererProfile = useSetRecoilState(delete_deliverer_profile);
   const [bankCode, setBankCode] = useState(
@@ -133,15 +134,19 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   };
 
   useEffect(() => {
-    setFormData((k) => {
-      return {
-        ...k,
-        bank_account_details: {
-          ...k.bank_account_details,
-          account_name: "",
-        },
-      };
-    });
+    if (firstUpdate) {
+      setFirstUpdate(false);
+    } else {
+      setFormData((k) => {
+        return {
+          ...k,
+          bank_account_details: {
+            ...k.bank_account_details,
+            account_name: "",
+          },
+        };
+      });
+    }
   }, [formData.bank_account_details.account_number, bankCode]);
 
   return (
@@ -219,10 +224,15 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
 
       {formData.bank_account_details.account_name ? (
         <>
-          <p className="mb-1 mt-4">Account name</p>
-          <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
+          <p className="mb-1 mt-4">
+            Account name:{" "}
+            <span className="font-medium">
+              {formData.bank_account_details.account_name}
+            </span>
+          </p>
+          {/* <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
             {formData.bank_account_details.account_name}
-          </div>
+          </div> */}
         </>
       ) : (
         <button
