@@ -1,18 +1,26 @@
 import { edit_order_status } from "@/atoms/atoms";
 import { PastOrdersProps } from "@/types/dashboard";
 import { classNames, parseDate } from "@/utils/helpers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
   const [page, setPage] = useState(1);
-  const new_orders = orders.map((o) => {
-    return {
-      ...o,
-      deliverer_name: deliverers.find((d) => d.uid === o.deliverer_id)
-        ?.full_name,
-    };
-  });
+  const [filter, setFilter] = useState("");
+  const new_orders = orders
+    .map((o) => {
+      return {
+        ...o,
+        deliverer_name: deliverers.find((d) => d.uid === o.deliverer_id)
+          ?.full_name,
+      };
+    })
+    .filter(
+      (o) =>
+        o.meal_type.toLowerCase().includes(filter.toLowerCase()) ||
+        o.deliverer_name?.toLowerCase().includes(filter.toLowerCase()) ||
+        o.status.toLowerCase().includes(filter.toLowerCase())
+    );
   const setEditOrderStatus = useSetRecoilState(edit_order_status);
 
   const d = new_orders.length / 10;
@@ -20,8 +28,18 @@ const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
     ? page !== Math.floor(d)
     : page !== Math.floor(d) + 1;
 
+  useEffect(() => setPage(1), [filter]);
+
   return (
     <>
+      <input
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Search for a meal type, deliverer's name, status..."
+        className="w-full max-w-lg border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white mt-6"
+      />
+
       <div className="overflow-x-scroll max-w-3xl shadow-md rounded-lg mt-6 border grid grid-cols-1">
         <table className="w-full text-left rtl:text-right">
           <thead className="border-b-2">

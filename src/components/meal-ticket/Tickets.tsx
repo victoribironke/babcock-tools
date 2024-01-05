@@ -84,8 +84,8 @@ const Tickets = () => {
         type="text"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        placeholder="Search for meal types, hostels..."
-        className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white mt-6"
+        placeholder="Search for a meal type, hostel..."
+        className="w-full max-w-lg border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white mt-6"
       />
 
       <section className="w-full flex items-center justify-center flex-wrap mt-6 gap-2">
