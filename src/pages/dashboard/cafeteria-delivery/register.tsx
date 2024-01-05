@@ -258,10 +258,15 @@ const RegisterAsADeliverer = () => {
 
           {formData.bank_account_details.account_name ? (
             <>
-              <p className="mb-1 mt-4">Account name</p>
-              <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
-                {formData.bank_account_details.account_name}
-              </div>
+              <p className="mb-1 mt-4">
+                Account name:{" "}
+                <span className="font-medium">
+                  {formData.bank_account_details.account_name}
+                </span>
+              </p>
+              {/* <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
+            {formData.bank_account_details.account_name}
+          </div> */}
             </>
           ) : (
             <button

@@ -72,9 +72,10 @@ const DelivererProfile = () => {
     const unsubDeliverer = onSnapshot(q3, (querySnapshot) => {
       setLoading(true);
 
-      setDeliverer(querySnapshot.docs[0].data() as Deliverer);
-
-      setLoading(false);
+      if (querySnapshot.docs[0]) {
+        setDeliverer(querySnapshot.docs[0].data() as Deliverer);
+        setLoading(false);
+      }
     });
 
     return () => {

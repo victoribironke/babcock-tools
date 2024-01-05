@@ -104,3 +104,17 @@ export type DashboardCardProps = {
 export type DelivererDetailsProps = {
   deliverer: Deliverer | undefined;
 };
+
+export type Summary = {
+  deliverers_name: string;
+  orders: number;
+  delivered: number;
+  not_delivered: number;
+  amount_paid: number;
+  amount_due: number;
+  profit: number;
+  account_name: string;
+  account_number: string;
+  bank_name: string;
+  email: string;
+};

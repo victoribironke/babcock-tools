@@ -13,6 +13,7 @@ import { BsCardText, BsStars } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import { auth } from "@/services/firebase";
 
 const Sidebar = ({ show, setShow }: SidebarProps) => {
   const router = useRouter();
@@ -83,6 +84,15 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
       </div>
 
       <div className="flex flex-col w-full gap-2">
+        {auth.currentUser?.uid === "h8o1yv93IdRAls2euKGINJ6qGzj2" && (
+          <Link
+            href={PAGES.admin}
+            className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
+          >
+            <CgProfile />
+            <p className="-mb-0.5 mr-auto">Admin</p>
+          </Link>
+        )}
         <Link
           href={PAGES.account_profile}
           className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"

@@ -1,4 +1,5 @@
 import { delete_deliverer_profile } from "@/atoms/atoms";
+import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
@@ -34,6 +35,7 @@ const DeleteProfile = () => {
           is_deliverer: false,
         })
       );
+      router.push(PAGES.cafeteria_delivery);
       router.reload();
     } catch (e: any) {
       toast.error("An error occured.");
