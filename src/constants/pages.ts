@@ -10,6 +10,7 @@ export const PAGES = {
 
   dashboard: "/dashboard",
   account_profile: "/dashboard/profile",
+  admin: "/dashboard/admin",
   cafeteria_delivery: "/dashboard/cafeteria-delivery",
   register_as_a_deliverer: "/dashboard/cafeteria-delivery/register",
   deliverer_profile: "/dashboard/cafeteria-delivery/deliverer-profile",
