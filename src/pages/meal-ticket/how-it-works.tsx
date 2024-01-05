@@ -5,14 +5,14 @@ import Link from "next/link";
 
 const HowItWorksPage = () => {
   const link_cls = "text-blue";
-  const text_cls = "w-full text-lg sm:text-xl mb-2";
+  const text_cls = "w-full sm:text-lg mb-2";
 
   return (
     <>
       <HeadTemplate title="How does the meal ticket tool work?" />
 
-      <section className="w-full max-w-3xl px-4 sm:px-8 py-12">
-        <h1 className="text-white bg-blue p-4 rounded-xl text-3xl sm:text-4xl w-full text-center mb-6 font-semibold">
+      <section className="w-full max-w-2xl px-4 sm:px-8 py-4 sm:py-12">
+        <h1 className="text-white bg-blue py-2 px-6 rounded-xl text-xl sm:text-2xl w-fit text-center mb-6 font-medium">
           How to buy a ticket
         </h1>
 
@@ -48,7 +48,7 @@ const HowItWorksPage = () => {
           collect the ticket.
         </h1> */}
 
-        <h1 className="text-white bg-blue p-4 rounded-xl text-3xl sm:text-4xl w-full text-center my-6 font-semibold">
+        <h1 className="text-white bg-blue py-2 px-6 rounded-xl text-xl sm:text-2xl w-fit text-center mb-6 mt-4 font-medium">
           How to sell a ticket
         </h1>
 
@@ -78,8 +78,7 @@ const HowItWorksPage = () => {
         </h1>
 
         <h1 className={text_cls}>
-          The ticket will be added to the public directory. Refresh the page to
-          see the ticket on your dashboard.
+          The ticket will be added to your tickets and the public directory.
         </h1>
 
         <h1 className={text_cls}>
@@ -93,21 +92,6 @@ const HowItWorksPage = () => {
           you&apos;ll have to delete it and add it again with the correct
           details.
         </h1>
-
-        <h1 className={classNames(text_cls, "mt-10")}>
-          Note: Tickets that have expired would be removed from the public
-          directory whether it has been sold or not.
-        </h1>
-
-        {/* <h1 className={classNames(text_cls, "mt-10")}>
-          Note: It is possible for more than two people to request a ticket, so
-          if a ticket is already sold when you meet the owner, you can request a
-          refund from us by sending an email to{" "}
-          <Link href={PAGES.mailto} className={link_cls}>
-            hello@babcock.tools
-          </Link>
-          .
-        </h1> */}
       </section>
     </>
   );
