@@ -102,7 +102,7 @@ const Signup = () => {
           is_deliverer: false,
         })
       );
-      router.push(PAGES.dashboard);
+      router.reload();
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {
