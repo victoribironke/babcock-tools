@@ -13,10 +13,16 @@ const Tickets = () => {
   const [loading, setLoading] = useState(true);
   const [noTickets, setNoTickets] = useState(false);
   const [tickets, setTickets] = useState<ATicket[]>([]);
-
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("");
 
-  const d = tickets.length / 15;
+  const filtered_tickets = tickets.filter(
+    (t) =>
+      t.meal_type.toLowerCase().includes(filter.toLowerCase()) ||
+      t.hall_of_owner?.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const d = filtered_tickets.length / 15;
   const c = Number.isInteger(d)
     ? page !== Math.floor(d)
     : page !== Math.floor(d) + 1;
@@ -58,6 +64,8 @@ const Tickets = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => setPage(1), [filter]);
+
   if (loading) {
     return <PageLoader type="small" />;
   }
@@ -72,8 +80,16 @@ const Tickets = () => {
 
   return (
     <>
-      <section className="w-full flex items-center justify-center flex-wrap mt-10 gap-2">
-        {tickets.slice(page * 15 - 15, page * 15).map((tk, i) => {
+      <input
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Search for meal types, hostels..."
+        className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white mt-6"
+      />
+
+      <section className="w-full flex items-center justify-center flex-wrap mt-6 gap-2">
+        {filtered_tickets.slice(page * 15 - 15, page * 15).map((tk, i) => {
           const dt = new Date(tk.ticket_date)
             .toDateString()
             .split(" ")
@@ -129,11 +145,11 @@ const Tickets = () => {
           <p className="text-sm rs:mr-auto">
             Showing {page * 15 - 14} to{" "}
             {c
-              ? tickets.length < 15
-                ? tickets.length
+              ? filtered_tickets.length < 15
+                ? filtered_tickets.length
                 : page * 15
-              : tickets.length}{" "}
-            of {tickets.length} results
+              : filtered_tickets.length}{" "}
+            of {filtered_tickets.length} results
           </p>
 
           <div className="flex gap-2">
