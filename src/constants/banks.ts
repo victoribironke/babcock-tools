@@ -130,7 +130,14 @@ export const BANKS = [
     slug: "kuda-bank",
     code: "50211",
     ussd: "",
-    logo: "https://nigerianbanks.xyz/logo/kuda-bank.png",
+    logo: "",
+  },
+  {
+    name: "Moniepoint MFB",
+    slug: "moniepoint-mfb-ng",
+    code: "50515",
+    ussd: "",
+    logo: "",
   },
   {
     name: "One Finance",
@@ -140,11 +147,25 @@ export const BANKS = [
     logo: "https://nigerianbanks.xyz/logo/default-image.png",
   },
   {
+    name: "OPay Digital Services Limited (OPay)",
+    slug: "paycom",
+    code: "999992",
+    ussd: "",
+    logo: "",
+  },
+  {
     name: "Paga",
     slug: "paga",
     code: "327",
     ussd: "",
     logo: "https://nigerianbanks.xyz/logo/paga.png",
+  },
+  {
+    name: "PalmPay",
+    slug: "palmpay",
+    code: "999991",
+    ussd: "",
+    logo: "",
   },
   {
     name: "Parallex Bank",
