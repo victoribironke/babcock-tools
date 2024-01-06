@@ -154,6 +154,10 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       <p className="text-2xl font-medium mb-2 text-blue">Edit your profile</p>
 
       <p className="mb-1">Max number of orders</p>
+      <p className="mb-2 text-sm text-gray-500">
+        If you won't be able to deliver, set this number to 0, and you can set
+        it back when you're ready again.
+      </p>
       <NumberInput
         onChange={(e) => updateFormData(e.target.value, "no_of_orders")}
         placeholder="Max number of orders you can take per meal time"
