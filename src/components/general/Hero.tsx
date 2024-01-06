@@ -1,6 +1,5 @@
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
-import { MdOutlinePlayArrow } from "react-icons/md";
 
 const Hero = () => {
   return (

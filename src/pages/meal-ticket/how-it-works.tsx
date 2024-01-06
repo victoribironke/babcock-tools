@@ -1,6 +1,5 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { PAGES } from "@/constants/pages";
-import { classNames } from "@/utils/helpers";
 import Link from "next/link";
 
 const HowItWorksPage = () => {
@@ -25,23 +24,24 @@ const BuyTicketInstructions = () => {
         <li className="mb-2">
           Navigate to the{" "}
           <Link href={PAGES.meal_ticket} className="text-blue">
-            tool's page
+            tool&apos;s page
           </Link>
           .
         </li>
         <li className="mb-2">
           Browse the directory to find tickets. Ideally, choose one where the
-          seller is in the same hostel as you, but it's not necessary.
+          seller is in the same hostel as you, but it&apos;s not necessary.
         </li>
         <li className="mb-2">
-          After selecting a ticket to buy, click 'Get owner's details.'
+          After selecting a ticket to buy, click &apos;Get owner&apos;s
+          details&apos;.
         </li>
       </ol>
 
       <p className="text-gray-800 mt-4">
-        When you click 'Get owner's details,' a modal will appear for you to
-        enter your email address. Enter it, and the ticket's details, along with
-        the owner's information, will be sent to you.
+        A modal will appear for you to enter your email address. Enter it, and
+        the ticket&apos;s details, along with the owner&apos;s information, will
+        be sent to you.
       </p>
     </div>
   );
@@ -59,11 +59,13 @@ const SellTicketInstructions = () => {
           <Link href={PAGES.login} className="text-blue">
             Login{" "}
           </Link>
-          to the dashboard and navigate to the tool's page.
+          to the dashboard and navigate to the tool&apos;s page.
         </li>
-        <li className="mb-2">Switch to the "Sell a ticket" tab at the top.</li>
         <li className="mb-2">
-          Fill in the details of the ticket and click 'Save.'
+          Switch to the &apos;Sell a ticket&apos; tab at the top.
+        </li>
+        <li className="mb-2">
+          Fill in the details of the ticket and click &apos;Save&apos;.
         </li>
       </ol>
 

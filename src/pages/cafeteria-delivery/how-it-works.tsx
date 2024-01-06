@@ -27,7 +27,7 @@ const StudentInstructions = () => {
               <Link href={PAGES.login} className="text-blue">
                 Login{" "}
               </Link>
-              to your dashboard and find the tool's page.
+              to your dashboard and find the tool&apos;s page.
             </li>
           </ul>
         </li>
@@ -73,8 +73,8 @@ const StudentInstructions = () => {
           </li>
           <li className="mb-1">View all your orders on your dashboard.</li>
           <li className="mb-1">
-            Set the order status to "Delivered" only after confirming receipt,
-            as this action cannot be undone.
+            Set the order status to &apos;Delivered&apos; only after confirming
+            receipt, as this action cannot be undone.
           </li>
         </ul>
       </div>
@@ -94,7 +94,7 @@ const DelivererInstructions = () => {
               <Link href={PAGES.login} className="text-blue">
                 Login{" "}
               </Link>
-              to your dashboard and find the tool's page.
+              to your dashboard and find the tool&apos;s page.
             </li>
           </ul>
         </li>
@@ -102,9 +102,9 @@ const DelivererInstructions = () => {
           Create a Profile (if not done already):
           <ul className="list-disc pl-6">
             <li>
-              If you don't have a profile, follow the prompts to create one.
-              Provide necessary details such as name, contact information, and
-              delivery preferences.
+              If you don&apos;t have a profile, follow the prompts to create
+              one. Provide necessary details such as name, contact information,
+              and delivery preferences.
             </li>
           </ul>
         </li>
@@ -152,7 +152,8 @@ const DelivererInstructions = () => {
           Deliver to Orderer:
           <ul className="list-disc pl-6">
             <li>
-              Deliver the meals to the orderer's room as specified in the order.
+              Deliver the meals to the orderer&apos;s room as specified in the
+              order.
             </li>
           </ul>
         </li>
