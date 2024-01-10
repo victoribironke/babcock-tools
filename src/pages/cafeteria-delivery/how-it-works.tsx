@@ -73,8 +73,8 @@ const StudentInstructions = () => {
           </li>
           <li className="mb-1">View all your orders on your dashboard.</li>
           <li className="mb-1">
-            Set the order status to &apos;Delivered&apos; only after confirming
-            receipt, as this action cannot be undone.
+            Set the order status to &apos;Delivered&apos; only after receiving
+            your order, as this action cannot be undone.
           </li>
         </ul>
       </div>
