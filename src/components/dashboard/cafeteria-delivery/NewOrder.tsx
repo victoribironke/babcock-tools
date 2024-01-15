@@ -21,11 +21,6 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<any>();
-  const [prices] = useState(
-    deliverers.map((d) => {
-      return { id: d.uid, price: d.amount_per_order };
-    })
-  );
   const [formData, setFormData] = useState<Order>({
     meal_type: "Breakfast",
     date_ordered: getTodaysDate(),
@@ -36,6 +31,9 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     room_number: "",
     amount_paid: { amount: "", charges: "100" },
     id: "", // meal_type, ticket_date, uid
+  });
+  const prices = deliverers.map((d) => {
+    return { id: d.uid, price: d.amount_per_order };
   });
   const price = prices.find((p) => p.id === formData.deliverer_id);
 
@@ -222,8 +220,11 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
             text: "Select deliverer",
           },
           ...deliverers
-            .filter((a) => a.max_number_of_orders !== "0")
-            .filter((a) => a.meals_handled.includes(formData.meal_type))
+            .filter(
+              (a) =>
+                a.max_number_of_orders !== "0" ||
+                a.meals_handled.includes(formData.meal_type)
+            )
             .map((a) => {
               return {
                 value: a.uid,
