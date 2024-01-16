@@ -45,6 +45,9 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       process.env.NODE_ENV === "development"
         ? process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY!
         : process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY!,
+    subaccount: deliverers.find((d) => d.uid === formData.deliverer_id)
+      ?.subaccount_code,
+    transaction_charge: 100 * 100,
   });
 
   const updateFormData = (text: string, which: string) => {
@@ -148,21 +151,16 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     }
   };
 
-  useEffect(
-    () => setUserInfo(JSON.parse(localStorage.getItem("bt_user_info")!)),
-    []
-  );
+  useEffect(() => {
+    setUserInfo(JSON.parse(localStorage.getItem("bt_user_info")!));
 
-  useEffect(
-    () =>
-      setFormData((k) => {
-        return {
-          ...k,
-          amount_paid: { ...k.amount_paid, amount: price ? price.price : "0" },
-        };
-      }),
-    [price]
-  );
+    setFormData((k) => {
+      return {
+        ...k,
+        amount_paid: { ...k.amount_paid, amount: price ? price.price : "0" },
+      };
+    });
+  }, [price]);
 
   useEffect(() => {
     const { meal_type, ticket_date } = formData;
