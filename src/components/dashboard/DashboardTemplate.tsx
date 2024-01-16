@@ -143,7 +143,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
       {deleteDelivererProfile && (
         <Modal
           header="Delete your profile"
-          dismiss={() => setDeleteDelivererProfile(false)}
+          dismiss={() => setDeleteDelivererProfile("")}
         >
           <DeleteProfile />
         </Modal>

@@ -50,5 +50,5 @@ export const edit_order_status = atom({
 
 export const delete_deliverer_profile = atom({
   key: "delete deliverer profile",
-  default: false,
+  default: "",
 });

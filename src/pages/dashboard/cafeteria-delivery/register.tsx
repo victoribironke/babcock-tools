@@ -72,6 +72,26 @@ const RegisterAsADeliverer = () => {
         return;
       }
 
+      const req = await fetch("https://api.paystack.co/subaccount", {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          business_name: account_name,
+          bank_code: bankCode,
+          account_number,
+          percentage_charge: 0.6,
+        }),
+      });
+      const data = await req.json();
+
+      if (!data.status) {
+        toast.error("An error occured.");
+        return;
+      }
+
       await setDoc(doc(db, "deliverers", auth.currentUser?.uid!), {
         uid: auth.currentUser?.uid,
         amount_per_order: amount,
@@ -87,6 +107,7 @@ const RegisterAsADeliverer = () => {
           account_name,
         },
         meals_handled,
+        subaccount_code: data.data.subaccount_code,
       });
 
       await updateDoc(doc(db, "users", auth.currentUser?.uid!), {

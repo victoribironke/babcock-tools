@@ -30,6 +30,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       account_name: deliverer!.bank_account_details.account_name,
     },
     meals_handled: deliverer!.meals_handled,
+    subaccount_code: deliverer!.subaccount_code,
   });
 
   const updateFormData = (text: string, which: string) => {
@@ -65,6 +66,29 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
     try {
       setLoading(true);
       setDisabled(true);
+      console.log(formData.subaccount_code);
+
+      const req = await fetch(
+        `https://api.paystack.co/subaccount/${formData.subaccount_code}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+            "Content-Type": "application/json",
+          },
+          method: "PUT",
+          body: JSON.stringify({
+            business_name: account_name,
+            bank_code: bankCode,
+            account_number,
+          }),
+        }
+      );
+      const data = await req.json();
+
+      if (!data.status) {
+        toast.error("An error occured.");
+        return;
+      }
 
       await updateDoc(doc(db, "deliverers", auth.currentUser?.uid!), {
         amount_per_order: amount,
@@ -251,7 +275,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
 
       <div className="mt-4 flex items-center justify-center gap-4 flex-col-reverse sm:flex-row">
         <button
-          onClick={() => setDeleteDelivererProfile(true)}
+          onClick={() => setDeleteDelivererProfile(formData.subaccount_code)}
           className="w-full bg-red py-2.5 text-white rounded-md"
         >
           Delete deliverer profile

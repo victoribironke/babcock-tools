@@ -6,13 +6,15 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const DeleteProfile = () => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const setDeleteDelivererProfile = useSetRecoilState(delete_deliverer_profile);
   const router = useRouter();
+  const [deleteDelivererProfile, setDeleteDelivererProfile] = useRecoilState(
+    delete_deliverer_profile
+  );
 
   const deleteProfile = async () => {
     try {
@@ -20,6 +22,26 @@ const DeleteProfile = () => {
       setLoading(true);
 
       const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
+
+      const req = await fetch(
+        `https://api.paystack.co/subaccount/${deleteDelivererProfile}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+            "Content-Type": "application/json",
+          },
+          method: "PUT",
+          body: JSON.stringify({
+            active: false,
+          }),
+        }
+      );
+      const data = await req.json();
+
+      if (!data.status) {
+        toast.error("An error occured.");
+        return;
+      }
 
       await deleteDoc(doc(db, "deliverers", auth.currentUser?.uid!));
 
@@ -55,7 +77,7 @@ const DeleteProfile = () => {
       <div className="mt-4 flex gap-2 items-center justify-center">
         <button
           className="w-full bg-blue py-2 text-white rounded-md"
-          onClick={() => setDeleteDelivererProfile(false)}
+          onClick={() => setDeleteDelivererProfile("")}
         >
           Cancel
         </button>

@@ -71,6 +71,7 @@ export type Deliverer = User & {
     account_name: string;
   };
   meals_handled: string[];
+  subaccount_code: string;
 };
 
 export type NewOrderProps = {
