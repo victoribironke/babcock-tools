@@ -57,7 +57,7 @@ const DeleteProfile = () => {
           is_deliverer: false,
         })
       );
-      router.push(PAGES.cafeteria_delivery);
+      // router.push(PAGES.cafeteria_delivery);
       router.reload();
     } catch (e: any) {
       toast.error("An error occured.");

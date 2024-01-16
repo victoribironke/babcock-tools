@@ -23,15 +23,15 @@ const DelivererProfile = () => {
   useEffect(() => {
     const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
-    if (!user_info.is_deliverer) {
-      toast.error("You are not a deliverer.");
-      router.push(PAGES.cafeteria_delivery);
-      return;
-    }
+    // if (!user_info.is_deliverer) {
+    //   toast.error("You are not a deliverer.");
+    //   router.push(PAGES.cafeteria_delivery);
+    //   return;
+    // }
 
     const q1 = query(
-      collection(db, "users"),
-      where("hall_of_residence", "==", user_info.hall_of_residence)
+      collection(db, "deliverers"),
+      where("uid", "==", auth.currentUser?.uid)
     );
 
     const q2 = query(
@@ -40,21 +40,21 @@ const DelivererProfile = () => {
     );
 
     const q3 = query(
-      collection(db, "deliverers"),
-      where("uid", "==", auth.currentUser?.uid)
+      collection(db, "users"),
+      where("hall_of_residence", "==", user_info.hall_of_residence)
     );
 
-    const unsubUsers = onSnapshot(q1, (querySnapshot) => {
+    const unsubDeliverer = onSnapshot(q1, (querySnapshot) => {
       setLoading(true);
 
-      const temp_users: User[] = [];
-
-      querySnapshot.forEach((doc) => {
-        temp_users.push(doc.data() as User);
-      });
-
-      setUsers(temp_users);
-      setLoading(false);
+      if (querySnapshot.docs[0]) {
+        setDeliverer(querySnapshot.docs[0].data() as Deliverer);
+        setLoading(false);
+      } else {
+        toast.error("You are not a deliverer.");
+        router.push(PAGES.cafeteria_delivery);
+        return;
+      }
     });
 
     const unsubOrders = onSnapshot(q2, (querySnapshot) => {
@@ -69,13 +69,17 @@ const DelivererProfile = () => {
       setLoading(false);
     });
 
-    const unsubDeliverer = onSnapshot(q3, (querySnapshot) => {
+    const unsubUsers = onSnapshot(q3, (querySnapshot) => {
       setLoading(true);
 
-      if (querySnapshot.docs[0]) {
-        setDeliverer(querySnapshot.docs[0].data() as Deliverer);
-        setLoading(false);
-      }
+      const temp_users: User[] = [];
+
+      querySnapshot.forEach((doc) => {
+        temp_users.push(doc.data() as User);
+      });
+
+      setUsers(temp_users);
+      setLoading(false);
     });
 
     return () => {
