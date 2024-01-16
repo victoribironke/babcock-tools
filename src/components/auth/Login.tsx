@@ -58,7 +58,6 @@ const Login = () => {
         await getDoc(doc(db, "users", user.user.uid))
       ).data();
 
-      toast.success("Logged in.");
       localStorage.setItem(
         "bt_user_info",
         JSON.stringify({
@@ -70,7 +69,8 @@ const Login = () => {
           is_deliverer: user_details?.is_deliverer ?? false,
         })
       );
-      router.push(redirect ? (redirect as string) : PAGES.dashboard);
+      toast.success("Logged in.");
+      // redirect ? router.push(redirect as string) : router.reload();
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {

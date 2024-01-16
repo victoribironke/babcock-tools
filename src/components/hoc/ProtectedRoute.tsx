@@ -64,7 +64,7 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
         setIsLoading(true);
 
         if (user) {
-          router.push(PAGES.dashboard);
+          router.push(PAGES.cafeteria_delivery);
           return;
         }
 
