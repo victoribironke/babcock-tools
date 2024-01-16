@@ -1,5 +1,5 @@
 import { delete_deliverer_profile } from "@/atoms/atoms";
-import { PAGES } from "@/constants/pages";
+// import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";

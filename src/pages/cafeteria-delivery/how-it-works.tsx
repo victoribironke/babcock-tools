@@ -171,9 +171,9 @@ const DelivererInstructions = () => {
           Payout:
           <ul className="list-disc pl-6">
             <li>
-              The next day, expect to receive your payout for the previous day's
-              deliveries to the specified account you added when creating your
-              profile.
+              The next day, expect to receive your payout for the previous
+              day&apos;s deliveries to the specified account you added when
+              creating your profile.
             </li>
           </ul>
         </li>
