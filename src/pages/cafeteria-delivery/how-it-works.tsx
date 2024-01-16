@@ -162,17 +162,18 @@ const DelivererInstructions = () => {
           <ul className="list-disc pl-6">
             <li>
               Once the orderer receives the food, let them know to update the
-              status of the order as that would count towards your payout at the
-              end of the day.
+              status of the order as that would count towards your payout the
+              next day.
             </li>
           </ul>
         </li>
         <li className="mb-2">
-          End of Day Payout:
+          Payout:
           <ul className="list-disc pl-6">
             <li>
-              Starting from 10 PM, expect to receive your payout for the day to
-              the specified account you added when creating your profile.
+              The next day, expect to receive your payout for the previous day's
+              deliveries to the specified account you added when creating your
+              profile.
             </li>
           </ul>
         </li>
