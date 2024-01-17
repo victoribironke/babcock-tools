@@ -1,11 +1,16 @@
 import { InputProps, SelectInputProps, TextareaProps } from "@/types/general";
+import { classNames } from "@/utils/helpers";
 
 const input_classes =
   "w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white";
 
 export const SelectInput = ({ options, onChange, value }: SelectInputProps) => {
   return (
-    <select className={input_classes} onChange={onChange} value={value}>
+    <select
+      className={classNames(input_classes, "py-2.5 px-2")}
+      onChange={onChange}
+      value={value}
+    >
       {options.map((op, i) => (
         <option value={op.value} key={i}>
           {op.text}
@@ -27,13 +32,19 @@ export const DateInput = ({ onChange, value }: InputProps) => {
   );
 };
 
-export const TextInput = ({ placeholder, value, onChange }: InputProps) => {
+export const TextInput = ({
+  placeholder,
+  value,
+  onChange,
+  disabled,
+}: InputProps) => {
   return (
     <input
       type="text"
       className={input_classes}
       placeholder={placeholder}
       value={value}
+      disabled={disabled}
       onChange={onChange}
     />
   );
@@ -83,7 +94,8 @@ export const NumberInput = ({
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      maxLength={maxLength}
+      // maxLength={maxLength}
+      max={maxLength}
     />
   );
 };

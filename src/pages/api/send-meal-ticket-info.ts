@@ -10,11 +10,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, ticket_id } = req.query;
 
   try {
-    const ticket_data = await (
+    const ticket_data = (
       await getDoc(doc(db, "meal-tickets", ticket_id as string))
     ).data();
 
-    const user_data = await (
+    const user_data = (
       await getDoc(doc(db, "users", ticket_data?.uid as string))
     ).data();
 

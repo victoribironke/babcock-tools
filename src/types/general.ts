@@ -25,6 +25,7 @@ export type InputProps = {
   onChange: ChangeEventHandler<HTMLInputElement>;
   maxLength?: number;
   type?: HTMLInputTypeAttribute;
+  disabled?: boolean;
 };
 
 export type TextareaProps = {

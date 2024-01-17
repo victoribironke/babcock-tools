@@ -1,20 +1,11 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import toast from "react-hot-toast";
-import { auth, db } from "@/services/firebase";
-import PageLoader from "@/components/general/PageLoader";
-import { CgProfile } from "react-icons/cg";
-import { IoMailOutline } from "react-icons/io5";
-import { LuHome } from "react-icons/lu";
-import { RiGraduationCapLine } from "react-icons/ri";
-import { FiPhone } from "react-icons/fi";
-import { UserDetails } from "@/types/dashboard";
+import { DashboardCardProps, User } from "@/types/dashboard";
+import { getUserDetails } from "@/constants/dashboard";
 
 const Dashboard = () => {
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<UserDetails>({
+  const [user, setUser] = useState<User>({
     email: "",
     full_name: "",
     hall_of_residence: "",
@@ -23,81 +14,42 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
+    const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
-      try {
-        const data = await (
-          await getDoc(doc(db, "users", auth.currentUser!.uid))
-        ).data()!;
-
-        setUser({
-          email: data.email,
-          full_name: data.full_name,
-          hall_of_residence: data.hall_of_residence,
-          matric_no: data.matric_no,
-          phone_number: data.phone_number,
-        });
-      } catch (e: any) {
-        toast.error(`Error: ${e.code.split("/")[1]}.`);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    setUser({
+      email: user_info.email,
+      full_name: user_info.full_name,
+      hall_of_residence: user_info.hall_of_residence,
+      matric_no: user_info.matric_no,
+      phone_number: user_info.phone_number,
+    });
   }, []);
 
   return (
     <>
       <HeadTemplate title="Dashboard" />
+      {/* grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 */}
 
-      <>
-        {loading && <PageLoader type="small" />}
-
-        {!loading && (
-          <div className="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 max-w-5xl gap-4">
-            <div className="p-4 w-full border shadow rounded-lg flex gap-4 items-center">
-              <CgProfile className="text-5xl text-blue" />
-              <div>
-                <p className="font-medium">Name</p>
-                <p className="font-light">{user.full_name}</p>
-              </div>
-            </div>
-
-            <div className="p-4 w-full border shadow-md rounded-lg flex gap-4 items-center">
-              <IoMailOutline className="text-5xl text-blue" />
-              <div>
-                <p className="font-medium">Email address</p>
-                <p className="font-light">{user.email}</p>
-              </div>
-            </div>
-
-            <div className="p-4 w-full border shadow-md rounded-lg flex gap-4 items-center">
-              <LuHome className="text-5xl text-blue" />
-              <div>
-                <p className="font-medium">Hall of residence</p>
-                <p className="font-light">{user.hall_of_residence}</p>
-              </div>
-            </div>
-
-            <div className="p-4 w-full border shadow-md rounded-lg flex gap-4 items-center">
-              <RiGraduationCapLine className="text-5xl text-blue" />
-              <div>
-                <p className="font-medium">Matric number / app id</p>
-                <p className="font-light">{user.matric_no}</p>
-              </div>
-            </div>
-
-            <div className="p-4 w-full border shadow-md rounded-lg flex gap-4 items-center">
-              <FiPhone className="text-5xl text-blue" />
-              <div>
-                <p className="font-medium">Phone number</p>
-                <p className="font-light">{user.phone_number}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </>
+      <div className="w-full flex flex-wrap max-w-7xl items-center justify-center lg:justify-start gap-4">
+        {getUserDetails(user).map((u, i) => (
+          <Card key={i} icon={u.icon} title={u.title} value={u.value} />
+        ))}
+      </div>
     </>
+  );
+};
+
+const Card = (card: DashboardCardProps) => {
+  return (
+    <div className="p-5 w-full max-w-[22rem] border-2 rounded-lg flex gap-6 items-center">
+      <div className="bg-blue bg-opacity-10 p-4 rounded-lg">
+        <card.icon className="text-2xl sm:text-3xl text-blue" />
+      </div>
+      <div>
+        <p className="font-medium">{card.title}</p>
+        <p className="font-light">{card.value}</p>
+      </div>
+    </div>
   );
 };
 

@@ -8,15 +8,17 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "@/services/firebase";
-import { useRouter } from "next/router";
+import { auth, db } from "@/services/firebase";
+// import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useToggle } from "@/hooks/general";
+import { doc, getDoc } from "firebase/firestore";
 
 const Login = () => {
-  const router = useRouter();
+  // const router = useRouter();
+  // const { redirect } = router.query;
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [showPassword, toggleShowPassword] = useToggle(false);
@@ -48,12 +50,27 @@ const Login = () => {
       setLoading(true);
       setDisabled(true);
 
-      await setPersistence(auth, browserLocalPersistence).then(() => {
-        return signInWithEmailAndPassword(auth, email, password);
-      });
+      const user = await setPersistence(auth, browserLocalPersistence).then(
+        () => signInWithEmailAndPassword(auth, email, password)
+      );
 
+      const user_details = (
+        await getDoc(doc(db, "users", user.user.uid))
+      ).data();
+
+      localStorage.setItem(
+        "bt_user_info",
+        JSON.stringify({
+          email: user_details?.email,
+          full_name: user_details?.full_name,
+          hall_of_residence: user_details?.hall_of_residence,
+          matric_no: user_details?.matric_no,
+          phone_number: user_details?.phone_number,
+          is_deliverer: user_details?.is_deliverer ?? false,
+        })
+      );
       toast.success("Logged in.");
-      router.push(PAGES.dashboard);
+      // redirect ? router.push(redirect as string) : router.reload();
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {

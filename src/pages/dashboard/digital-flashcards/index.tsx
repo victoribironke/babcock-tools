@@ -48,46 +48,44 @@ const DigitalFlashcardsDashboardPage = () => {
     <>
       <HeadTemplate title="Digital flashcards" />
 
-      <>
-        <div className="flex justify-between items-center w-full max-w-5xl">
-          <p className="font-medium text-lg">Your flashcards</p>
+      <div className="flex justify-between items-center w-full max-w-5xl">
+        <p className="font-medium text-lg">Your flashcards</p>
 
-          <button
-            className="bg-green text-white py-1 px-3 rounded-md"
-            onClick={() => setCreateFlashcard(cards)}
-          >
-            Create flashcard
-          </button>
-        </div>
+        <button
+          className="bg-green text-white py-1 px-3 rounded-md"
+          onClick={() => setCreateFlashcard(cards)}
+        >
+          Create flashcard
+        </button>
+      </div>
 
-        {!isLoading ? (
-          isEmpty ? (
-            <p className="w-full text-center mt-6 opacity-70">
-              You don&apos;t have any flashcards.
-            </p>
-          ) : (
-            <div className="w-full grid max-w-5xl grid-cols-1 rs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
-              {cards.map((c, i) => (
-                <Link
-                  href={PAGES.flashcards_for_course(c.course_code)}
-                  className="p-4 w-full rounded-lg border bg-white hover:shadow-md cursor-pointer"
-                  key={i}
-                >
-                  <p className="text-lg sm:text-xl font-medium w-full text-center">
-                    {c.course_code}
-                  </p>
-
-                  <div className="w-full text-center text-3xl sm:text-4xl font-semibold mt-4 text-blue">
-                    {c.count}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )
+      {!isLoading ? (
+        isEmpty ? (
+          <p className="w-full text-center mt-6 opacity-70">
+            You don&apos;t have any flashcards.
+          </p>
         ) : (
-          <PageLoader type="small" />
-        )}
-      </>
+          <div className="w-full grid max-w-5xl grid-cols-1 rs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-3">
+            {cards.map((c, i) => (
+              <Link
+                href={PAGES.flashcards_for_course(c.course_code)}
+                className="p-4 w-full rounded-lg border bg-white hover:shadow-md cursor-pointer"
+                key={i}
+              >
+                <p className="text-lg sm:text-xl font-medium w-full text-center">
+                  {c.course_code}
+                </p>
+
+                <div className="w-full text-center text-3xl sm:text-4xl font-semibold mt-4 text-blue">
+                  {c.count}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )
+      ) : (
+        <PageLoader type="full" />
+      )}
 
       <Link
         href="https://www.twinkl.com.ng/teaching-wiki/flashcards"

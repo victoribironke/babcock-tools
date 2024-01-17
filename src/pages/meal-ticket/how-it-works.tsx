@@ -1,115 +1,90 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { PAGES } from "@/constants/pages";
-import { classNames } from "@/utils/helpers";
 import Link from "next/link";
 
 const HowItWorksPage = () => {
-  const link_cls = "text-blue";
-  const text_cls = "w-full text-lg sm:text-xl mb-2";
-
   return (
     <>
       <HeadTemplate title="How does the meal ticket tool work?" />
 
-      <section className="w-full max-w-3xl px-4 sm:px-8 py-12">
-        <h1 className="text-white bg-blue p-4 rounded-xl text-3xl sm:text-4xl w-full text-center mb-6 font-semibold">
-          How to buy a ticket
-        </h1>
-
-        <h1 className={text_cls}>
-          To buy a ticket, navigate to{" "}
-          <Link href={PAGES.meal_ticket} className={link_cls}>
-            the tool&apos;s page
-          </Link>
-          .
-        </h1>
-
-        <h1 className={text_cls}>
-          Browse the directory to find a ticket, ideally one where the
-          owner&apos;s hostel is the same as yours (not necessary).
-        </h1>
-
-        <h1 className={text_cls}>
-          When you&apos;ve selected your ticket, click &quot;Get owner&apos;s
-          details&quot; which would open a modal for you to put in your email.
-          Just input your email, click &quot;Get owner&apos;s details&quot; and
-          the details would be sent to the email address.
-        </h1>
-
-        {/* <h1 className={text_cls}>
-          When you&apos;ve selected your ticket, click &quot;Get owner&apos;s
-          details&quot; which would open a modal for you to put in your email
-          and pay the platform fee (₦100).
-        </h1> */}
-
-        {/* <h1 className={text_cls}>
-          After payment, the owner&apos;s details is sent to the email you
-          provided which you can then use to find the owner to pay for and
-          collect the ticket.
-        </h1> */}
-
-        <h1 className="text-white bg-blue p-4 rounded-xl text-3xl sm:text-4xl w-full text-center my-6 font-semibold">
-          How to sell a ticket
-        </h1>
-
-        <h1 className={text_cls}>
-          To sell a ticket,{" "}
-          <Link href={PAGES.login} className={link_cls}>
-            login
-          </Link>{" "}
-          or{" "}
-          <Link href={PAGES.signup} className={link_cls}>
-            create an account
-          </Link>
-          .
-        </h1>
-
-        <h1 className={text_cls}>
-          Navigate to{" "}
-          <Link href={PAGES.sell_your_meal_ticket} className={link_cls}>
-            the tool&apos;s page
-          </Link>{" "}
-          on your dashboard.
-        </h1>
-
-        <h1 className={text_cls}>
-          Click &quot;Sell a ticket&quot;, fill in the details of the ticket and
-          click &quot;Save&quot;.
-        </h1>
-
-        <h1 className={text_cls}>
-          The ticket will be added to the public directory. Refresh the page to
-          see the ticket on your dashboard.
-        </h1>
-
-        <h1 className={text_cls}>
-          After the ticket is bought by someone, mark the ticket as sold so it
-          will be removed from the public directory. You can also unmark it as
-          sold.
-        </h1>
-
-        <h1 className={text_cls}>
-          You currently cannot edit a ticket so if you put in the wrong details,
-          you&apos;ll have to delete it and add it again with the correct
-          details.
-        </h1>
-
-        <h1 className={classNames(text_cls, "mt-10")}>
-          Note: Tickets that have expired would be removed from the public
-          directory whether it has been sold or not.
-        </h1>
-
-        {/* <h1 className={classNames(text_cls, "mt-10")}>
-          Note: It is possible for more than two people to request a ticket, so
-          if a ticket is already sold when you meet the owner, you can request a
-          refund from us by sending an email to{" "}
-          <Link href={PAGES.mailto} className={link_cls}>
-            hello@babcock.tools
-          </Link>
-          .
-        </h1> */}
-      </section>
+      <BuyTicketInstructions />
+      <SellTicketInstructions />
     </>
+  );
+};
+
+const BuyTicketInstructions = () => {
+  return (
+    <div className="max-w-2xl mx-auto mt-8 p-4 bg-white rounded shadow-md">
+      <h2 className="text-2xl font-bold mb-4 text-blue">
+        How to Buy a Ticket:
+      </h2>
+
+      <ol className="list-decimal pl-6">
+        <li className="mb-2">
+          Navigate to the{" "}
+          <Link href={PAGES.meal_ticket} className="text-blue">
+            tool&apos;s page
+          </Link>
+          .
+        </li>
+        <li className="mb-2">
+          Browse the directory to find tickets. Ideally, choose one where the
+          seller is in the same hostel as you, but it&apos;s not necessary.
+        </li>
+        <li className="mb-2">
+          After selecting a ticket to buy, click &apos;Get owner&apos;s
+          details&apos;.
+        </li>
+      </ol>
+
+      <p className="text-gray-800 mt-4">
+        A modal will appear for you to enter your email address. Enter it, and
+        the ticket&apos;s details, along with the owner&apos;s information, will
+        be sent to you.
+      </p>
+    </div>
+  );
+};
+
+const SellTicketInstructions = () => {
+  return (
+    <div className="max-w-2xl mx-auto my-8 p-4 bg-white rounded shadow-md">
+      <h2 className="text-2xl font-bold mb-4 text-blue">
+        How to Sell a Ticket:
+      </h2>
+
+      <ol className="list-decimal pl-6">
+        <li className="mb-2">
+          <Link href={PAGES.login} className="text-blue">
+            Login{" "}
+          </Link>
+          to the dashboard and navigate to the tool&apos;s page.
+        </li>
+        <li className="mb-2">
+          Switch to the &apos;Sell a ticket&apos; tab at the top.
+        </li>
+        <li className="mb-2">
+          Fill in the details of the ticket and click &apos;Save&apos;.
+        </li>
+      </ol>
+
+      <p className="text-gray-800 mt-4">
+        The ticket will be added to your tickets and the public directory.
+      </p>
+
+      <h2 className="text-2xl font-bold mt-6 mb-2 text-blue">Notes:</h2>
+      <ol className="list-decimal pl-6">
+        <li className="mb-2">
+          After the ticket is bought by someone, mark the ticket as sold to
+          remove it from the public directory. You can also unmark it as sold.
+        </li>
+        <li className="mb-2">
+          You cannot edit a ticket, so if you put in the wrong details, delete
+          the ticket and create a new one.
+        </li>
+      </ol>
+    </div>
   );
 };
 

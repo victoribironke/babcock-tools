@@ -22,23 +22,12 @@ export const parseDate = (date: string, type: "text" | "object" = "text") => {
   if (type === "object")
     return { year: splitted[0], month: splitted[1], day: splitted[2] };
 
-  const getSuffix = (day: string) => {
-    if (day.split("").every((k) => k === "1")) return "th";
+  const d = new Date(date).toDateString().split(" ");
 
-    if (day === "1" || day[1] === "1") return "st";
-    if (day === "2" || day[1] === "2") return "nd";
-    if (day === "3" || day[1] === "3") return "rd";
-
-    return "th";
-  };
-
-  const day = splitted[2];
-  const month = months[splitted[1] - 1];
-  const year = splitted[0];
-  const suffix = getSuffix(day.toString());
-
-  return `${day}${suffix} ${month}, ${year}`;
+  return `${d[2]} ${d[1]} ${d[3]}`;
 };
+
+export const getTodaysDate = () => new Date().toISOString().split("T")[0];
 
 export const isValidEmail = (email: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(email);

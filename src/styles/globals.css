@@ -54,7 +54,7 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-select {
+/* select {
   -webkit-appearance: none;
   appearance: none;
-}
+} */
