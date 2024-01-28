@@ -1,9 +1,10 @@
 import { delete_deliverer_profile } from "@/atoms/atoms";
 import { NumberInput, SelectInput } from "@/components/general/Input";
-import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
+import { DAYS } from "@/constants/dashboard";
 import { auth, db } from "@/services/firebase";
 import { DelivererDetailsProps } from "@/types/dashboard";
+import { classNames } from "@/utils/helpers";
 import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -29,7 +30,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       bank_name: deliverer!.bank_account_details.bank_name,
       account_name: deliverer!.bank_account_details.account_name,
     },
-    meals_handled: deliverer!.meals_handled,
+    schedule: deliverer!.schedule,
     subaccount_code: deliverer!.subaccount_code,
   });
 
@@ -43,8 +44,8 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
     const {
       amount,
       no_of_orders,
+      schedule,
       bank_account_details: { account_number, bank_name, account_name },
-      meals_handled,
     } = formData;
 
     if (
@@ -58,15 +59,9 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       return;
     }
 
-    if (meals_handled.length === 0) {
-      toast.error("Please select a meal to deliver.");
-      return;
-    }
-
     try {
       setLoading(true);
       setDisabled(true);
-      console.log(formData.subaccount_code);
 
       const req = await fetch(
         `https://api.paystack.co/subaccount/${formData.subaccount_code}`,
@@ -98,7 +93,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
           bank_name,
           account_name,
         },
-        meals_handled,
+        schedule,
       });
 
       toast.success("Your profile was saved.");
@@ -195,28 +190,97 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
         value={formData.amount}
       />
 
-      <p className="mb-1 mt-4">Meals to handle</p>
-      <div className="w-full flex flex-wrap justify-between">
-        {MEAL_TYPES.map((m, i) => (
-          <div key={i} className="flex items-center justify-center gap-1">
-            <input
-              type="checkbox"
-              id={`check ${i}`}
-              onChange={() =>
+      <p className="mb-2 mt-4">Schedule</p>
+      <div className="flex items-center justify-center rs:justify-between flex-wrap gap-4">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <p className="font-medium">Breakfast</p>
+          {DAYS.map((d, i) => (
+            <button
+              key={i}
+              className={classNames(
+                "w-full py-1 px-3 rounded",
+                formData.schedule.breakfast.includes(d as never)
+                  ? "bg-blue text-white"
+                  : "bg-gray-200"
+              )}
+              onClick={() =>
                 setFormData((k) => {
                   return {
                     ...k,
-                    meals_handled: formData.meals_handled.includes(m as never)
-                      ? k.meals_handled.filter((a) => a !== m)
-                      : [...k.meals_handled, m as never],
+                    schedule: {
+                      ...k.schedule,
+                      breakfast: k.schedule.breakfast.includes(d as never)
+                        ? k.schedule.breakfast.filter((a) => a !== (d as never))
+                        : [...k.schedule.breakfast, d as never],
+                    },
                   };
                 })
               }
-              checked={formData.meals_handled.includes(m as never)}
-            />
-            <label htmlFor={`check ${i}`}>{m}</label>
-          </div>
-        ))}
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center justify-center gap-2">
+          <p className="font-medium">Lunch</p>
+          {DAYS.map((d, i) => (
+            <button
+              key={i}
+              className={classNames(
+                "w-full py-1 px-3 rounded",
+                formData.schedule.lunch.includes(d as never)
+                  ? "bg-blue text-white"
+                  : "bg-gray-200"
+              )}
+              onClick={() =>
+                setFormData((k) => {
+                  return {
+                    ...k,
+                    schedule: {
+                      ...k.schedule,
+                      lunch: k.schedule.lunch.includes(d as never)
+                        ? k.schedule.lunch.filter((a) => a !== (d as never))
+                        : [...k.schedule.lunch, d as never],
+                    },
+                  };
+                })
+              }
+            >
+              {d}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center justify-center gap-2">
+          <p className="font-medium">Dinner</p>
+          {DAYS.map((d, i) => (
+            <button
+              key={i}
+              className={classNames(
+                "w-full py-1 px-3 rounded",
+                formData.schedule.dinner.includes(d as never)
+                  ? "bg-blue text-white"
+                  : "bg-gray-200"
+              )}
+              onClick={() =>
+                setFormData((k) => {
+                  return {
+                    ...k,
+                    schedule: {
+                      ...k.schedule,
+                      dinner: k.schedule.dinner.includes(d as never)
+                        ? k.schedule.dinner.filter((a) => a !== (d as never))
+                        : [...k.schedule.dinner, d as never],
+                    },
+                  };
+                })
+              }
+            >
+              {d}
+            </button>
+          ))}
+        </div>
       </div>
 
       <hr className="mt-4" />

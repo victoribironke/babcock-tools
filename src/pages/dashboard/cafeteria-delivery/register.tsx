@@ -1,9 +1,10 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { NumberInput, SelectInput } from "@/components/general/Input";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
-import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
+import { DAYS } from "@/constants/dashboard";
 import { auth, db } from "@/services/firebase";
+import { classNames } from "@/utils/helpers";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -25,7 +26,11 @@ const RegisterAsADeliverer = () => {
       bank_name: "",
       account_name: "",
     },
-    meals_handled: [],
+    schedule: {
+      breakfast: [],
+      lunch: [],
+      dinner: [],
+    },
   });
 
   const updateFormData = (text: string, which: string) => {
@@ -38,8 +43,8 @@ const RegisterAsADeliverer = () => {
     const {
       amount,
       no_of_orders,
+      schedule,
       bank_account_details: { account_number, bank_name, account_name },
-      meals_handled,
     } = formData;
     const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
@@ -51,11 +56,6 @@ const RegisterAsADeliverer = () => {
       !account_name
     ) {
       toast.error("Please fill in all the fields.");
-      return;
-    }
-
-    if (meals_handled.length === 0) {
-      toast.error("Please select a meal to deliver.");
       return;
     }
 
@@ -106,7 +106,7 @@ const RegisterAsADeliverer = () => {
           bank_name,
           account_name,
         },
-        meals_handled,
+        schedule,
         subaccount_code: data.data.subaccount_code,
       });
 
@@ -224,30 +224,101 @@ const RegisterAsADeliverer = () => {
             value={formData.amount}
           />
 
-          <p className="mb-1 mt-4">Meals to handle</p>
-          <div className="w-full flex flex-wrap justify-between">
-            {MEAL_TYPES.map((m, i) => (
-              <div key={i} className="flex items-center justify-center gap-1">
-                <input
-                  type="checkbox"
-                  id={`check ${i}`}
-                  onChange={() =>
+          <p className="mb-2 mt-4">Schedule</p>
+          <div className="flex items-center justify-center rs:justify-between flex-wrap gap-4">
+            <div className="flex flex-col items-center justify-center gap-2">
+              <p className="font-medium">Breakfast</p>
+              {DAYS.map((d, i) => (
+                <button
+                  key={i}
+                  className={classNames(
+                    "w-full py-1 px-3 rounded",
+                    formData.schedule.breakfast.includes(d as never)
+                      ? "bg-blue text-white"
+                      : "bg-gray-200"
+                  )}
+                  onClick={() =>
                     setFormData((k) => {
                       return {
                         ...k,
-                        meals_handled: formData.meals_handled.includes(
-                          m as never
-                        )
-                          ? k.meals_handled.filter((a) => a !== m)
-                          : [...k.meals_handled, m as never],
+                        schedule: {
+                          ...k.schedule,
+                          breakfast: k.schedule.breakfast.includes(d as never)
+                            ? k.schedule.breakfast.filter(
+                                (a) => a !== (d as never)
+                              )
+                            : [...k.schedule.breakfast, d as never],
+                        },
                       };
                     })
                   }
-                  checked={formData.meals_handled.includes(m as never)}
-                />
-                <label htmlFor={`check ${i}`}>{m}</label>
-              </div>
-            ))}
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex flex-col items-center justify-center gap-2">
+              <p className="font-medium">Lunch</p>
+              {DAYS.map((d, i) => (
+                <button
+                  key={i}
+                  className={classNames(
+                    "w-full py-1 px-3 rounded",
+                    formData.schedule.lunch.includes(d as never)
+                      ? "bg-blue text-white"
+                      : "bg-gray-200"
+                  )}
+                  onClick={() =>
+                    setFormData((k) => {
+                      return {
+                        ...k,
+                        schedule: {
+                          ...k.schedule,
+                          lunch: k.schedule.lunch.includes(d as never)
+                            ? k.schedule.lunch.filter((a) => a !== (d as never))
+                            : [...k.schedule.lunch, d as never],
+                        },
+                      };
+                    })
+                  }
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex flex-col items-center justify-center gap-2">
+              <p className="font-medium">Dinner</p>
+              {DAYS.map((d, i) => (
+                <button
+                  key={i}
+                  className={classNames(
+                    "w-full py-1 px-3 rounded",
+                    formData.schedule.dinner.includes(d as never)
+                      ? "bg-blue text-white"
+                      : "bg-gray-200"
+                  )}
+                  onClick={() =>
+                    setFormData((k) => {
+                      return {
+                        ...k,
+                        schedule: {
+                          ...k.schedule,
+                          dinner: k.schedule.dinner.includes(d as never)
+                            ? k.schedule.dinner.filter(
+                                (a) => a !== (d as never)
+                              )
+                            : [...k.schedule.dinner, d as never],
+                        },
+                      };
+                    })
+                  }
+                >
+                  {d}
+                </button>
+              ))}
+            </div>
           </div>
 
           <hr className="mt-4" />
@@ -289,9 +360,6 @@ const RegisterAsADeliverer = () => {
                   {formData.bank_account_details.account_name}
                 </span>
               </p>
-              {/* <div className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white">
-            {formData.bank_account_details.account_name}
-          </div> */}
             </>
           ) : (
             <button

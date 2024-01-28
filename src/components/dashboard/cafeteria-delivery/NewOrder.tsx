@@ -1,7 +1,7 @@
 import { DateInput, SelectInput, TextInput } from "@/components/general/Input";
 import { MEAL_TYPES } from "@/constants/babcock";
 import { auth, db } from "@/services/firebase";
-import { NewOrderProps, Order } from "@/types/dashboard";
+import { Deliverer, NewOrderProps, Order } from "@/types/dashboard";
 import { getTodaysDate, parseDate } from "@/utils/helpers";
 import { useEffect, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
@@ -16,6 +16,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { DAYS } from "@/constants/dashboard";
 
 const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   const [disabled, setDisabled] = useState(false);
@@ -36,6 +37,20 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     return { id: d.uid, price: d.amount_per_order };
   });
   const price = prices.find((p) => p.id === formData.deliverer_id);
+  const today = DAYS[new Date().getDay()];
+
+  const doesTheDelivererHandleTheMealForToday = (d: Deliverer) => {
+    const { meal_type } = formData;
+    let arr: string[] = [];
+
+    if (meal_type === "Breakfast") arr = d.schedule.breakfast;
+    else if (meal_type === "Lunch") arr = d.schedule.lunch;
+    else if (meal_type === "Dinner") arr = d.schedule.dinner;
+
+    if (arr.includes(today)) return true;
+
+    return false;
+  };
 
   const initializePayment = usePaystackPayment({
     email: userInfo?.email,
@@ -205,9 +220,9 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       <p className="mb-1 mt-5">Select deliverer</p>
       <p className="mb-2 text-sm text-gray-500">
         If the dropdown below is empty, it means that there are no deliverers in
-        your hostel or no deliverer handles the meal type you selected. The
-        price beside the deliverer&apos;s name is the deliverer&apos;s fee + the
-        processing fee (₦100).
+        your hostel or no deliverer handles the meal type you selected on this
+        day. The price beside the deliverer&apos;s name is the deliverer&apos;s
+        fee + the processing fee (₦100).
       </p>
       <SelectInput
         onChange={(e) => updateFormData(e.target.value, "deliverer_id")}
@@ -220,8 +235,8 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
           ...deliverers
             .filter(
               (a) =>
-                a.max_number_of_orders !== "0" ||
-                a.meals_handled.includes(formData.meal_type)
+                a.max_number_of_orders !== "0" &&
+                doesTheDelivererHandleTheMealForToday(a)
             )
             .map((a) => {
               return {
