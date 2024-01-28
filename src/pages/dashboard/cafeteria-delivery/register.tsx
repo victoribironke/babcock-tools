@@ -1,7 +1,6 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
 import { NumberInput, SelectInput } from "@/components/general/Input";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
-import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
 import { DAYS } from "@/constants/dashboard";
 import { auth, db } from "@/services/firebase";

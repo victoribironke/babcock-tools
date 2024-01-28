@@ -1,6 +1,5 @@
 import { delete_deliverer_profile } from "@/atoms/atoms";
 import { NumberInput, SelectInput } from "@/components/general/Input";
-import { MEAL_TYPES } from "@/constants/babcock";
 import { BANKS } from "@/constants/banks";
 import { DAYS } from "@/constants/dashboard";
 import { auth, db } from "@/services/firebase";
