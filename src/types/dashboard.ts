@@ -6,6 +6,8 @@ export type SidebarProps = {
   setShow: () => void;
 };
 
+export type MealTypes = "Breakfast" | "Lunch" | "Dinner";
+
 export type DashboardTemplateProps = {
   children: React.ReactNode;
 };
@@ -50,7 +52,7 @@ export type User = {
 };
 
 export type Order = {
-  meal_type: "Breakfast" | "Lunch" | "Dinner";
+  meal_type: MealTypes;
   deliverer_id: string;
   date_ordered: string;
   status: "Not delivered" | "Delivered";
@@ -70,7 +72,11 @@ export type Deliverer = User & {
     bank_name: string;
     account_name: string;
   };
-  meals_handled: string[];
+  schedule: {
+    breakfast: string[];
+    lunch: string[];
+    dinner: string[];
+  };
   subaccount_code: string;
 };
 
