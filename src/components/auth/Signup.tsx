@@ -15,7 +15,7 @@ import {
   setPersistence,
 } from "firebase/auth";
 import { auth, db } from "@/services/firebase";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { doc, setDoc } from "firebase/firestore";
@@ -24,7 +24,7 @@ import { LuEye, LuEyeOff } from "react-icons/lu";
 import { useToggle } from "@/hooks/general";
 
 const Signup = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [showPassword, toggleShowPassword] = useToggle(false);
@@ -102,7 +102,7 @@ const Signup = () => {
         })
       );
       toast.success("Account created.");
-      // router.reload();
+      router.reload();
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
     } finally {

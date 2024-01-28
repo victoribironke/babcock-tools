@@ -64,8 +64,10 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
         setIsLoading(true);
 
         if (user) {
-          router.push(PAGES.dashboard);
-          return;
+          setTimeout(() => {
+            router.push(PAGES.dashboard);
+            return;
+          }, 1000);
         }
 
         setIsLoading(false);
