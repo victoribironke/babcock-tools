@@ -9,7 +9,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, db } from "@/services/firebase";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -17,7 +17,7 @@ import { useToggle } from "@/hooks/general";
 import { doc, getDoc } from "firebase/firestore";
 
 const Login = () => {
-  // const router = useRouter();
+  const router = useRouter();
   // const { redirect } = router.query;
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -70,6 +70,7 @@ const Login = () => {
         })
       );
       toast.success("Logged in.");
+      router.reload();
       // redirect ? router.push(redirect as string) : router.reload();
     } catch (e: any) {
       toast.error(`Error: ${e.code.split("/")[1]}.`);
