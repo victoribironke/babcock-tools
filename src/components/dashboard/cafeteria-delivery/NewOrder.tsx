@@ -220,7 +220,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
           ...deliverers
             .filter(
               (a) =>
-                a.max_number_of_orders !== "0" ||
+                a.max_number_of_orders !== "0" &&
                 a.meals_handled.includes(formData.meal_type)
             )
             .map((a) => {
