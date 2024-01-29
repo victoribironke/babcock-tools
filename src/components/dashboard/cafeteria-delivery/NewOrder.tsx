@@ -264,7 +264,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
 
       <p className="mb-2 mt-4 text-sm text-gray-500">
         If the button below is greyed out, it means the time for ordering the
-        meal you selected on the ticket's date has passed.{" "}
+        meal you selected on the ticket&apos;s date has passed.{" "}
         <Link
           href={PAGES.cafeteria_delivery_instructions}
           className="text-blue"
