@@ -45,4 +45,4 @@ export const DAYS = [
   "Thursday",
   "Friday",
   "Saturday",
-];
+]; // DO NOT SORT FROM HERE!
