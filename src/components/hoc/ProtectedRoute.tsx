@@ -67,7 +67,7 @@ export const alreadyLoggedIn = (ProtectedComponent: () => JSX.Element) => {
           setTimeout(() => {
             router.push(PAGES.dashboard);
             return;
-          }, 1000);
+          }, 500);
         }
 
         setIsLoading(false);

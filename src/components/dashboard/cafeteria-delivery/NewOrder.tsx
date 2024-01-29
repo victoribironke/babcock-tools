@@ -17,6 +17,8 @@ import {
   where,
 } from "firebase/firestore";
 import { DAYS } from "@/constants/dashboard";
+import Link from "next/link";
+import { PAGES } from "@/constants/pages";
 
 const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   const [disabled, setDisabled] = useState(false);
@@ -27,7 +29,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     date_ordered: getTodaysDate(),
     deliverer_id: "",
     status: "Not delivered",
-    ticket_date: "",
+    ticket_date: getTodaysDate(),
     orderer_id: auth.currentUser?.uid!,
     room_number: "",
     amount_paid: { amount: "", charges: "100" },
@@ -180,6 +182,17 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   useEffect(() => {
     const { meal_type, ticket_date } = formData;
 
+    const time = new Date().getHours();
+    const todaysDate = new Date().getDate();
+    const ticketDate = new Date(ticket_date).getDate();
+
+    if (todaysDate === ticketDate) {
+      if (meal_type === "Breakfast") setDisabled(time >= 7 ? true : false);
+      else if (meal_type === "Lunch") setDisabled(time >= 12 ? true : false);
+      else if (meal_type === "Dinner") setDisabled(time >= 17 ? true : false);
+      else setDisabled(false);
+    }
+
     setFormData((k) => {
       return {
         ...k,
@@ -249,10 +262,21 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
         ]}
       />
 
+      <p className="mb-2 mt-4 text-sm text-gray-500">
+        If the button below is greyed out, it means the time for ordering the
+        meal you selected on the ticket&apos;s date has passed.{" "}
+        <Link
+          href={PAGES.cafeteria_delivery_instructions}
+          className="text-blue"
+          target="_blank"
+        >
+          Learn more
+        </Link>
+      </p>
       <button
         disabled={disabled}
         onClick={placeOrder}
-        className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+        className="w-full mt- bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
       >
         Place order
         {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
