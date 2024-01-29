@@ -191,7 +191,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       else if (meal_type === "Lunch") setDisabled(time >= 12 ? true : false);
       else if (meal_type === "Dinner") setDisabled(time >= 17 ? true : false);
       else setDisabled(false);
-    }
+    } else setDisabled(false);
 
     setFormData((k) => {
       return {
