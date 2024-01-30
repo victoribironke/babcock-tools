@@ -82,7 +82,7 @@ const RegisterAsADeliverer = () => {
           business_name: account_name,
           bank_code: bankCode,
           account_number,
-          percentage_charge: 0.6,
+          percentage_charge: 0,
         }),
       });
       const data = await req.json();
