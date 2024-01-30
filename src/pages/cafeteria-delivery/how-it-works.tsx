@@ -162,8 +162,7 @@ const DelivererInstructions = () => {
           <ul className="list-disc pl-6">
             <li>
               Once the orderer receives the food, let them know to update the
-              status of the order as that would count towards your payout the
-              next day.
+              status of the order.
             </li>
           </ul>
         </li>
