@@ -39,17 +39,17 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     return { id: d.uid, price: d.amount_per_order };
   });
   const price = prices.find((p) => p.id === formData.deliverer_id);
-  const today = DAYS[new Date().getDay()];
+  // const today = DAYS[new Date().getDay()];
 
   const doesTheDelivererHandleTheMealForToday = (d: Deliverer) => {
-    const { meal_type } = formData;
+    const { meal_type, ticket_date } = formData;
     let arr: string[] = [];
 
     if (meal_type === "Breakfast") arr = d.schedule.breakfast;
     else if (meal_type === "Lunch") arr = d.schedule.lunch;
     else if (meal_type === "Dinner") arr = d.schedule.dinner;
 
-    if (arr.includes(today)) return true;
+    if (arr.includes(DAYS[new Date(ticket_date).getDay()])) return true;
 
     return false;
   };
