@@ -114,6 +114,12 @@ const RegisterAsADeliverer = () => {
         is_deliverer: true,
       });
 
+      await fetch(
+        `/api/send-welcome-message?email=${user_info.email}&first_name=${
+          user_info.full_name.split(" ")[0]
+        }`
+      ).catch(() => {});
+
       toast.success("Your profile was created.");
       localStorage.setItem(
         "bt_user_info",
