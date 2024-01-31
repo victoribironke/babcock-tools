@@ -46,7 +46,7 @@ const MealTicketPage = () => {
     <>
       <HeadTemplate title="Buy a meal ticket" />
 
-      <section className="w-full max-w-4xl px-4 sm:px-8 py-8">
+      <section className="w-full max-w-4xl flex items-center justify-center flex-col px-4 sm:px-8 py-8">
         <Header />
         <Tickets />
       </section>

@@ -141,7 +141,7 @@ const Tickets = () => {
       </section>
 
       {tickets.length > 0 && (
-        <div className="border mt-4 rounded-lg p-4 flex items-center justify-center gap-2 flex-col rs:flex-row">
+        <div className="border w-full mt-4 rounded-lg p-4 flex items-center justify-center gap-2 flex-col rs:flex-row">
           <p className="text-sm rs:mr-auto">
             Showing {page * 15 - 14} to{" "}
             {c
