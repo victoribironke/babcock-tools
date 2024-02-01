@@ -36,18 +36,17 @@ const Tickets = () => {
       const full_tickets: ATicket[] = [];
 
       querySnapshot.forEach((document) => {
-        // if (
-        //   new Date(document.data().ticket_date).getTime() >
-        //     new Date().getTime() ||
-        //   new Date(document.data().ticket_date).toDateString() ===
-        //     new Date().toDateString()
-        // ) {
-
-        // }
-        full_tickets.push({
-          id: document.id,
-          ...(document.data() as any),
-        });
+        if (
+          new Date(document.data().ticket_date).getTime() >
+            new Date().getTime() ||
+          new Date(document.data().ticket_date).toDateString() ===
+            new Date().toDateString()
+        ) {
+          full_tickets.push({
+            id: document.id,
+            ...(document.data() as any),
+          });
+        }
       });
 
       setLoading(false);
