@@ -47,8 +47,10 @@ export type User = {
   hall_of_residence: string;
   matric_no: string;
   phone_number: string;
-  email_verified?: string;
+  email_verified?: boolean;
   uid?: string;
+  my_tickets?: string[];
+  is_deliverer?: boolean;
 };
 
 export type Order = {
