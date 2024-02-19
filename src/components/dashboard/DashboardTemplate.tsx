@@ -74,7 +74,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
           <p className="w-full">
             If you have any questions or requests, please send an email to{" "}
             <Link href={PAGES.mailto} className="text-blue">
-              hello@babcock.tools
+              babcock.tools@gmail.com
             </Link>
             .
           </p>
