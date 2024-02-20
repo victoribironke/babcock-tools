@@ -1,0 +1,52 @@
+useEffect(() => {
+    const grouped_data = orders.reduce((group, order) => {
+      const { deliverer_id } = order;
+
+      group[deliverer_id as keyof typeof group] =
+        group[deliverer_id as keyof typeof group] ?? [];
+
+      (group[deliverer_id as keyof typeof group] as Order[]).push(order);
+
+      return group;
+    }, {}); // Group orders according to their deliverer
+
+    const arr: Order[][] = [];
+
+    for (let i in grouped_data) {
+      arr.push(grouped_data[i as keyof typeof grouped_data]);
+    }
+
+    const new_arr: Summary[] = arr.map((a) => {
+      const b = deliverers.find(
+        (d) => d.uid === a[0].deliverer_id
+      )!.bank_account_details;
+      const delivered = a.filter((c) => c.status === "Delivered");
+      const not_delivered = a.filter((c) => c.status === "Not delivered");
+      const amount_due = delivered.reduce(
+        (c, d) => c + parseInt(d.amount_paid.amount),
+        0
+      );
+      const amount_paid = a.reduce(
+        (c, d) =>
+          c + parseInt(d.amount_paid.amount) + parseInt(d.amount_paid.charges),
+        0
+      );
+
+      return {
+        deliverers_name: deliverers.find((d) => d.uid === a[0].deliverer_id)!
+          .full_name,
+        orders: a.length,
+        delivered: delivered.length,
+        not_delivered: not_delivered.length,
+        amount_due,
+        amount_paid,
+        profit: amount_paid - amount_due,
+        account_name: b.account_name,
+        account_number: b.account_number,
+        bank_name: b.bank_name,
+        email: deliverers.find((d) => d.uid === a[0].deliverer_id)!.email,
+      };
+    });
+
+    setSummary(new_arr);
+  }, [orders]);

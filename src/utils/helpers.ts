@@ -1,3 +1,5 @@
+import { Order, User } from "@/types/dashboard";
+
 export const months = [
   "January",
   "February",
@@ -103,4 +105,60 @@ export const shuffleArray = (array: any[]) => {
   }
 
   return a;
+};
+
+export const getUsersByHall = (users: User[]) => {
+  const grouped_data = users.reduce((group, user) => {
+    const { hall_of_residence } = user;
+
+    group[hall_of_residence as keyof typeof group] =
+      group[hall_of_residence as keyof typeof group] ?? [];
+
+    (group[hall_of_residence as keyof typeof group] as User[]).push(user);
+
+    return group;
+  }, {}); // Group users according to their halls
+
+  const arr: User[][] = [];
+
+  for (let i in grouped_data) {
+    arr.push(grouped_data[i as keyof typeof grouped_data]);
+  }
+
+  const data: { name: string; total: number }[] = arr.map((a) => {
+    return {
+      name: a[0].hall_of_residence,
+      total: a.length,
+    };
+  });
+
+  return data.sort((a, b) => (a.name > b.name ? 1 : -1));
+};
+
+export const getOrdersByMealType = (orders: Order[]) => {
+  const grouped_data = orders.reduce((group, order) => {
+    const { meal_type } = order;
+
+    group[meal_type as keyof typeof group] =
+      group[meal_type as keyof typeof group] ?? [];
+
+    (group[meal_type as keyof typeof group] as Order[]).push(order);
+
+    return group;
+  }, {}); // Group orders according to the meal types
+
+  const arr: Order[][] = [];
+
+  for (let i in grouped_data) {
+    arr.push(grouped_data[i as keyof typeof grouped_data]);
+  }
+
+  const data: { name: string; total: number }[] = arr.map((a) => {
+    return {
+      name: a[0].meal_type,
+      total: a.length,
+    };
+  });
+
+  return data;
 };
