@@ -7,6 +7,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { RecoilRoot } from "recoil";
 import { useRouter } from "next/router";
 import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorMessage from "@/components/hoc/ErrorMessage";
 
 const gt = localFont({
   src: [
@@ -56,13 +58,15 @@ const App = ({ Component, pageProps }: AppProps) => {
           router.pathname.includes("dashboard") && "bg-dark-blue"
         )}
       >
-        {router.pathname.includes("dashboard") ? (
-          <DashboardTemplate>
+        <ErrorBoundary FallbackComponent={ErrorMessage}>
+          {router.pathname.includes("dashboard") ? (
+            <DashboardTemplate>
+              <Component {...pageProps} />
+            </DashboardTemplate>
+          ) : (
             <Component {...pageProps} />
-          </DashboardTemplate>
-        ) : (
-          <Component {...pageProps} />
-        )}
+          )}
+        </ErrorBoundary>
       </main>
     </RecoilRoot>
   );
