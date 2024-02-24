@@ -43,7 +43,10 @@ const PracticeModal = ({ header, dismiss }: PracticeModalProps) => {
           </button>
         </div>
 
-        <div className="w-full h-[calc(100vh-16rem)] grid place-items-center text-lg overflow-y-auto py-4 px-6 bg-green text-center text-white rounded-lg">
+        <div
+          className="w-full h-[calc(100vh-16rem)] grid place-items-center cursor-pointer text-lg overflow-y-auto py-4 px-6 bg-green text-center text-white rounded-lg"
+          onClick={() => setShowA((k) => !k)}
+        >
           {showA
             ? `A: ${cards[currentQnA].answer}`
             : `Q: ${cards[currentQnA].question}`}
