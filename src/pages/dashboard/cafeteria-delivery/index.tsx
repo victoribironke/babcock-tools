@@ -7,13 +7,7 @@ import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
 import { Deliverer, Order } from "@/types/dashboard";
 import { classNames } from "@/utils/helpers";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
