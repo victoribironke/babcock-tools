@@ -183,11 +183,19 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
         value={formData.no_of_orders}
       />
 
-      <p className="mb-1 mt-4">Amount</p>
+      <p className="mb-1 mt-4">
+        Amount <span className="text-sm text-gray-500">min. 200, max. 500</span>
+      </p>
       <NumberInput
         onChange={(e) => updateFormData(e.target.value, "amount")}
         placeholder="Amount per order"
         value={formData.amount}
+        onBlur={() => {
+          if (formData.amount === "") return;
+
+          if (parseInt(formData.amount) < 200) updateFormData("200", "amount");
+          if (parseInt(formData.amount) > 500) updateFormData("500", "amount");
+        }}
       />
 
       <p className="mb-2 mt-4">Schedule</p>
