@@ -234,8 +234,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
       <p className="mb-2 text-sm text-gray-500">
         If the dropdown below is empty, it means that there are no deliverers in
         your hostel or no deliverer handles the meal type you selected on this
-        day. The price beside the deliverer&apos;s name is the deliverer&apos;s
-        fee + the processing fee (₦100).
+        day.
       </p>
       <SelectInput
         onChange={(e) => updateFormData(e.target.value, "deliverer_id")}
