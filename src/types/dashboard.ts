@@ -63,6 +63,7 @@ export type Order = {
   id: string;
   room_number: string;
   amount_paid: { amount: string; charges: string };
+  is_free: boolean;
 };
 
 export type Deliverer = User & {
@@ -85,6 +86,7 @@ export type Deliverer = User & {
 export type NewOrderProps = {
   setTab: Dispatch<SetStateAction<"new" | "past">>;
   deliverers: Deliverer[];
+  orders: number;
 };
 
 export type PastOrdersProps = { orders: Order[]; deliverers: Deliverer[] };

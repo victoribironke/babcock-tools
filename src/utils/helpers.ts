@@ -162,3 +162,47 @@ export const getOrdersByMealType = (orders: Order[]) => {
 
   return data;
 };
+
+export const getFreeOrderStatus = (orders: number) => {
+  let orders_to_go = 0;
+  let free_order = false;
+
+  if (orders < 10) orders_to_go = 10 - orders;
+  else if (orders === 10) free_order = true;
+  else if (11 <= orders && orders < 21) orders_to_go = 21 - orders;
+  else if (orders === 21) free_order = true;
+  else if (22 <= orders && orders < 32) orders_to_go = 32 - orders;
+  else if (orders === 32) free_order = true;
+  else if (33 <= orders && orders < 43) orders_to_go = 43 - orders;
+  else if (orders === 43) free_order = true;
+  else if (44 <= orders && orders < 54) orders_to_go = 54 - orders;
+  else if (orders === 54) free_order = true;
+  else if (55 <= orders && orders < 65) orders_to_go = 65 - orders;
+  else if (orders === 65) free_order = true;
+  else if (66 <= orders && orders < 76) orders_to_go = 76 - orders;
+  else if (orders === 76) free_order = true;
+  else if (77 <= orders && orders < 87) orders_to_go = 87 - orders;
+  else if (orders === 87) free_order = true;
+  else if (88 <= orders && orders < 98) orders_to_go = 98 - orders;
+  else if (orders === 98) free_order = true;
+
+  return { orders_to_go, free_order };
+};
+
+export const getMealType = () => {
+  const time = new Date().getHours();
+  // const todaysDate = new Date().getDate();
+  // const ticketDate = new Date(ticket_date).getDate();
+
+  // if (todaysDate === ticketDate) {
+  //   if (meal_type === "Breakfast") setDisabled(time >= 7 ? true : false);
+  //   else if (meal_type === "Lunch") setDisabled(time >= 12 ? true : false);
+  //   else if (meal_type === "Dinner") setDisabled(time >= 17 ? true : false);
+  //   else setDisabled(false);
+  // } else setDisabled(false);
+
+  if (time < 10) return "Breakfast";
+  else if (time < 15) return "Lunch";
+
+  return "Dinner";
+};

@@ -88,7 +88,13 @@ const CafeteriaDeliveryPage = () => {
         </button>
       </div>
 
-      {tab === "new" && <NewOrder setTab={setTab} deliverers={deliverers} />}
+      {tab === "new" && (
+        <NewOrder
+          setTab={setTab}
+          deliverers={deliverers}
+          orders={orders.length}
+        />
+      )}
       {tab === "past" && <PastOrders orders={orders} deliverers={deliverers} />}
 
       <Link

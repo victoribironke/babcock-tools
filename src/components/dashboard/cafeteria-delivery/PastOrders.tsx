@@ -22,7 +22,6 @@ const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
         o.status.toLowerCase().includes(filter.toLowerCase())
     );
   const setEditOrderStatus = useSetRecoilState(edit_order_status);
-
   const d = new_orders.length / 10;
   const c = Number.isInteger(d)
     ? page !== Math.floor(d)
@@ -40,7 +39,7 @@ const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
         className="w-full max-w-lg border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white mt-6"
       />
 
-      <div className="overflow-x-scroll max-w-3xl shadow-md rounded-lg mt-6 border grid grid-cols-1">
+      <div className="overflow-x-scroll max-w-3xl shadow-md rounded-lg mt-4 border grid grid-cols-1">
         <table className="w-full text-left rtl:text-right">
           <thead className="border-b-2">
             <tr>
@@ -135,7 +134,7 @@ const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
                   ? new_orders.length
                   : page * 10
                 : new_orders.length}{" "}
-              of {new_orders.length} results
+              of {new_orders.length} orders
             </p>
 
             <div className="flex gap-2">

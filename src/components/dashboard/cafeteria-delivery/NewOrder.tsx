@@ -2,7 +2,13 @@ import { DateInput, SelectInput, TextInput } from "@/components/general/Input";
 import { MEAL_TYPES } from "@/constants/babcock";
 import { auth, db } from "@/services/firebase";
 import { Deliverer, NewOrderProps, Order } from "@/types/dashboard";
-import { getTodaysDate, parseDate } from "@/utils/helpers";
+import {
+  classNames,
+  getFreeOrderStatus,
+  getMealType,
+  getTodaysDate,
+  parseDate,
+} from "@/utils/helpers";
 import { useEffect, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import toast from "react-hot-toast";
@@ -20,12 +26,13 @@ import { DAYS } from "@/constants/dashboard";
 import Link from "next/link";
 import { PAGES } from "@/constants/pages";
 
-const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
+const NewOrder = ({ setTab, deliverers, orders }: NewOrderProps) => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<any>();
+  const { free_order, orders_to_go } = getFreeOrderStatus(orders);
   const [formData, setFormData] = useState<Order>({
-    meal_type: "Breakfast",
+    meal_type: getMealType(),
     date_ordered: getTodaysDate(),
     deliverer_id: "",
     status: "Not delivered",
@@ -34,6 +41,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
     room_number: "",
     amount_paid: { amount: "", charges: "100" },
     id: "", // meal_type, ticket_date, uid
+    is_free: free_order ? true : false,
   });
   const prices = deliverers.map((d) => {
     return { id: d.uid, price: d.amount_per_order };
@@ -159,7 +167,7 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
         setDisabled(false);
       };
 
-      initializePayment(onSuccess, onClose);
+      free_order ? onSuccess() : initializePayment(onSuccess, onClose);
     } catch (e: any) {
       toast.error("An error occured.");
     } finally {
@@ -182,17 +190,6 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   useEffect(() => {
     const { meal_type, ticket_date } = formData;
 
-    // const time = new Date().getHours();
-    // const todaysDate = new Date().getDate();
-    // const ticketDate = new Date(ticket_date).getDate();
-
-    // if (todaysDate === ticketDate) {
-    //   if (meal_type === "Breakfast") setDisabled(time >= 7 ? true : false);
-    //   else if (meal_type === "Lunch") setDisabled(time >= 12 ? true : false);
-    //   else if (meal_type === "Dinner") setDisabled(time >= 17 ? true : false);
-    //   else setDisabled(false);
-    // } else setDisabled(false);
-
     setFormData((k) => {
       return {
         ...k,
@@ -202,85 +199,98 @@ const NewOrder = ({ setTab, deliverers }: NewOrderProps) => {
   }, [formData.date_ordered, formData.meal_type, formData.ticket_date]);
 
   return (
-    <div className="w-full max-w-md mt-4">
-      <p className="mb-1">Meal type</p>
-      <SelectInput
-        onChange={(e) => updateFormData(e.target.value, "meal_type")}
-        value={formData.meal_type}
-        options={MEAL_TYPES.map((a) => {
-          return { value: a, text: a };
-        })}
-      />
-
-      <p className="mb-1 mt-5">Ticket date</p>
-      <DateInput
-        onChange={(e) => updateFormData(e.target.value, "ticket_date")}
-        value={formData.ticket_date}
-      />
-
-      <p className="mb-1 mt-5">Room number</p>
-      <TextInput
-        onChange={(e) =>
-          updateFormData(
-            e.target.value.replace(" ", "").toUpperCase(),
-            "room_number"
-          )
-        }
-        value={formData.room_number}
-        placeholder="Room number"
-      />
-
-      <p className="mb-1 mt-5">Select deliverer</p>
-      <p className="mb-2 text-sm text-gray-500">
-        If the dropdown below is empty, it means that there are no deliverers in
-        your hostel or no deliverer handles the meal type you selected on this
-        day.
-      </p>
-      <SelectInput
-        onChange={(e) => updateFormData(e.target.value, "deliverer_id")}
-        value={formData.deliverer_id}
-        options={[
-          {
-            value: "",
-            text: "Select deliverer",
-          },
-          ...deliverers
-            .filter(
-              (a) =>
-                a.max_number_of_orders !== "0" &&
-                doesTheDelivererHandleTheMealForToday(a)
-            )
-            .map((a) => {
-              return {
-                value: a.uid,
-                text: `${a.full_name} / ₦${
-                  parseInt(a.amount_per_order) + 100
-                } `,
-              };
-            }),
-        ]}
-      />
-
-      <p className="mb-2 mt-4 text-sm text-gray-500">
-        If the button below is greyed out, it means the time for ordering the
-        meal you selected on the ticket&apos;s date has passed.{" "}
-        <Link
-          href={PAGES.cafeteria_delivery_instructions}
-          className="text-blue"
-          target="_blank"
-        >
-          Learn more
-        </Link>
-      </p>
-      <button
-        disabled={disabled}
-        onClick={placeOrder}
-        className="w-full mt- bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+    <>
+      <p
+        className={classNames(
+          "mt-4 py-1 px-3 rounded-md text-white",
+          free_order ? "bg-green" : "bg-blue"
+        )}
       >
-        Place order
-        {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
-      </button>
-    </div>
+        {free_order
+          ? "You have a free order"
+          : `Free order in ${orders_to_go} orders`}
+      </p>
+
+      <div className="w-full max-w-md mt-4">
+        <p className="mb-1">Meal type</p>
+        <SelectInput
+          onChange={(e) => updateFormData(e.target.value, "meal_type")}
+          value={formData.meal_type}
+          options={MEAL_TYPES.map((a) => {
+            return { value: a, text: a };
+          })}
+        />
+
+        <p className="mb-1 mt-5">Ticket date</p>
+        <DateInput
+          onChange={(e) => updateFormData(e.target.value, "ticket_date")}
+          value={formData.ticket_date}
+        />
+
+        <p className="mb-1 mt-5">Room number</p>
+        <TextInput
+          onChange={(e) =>
+            updateFormData(
+              e.target.value.replace(" ", "").toUpperCase(),
+              "room_number"
+            )
+          }
+          value={formData.room_number}
+          placeholder="Room number"
+        />
+
+        <p className="mb-1 mt-5">Select deliverer</p>
+        <p className="mb-2 text-sm text-gray-500">
+          If the dropdown below is empty, it means that there are no deliverers
+          in your hostel or no deliverer handles the meal type you selected on
+          this day.
+        </p>
+        <SelectInput
+          onChange={(e) => updateFormData(e.target.value, "deliverer_id")}
+          value={formData.deliverer_id}
+          options={[
+            {
+              value: "",
+              text: "Select deliverer",
+            },
+            ...deliverers
+              .filter(
+                (a) =>
+                  a.max_number_of_orders !== "0" &&
+                  doesTheDelivererHandleTheMealForToday(a)
+              )
+              .map((a) => {
+                return {
+                  value: a.uid,
+                  text: `${a.full_name} / ₦${
+                    parseInt(a.amount_per_order) + 100
+                  } `,
+                };
+              }),
+          ]}
+        />
+
+        <p className="mb-2 mt-4 text-sm text-gray-500">
+          If the button below is greyed out, it means the time for ordering the
+          meal you selected on the ticket&apos;s date has passed.{" "}
+          <Link
+            href={PAGES.cafeteria_delivery_instructions}
+            className="text-blue"
+            target="_blank"
+          >
+            Learn more
+          </Link>
+        </p>
+        <button
+          disabled={disabled}
+          onClick={placeOrder}
+          className="w-full mt- bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
+        >
+          Place order
+          {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
+        </button>
+      </div>
+    </>
   );
 };
 
