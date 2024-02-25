@@ -3,11 +3,14 @@ import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
-import { Order, User } from "@/types/dashboard";
+import { Deliverer, Order, User } from "@/types/dashboard";
 import {
   formatNumber,
+  getFreeOrdersForToday,
   getOrdersByMealType,
+  getTodaysDate,
   getUsersByHall,
+  parseDate,
 } from "@/utils/helpers";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useRouter } from "next/router";
@@ -27,28 +30,32 @@ const AdminPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
-  // const [deliverers, setDeliverers] = useState<Deliverer[]>([]);
+  const [deliverers, setDeliverers] = useState<Deliverer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const freeOrders = getFreeOrdersForToday(
+    orders.filter((o) => o.ticket_date === getTodaysDate() && o.is_free),
+    deliverers
+  );
 
   useEffect(() => {
     if (auth.currentUser?.uid !== "h8o1yv93IdRAls2euKGINJ6qGzj2") {
       router.push(PAGES.dashboard);
     }
 
-    // const unsubDeliverer = onSnapshot(
-    //   query(collection(db, "deliverers")),
-    //   (querySnapshot) => {
-    //     setLoading(true);
-    //     const temp_deliverers: Deliverer[] = [];
+    const unsubDeliverer = onSnapshot(
+      query(collection(db, "deliverers")),
+      (querySnapshot) => {
+        setLoading(true);
+        const temp_deliverers: Deliverer[] = [];
 
-    //     querySnapshot.forEach((doc) => {
-    //       temp_deliverers.push(doc.data() as Deliverer);
-    //     });
+        querySnapshot.forEach((doc) => {
+          temp_deliverers.push(doc.data() as Deliverer);
+        });
 
-    //     setDeliverers(temp_deliverers);
-    //     setLoading(false);
-    //   }
-    // );
+        setDeliverers(temp_deliverers);
+        setLoading(false);
+      }
+    );
 
     const unsubOrders = onSnapshot(
       query(collection(db, "orders")),
@@ -83,7 +90,7 @@ const AdminPage = () => {
     return () => {
       unsubUsers();
       unsubOrders();
-      // unsubDeliverer();
+      unsubDeliverer();
     };
   }, []);
 
@@ -114,6 +121,83 @@ const AdminPage = () => {
               <p className="font-light">{orders.length}</p>
             </div>
           </div>
+        </div>
+
+        <p className="text-lg mb-2 font-medium">
+          Free orders for {parseDate(getTodaysDate()) as string}
+        </p>
+
+        <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
+          <table className="w-full text-left rtl:text-right">
+            <thead className="border-b-2">
+              <tr>
+                <th
+                  scope="col"
+                  className="pl-4 pr-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Deliverer&apos;s name
+                </th>
+                <th
+                  scope="col"
+                  className="px-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Email address
+                </th>
+                <th
+                  scope="col"
+                  className="px-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Bank name
+                </th>
+                <th
+                  scope="col"
+                  className="px-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Account number
+                </th>
+                <th
+                  scope="col"
+                  className="px-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Account name
+                </th>
+                <th
+                  scope="col"
+                  className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
+                >
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            {freeOrders.length > 0 && (
+              <tbody>
+                {freeOrders.map((f, i) => (
+                  <tr className="bg-white border-b text-sm" key={i}>
+                    <td className="pl-4 pr-2 py-3 whitespace-nowrap">
+                      {f.deliverers_name}
+                    </td>
+                    <td className="px-2 py-3 whitespace-nowrap">{f.email}</td>
+                    <td className="px-2 py-3 whitespace-nowrap">
+                      {f.bank_details?.bank_name}
+                    </td>
+                    <td className="px-2 py-3 whitespace-nowrap">
+                      {f.bank_details?.account_number}
+                    </td>
+                    <td className="px-2 py-3 whitespace-nowrap">
+                      {f.bank_details?.account_name}
+                    </td>
+                    <td className="px-2 py-3 whitespace-nowrap">{f.amount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            )}{" "}
+          </table>
+
+          {freeOrders.length === 0 && (
+            <p className="w-full text-center my-4 text-gray-400 text-sm">
+              There are no free orders for today.
+            </p>
+          )}
         </div>
 
         <div className="w-full pt-4 mb-5 pr-6 pb-2 rounded-lg border-2">

@@ -41,7 +41,7 @@ const NewOrder = ({ setTab, deliverers, orders }: NewOrderProps) => {
     room_number: "",
     amount_paid: { amount: "", charges: "100" },
     id: "", // meal_type, ticket_date, uid
-    is_free: free_order ? true : false,
+    is_free: free_order,
   });
   const prices = deliverers.map((d) => {
     return { id: d.uid, price: d.amount_per_order };

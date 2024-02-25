@@ -129,3 +129,16 @@ export type Summary = {
   bank_name: string;
   email: string;
 };
+
+export type FreeOrderSummary = {
+  deliverers_name: string | undefined;
+  bank_details:
+    | {
+        account_number: string;
+        bank_name: string;
+        account_name: string;
+      }
+    | undefined;
+  amount: string;
+  email: string | undefined;
+};

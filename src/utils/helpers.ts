@@ -1,4 +1,4 @@
-import { Order, User } from "@/types/dashboard";
+import { Deliverer, FreeOrderSummary, Order, User } from "@/types/dashboard";
 
 export const months = [
   "January",
@@ -205,4 +205,52 @@ export const getMealType = () => {
   else if (time < 15) return "Lunch";
 
   return "Dinner";
+};
+
+export const getFreeOrdersForToday = (
+  orders: Order[],
+  deliverers: Deliverer[]
+) => {
+  const new_orders = orders.map((o) => {
+    const deliverer = deliverers.find((d) => d.uid === o.deliverer_id);
+
+    return {
+      deliverers_name: deliverer?.full_name,
+      bank_details: deliverer?.bank_account_details,
+      amount: o.amount_paid.amount,
+      email: deliverer?.email,
+    };
+  });
+
+  const grouped_data = new_orders.reduce((group, order) => {
+    const { deliverers_name } = order;
+
+    group[deliverers_name as keyof typeof group] =
+      group[deliverers_name as keyof typeof group] ?? [];
+
+    (group[deliverers_name as keyof typeof group] as FreeOrderSummary[]).push(
+      order
+    );
+
+    return group;
+  }, {}); // Group orders according to their deliverer
+
+  const arr: FreeOrderSummary[][] = [];
+
+  for (let i in grouped_data) {
+    arr.push(grouped_data[i as keyof typeof grouped_data]);
+  }
+
+  const new_arr: FreeOrderSummary[] = arr.map((a) => {
+    return {
+      bank_details: a[0].bank_details,
+      deliverers_name: a[0].deliverers_name,
+      email: a[0].email,
+      amount: formatNumber(
+        a.reduce((a, b) => a + parseInt(b.amount), 0)
+      ).toString(),
+    };
+  });
+
+  return new_arr;
 };

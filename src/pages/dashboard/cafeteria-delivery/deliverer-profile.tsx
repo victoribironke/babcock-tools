@@ -116,7 +116,9 @@ const DelivererProfile = () => {
         </button>
       </div>
 
-      {tab === "orders" && <DeliverersOrders orders={orders} users={users} />}
+      {tab === "orders" && (
+        <DeliverersOrders orders={orders.toReversed()} users={users} />
+      )}
       {tab === "profile" && <DeliverersDetails deliverer={deliverer} />}
     </>
   );
