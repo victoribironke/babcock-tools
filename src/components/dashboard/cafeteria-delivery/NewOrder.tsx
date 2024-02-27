@@ -190,6 +190,17 @@ const NewOrder = ({ setTab, deliverers, orders }: NewOrderProps) => {
   useEffect(() => {
     const { meal_type, ticket_date } = formData;
 
+    const time = new Date().getHours();
+    const todaysDate = new Date().getDate();
+    const ticketDate = new Date(ticket_date).getDate();
+
+    if (todaysDate === ticketDate) {
+      if (meal_type === "Breakfast") setDisabled(time >= 7 ? true : false);
+      else if (meal_type === "Lunch") setDisabled(time >= 11 ? true : false);
+      else if (meal_type === "Dinner") setDisabled(time >= 16 ? true : false);
+      else setDisabled(false);
+    } else setDisabled(false);
+
     setFormData((k) => {
       return {
         ...k,
