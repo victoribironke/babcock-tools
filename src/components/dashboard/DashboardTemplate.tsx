@@ -136,7 +136,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
 
       {editOrderStatus && (
         <Modal header="Edit an order" dismiss={() => setEditOrderStatus("")}>
-          <EditOrderStatus id={editOrderStatus} />
+          <EditOrderStatus code={editOrderStatus} />
         </Modal>
       )}
 

@@ -57,7 +57,7 @@ export type Order = {
   meal_type: MealTypes;
   deliverer_id: string;
   date_ordered: string;
-  status: "Not delivered" | "Delivered";
+  status: "Not delivered" | "Delivered" | "Cancelled";
   ticket_date: string;
   orderer_id: string;
   id: string;

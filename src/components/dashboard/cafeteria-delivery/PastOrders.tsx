@@ -97,7 +97,9 @@ const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
                     <div
                       className={classNames(
                         "py-1 px-3 rounded text-white w-fit",
-                        o.status === "Delivered" ? "bg-green" : "bg-yellow"
+                        o.status === "Delivered" && "bg-green",
+                        o.status === "Not delivered" && "bg-yellow",
+                        o.status === "Cancelled" && "bg-red"
                       )}
                     >
                       {o.status}
@@ -107,7 +109,7 @@ const PastOrders = ({ orders, deliverers }: PastOrdersProps) => {
                     {o.status === "Not delivered" && (
                       <button
                         className="bg-blue py-1 px-3 rounded text-white"
-                        onClick={() => setEditOrderStatus(o.id)}
+                        onClick={() => setEditOrderStatus(`${o.id}|status`)}
                       >
                         Edit status
                       </button>

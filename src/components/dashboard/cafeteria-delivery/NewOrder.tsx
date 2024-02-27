@@ -64,7 +64,7 @@ const NewOrder = ({ setTab, deliverers, orders }: NewOrderProps) => {
 
   const initializePayment = usePaystackPayment({
     email: userInfo?.email,
-    reference: new Date().getTime().toString(),
+    reference: formData.id,
     amount: (parseInt(price ? price.price : "0") + 100) * 100,
     publicKey:
       process.env.NODE_ENV === "development"

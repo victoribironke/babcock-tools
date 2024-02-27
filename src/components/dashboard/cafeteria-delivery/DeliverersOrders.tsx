@@ -1,6 +1,8 @@
+import { edit_order_status } from "@/atoms/atoms";
 import { DeliverersOrdersProps } from "@/types/dashboard";
-import { classNames, parseDate } from "@/utils/helpers";
+import { classNames, getTodaysDate, parseDate } from "@/utils/helpers";
 import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 const DeliverersOrders = ({ orders, users }: DeliverersOrdersProps) => {
   const [page, setPage] = useState(1);
@@ -19,7 +21,7 @@ const DeliverersOrders = ({ orders, users }: DeliverersOrdersProps) => {
         o.room_number.toLowerCase().includes(filter.toLowerCase()) ||
         o.status.toLowerCase().includes(filter.toLowerCase())
     );
-
+  const setEditOrderStatus = useSetRecoilState(edit_order_status);
   const d = new_orders.length / 10;
   const c = Number.isInteger(d)
     ? page !== Math.floor(d)
@@ -67,10 +69,11 @@ const DeliverersOrders = ({ orders, users }: DeliverersOrdersProps) => {
               </th>
               <th
                 scope="col"
-                className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
+                className="px-2 py-3 font-medium whitespace-nowrap"
               >
                 Status
               </th>
+              <th scope="col" className="pl-2 pr-4 py-3 font-medium"></th>
             </tr>
           </thead>
 
@@ -90,15 +93,28 @@ const DeliverersOrders = ({ orders, users }: DeliverersOrdersProps) => {
                   <td className="px-2 py-3 whitespace-nowrap">
                     {o.room_number}
                   </td>
-                  <td className="pl-2 pr-4 py-3 whitespace-nowrap">
+                  <td className="px-2 py-3 whitespace-nowrap">
                     <div
                       className={classNames(
                         "py-1 px-3 rounded text-white w-fit",
-                        o.status === "Delivered" ? "bg-green" : "bg-yellow"
+                        o.status === "Delivered" && "bg-green",
+                        o.status === "Not delivered" && "bg-yellow",
+                        o.status === "Cancelled" && "bg-red"
                       )}
                     >
                       {o.status}
                     </div>
+                  </td>
+                  <td className="pl-2 pr-4 py-3 whitespace-nowrap">
+                    {o.status === "Not delivered" &&
+                      o.date_ordered === getTodaysDate() && (
+                        <button
+                          className="bg-red py-1 px-3 rounded text-white"
+                          onClick={() => setEditOrderStatus(`${o.id}|cancel`)}
+                        >
+                          Cancel order
+                        </button>
+                      )}
                   </td>
                 </tr>
               ))}

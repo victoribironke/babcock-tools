@@ -95,9 +95,7 @@ const CafeteriaDeliveryPage = () => {
           orders={orders.length}
         />
       )}
-      {tab === "past" && (
-        <PastOrders orders={orders.toReversed()} deliverers={deliverers} />
-      )}
+      {tab === "past" && <PastOrders orders={orders} deliverers={deliverers} />}
 
       <Link
         href={PAGES.register_as_a_deliverer}
