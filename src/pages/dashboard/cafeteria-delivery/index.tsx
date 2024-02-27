@@ -92,7 +92,7 @@ const CafeteriaDeliveryPage = () => {
         <NewOrder
           setTab={setTab}
           deliverers={deliverers}
-          orders={orders.length}
+          orders={orders.filter((o) => o.status === "Delivered").length}
         />
       )}
       {tab === "past" && <PastOrders orders={orders} deliverers={deliverers} />}
