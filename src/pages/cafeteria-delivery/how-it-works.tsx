@@ -76,6 +76,10 @@ const StudentInstructions = () => {
             Set the order status to &apos;Delivered&apos; only after receiving
             your order, as this action cannot be undone.
           </li>
+          <li className="mb-1">
+            You qualify for a free order everytime you complete 10 orders. Your
+            progress will be shown in the &apos;New order&apos; tab.
+          </li>
         </ul>
       </div>
     </div>
@@ -177,6 +181,21 @@ const DelivererInstructions = () => {
           </ul>
         </li>
       </ol>
+
+      <div className="mt-6">
+        <h3 className="text-xl font-bold mb-2 text-blue">Notes:</h3>
+        <ul className="list-disc pl-6">
+          <li className="mb-1">
+            You qualify for a bonus payment everytime you complete 20
+            deliveries. Your progress will be shown in the &apos;Orders&apos;
+            tab.
+          </li>
+          <li className="mb-1">
+            Incase of any hiccup, you can cancel an order and the orderer will
+            be refunded.
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
