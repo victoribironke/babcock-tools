@@ -1,4 +1,4 @@
-import { IoTicketOutline, IoFastFoodOutline } from "react-icons/io5";
+import { IoFastFoodOutline } from "react-icons/io5";
 import { BsCardText } from "react-icons/bs";
 import { PAGES } from "./pages";
 

@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { LuHome } from "react-icons/lu";
 import { FiHelpCircle, FiLogOut } from "react-icons/fi";
 import { signOutUser } from "@/utils/firebase";
-import { IoTicketOutline, IoFastFoodOutline } from "react-icons/io5";
+import { IoFastFoodOutline } from "react-icons/io5";
 import { useSetRecoilState } from "recoil";
 import { get_help } from "@/atoms/atoms";
 import { BsCardText, BsStars } from "react-icons/bs";

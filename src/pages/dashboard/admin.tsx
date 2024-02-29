@@ -6,7 +6,6 @@ import { auth, db } from "@/services/firebase";
 import { Deliverer, Order, Summary, User } from "@/types/dashboard";
 import {
   formatNumber,
-  getFreeOrderStatus,
   getFreeOrdersForToday,
   getOrdersByMealType,
   getTodaysDate,
