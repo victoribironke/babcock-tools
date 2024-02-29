@@ -75,12 +75,12 @@ const AdminPage = () => {
       // );
 
       return {
-        deliverers_name: d.full_name,
+        deliverers_name: d.full_name ?? "[Deleted]",
         orders: a.length,
         delivered,
         not_delivered,
         cancelled,
-        hostel: d.hall_of_residence,
+        hostel: d.hall_of_residence ?? "[Deleted]",
       };
     });
 
