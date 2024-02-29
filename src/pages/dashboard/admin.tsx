@@ -3,9 +3,10 @@ import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
-import { Deliverer, Order, User } from "@/types/dashboard";
+import { Deliverer, Order, Summary, User } from "@/types/dashboard";
 import {
   formatNumber,
+  getFreeOrderStatus,
   getFreeOrdersForToday,
   getOrdersByMealType,
   getTodaysDate,
@@ -30,12 +31,61 @@ const AdminPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
+  const [summary, setSummary] = useState<Summary[]>([]);
   const [deliverers, setDeliverers] = useState<Deliverer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const freeOrders = getFreeOrdersForToday(
     orders.filter((o) => o.ticket_date === getTodaysDate() && o.is_free),
     deliverers
   );
+
+  useEffect(() => {
+    const grouped_data = orders.reduce((group, order) => {
+      const { deliverer_id } = order;
+
+      group[deliverer_id as keyof typeof group] =
+        group[deliverer_id as keyof typeof group] ?? [];
+
+      (group[deliverer_id as keyof typeof group] as Order[]).push(order);
+
+      return group;
+    }, {}); // Group orders according to their deliverer
+
+    const arr: Array<Order[]> = [];
+
+    for (let i in grouped_data) {
+      arr.push(grouped_data[i as keyof typeof grouped_data]);
+    }
+
+    const new_arr: Summary[] = arr.map((a) => {
+      const d = deliverers.find((d) => d.uid === a[0].deliverer_id)!;
+      const delivered = a.filter((c) => c.status === "Delivered").length;
+      const not_delivered = a.filter(
+        (c) => c.status === "Not delivered"
+      ).length;
+      const cancelled = a.filter((c) => c.status === "Cancelled").length;
+      // const amount_due = delivered.reduce(
+      //   (c, d) => c + parseInt(d.amount_paid.amount),
+      //   0
+      // );
+      // const amount_paid = a.reduce(
+      //   (c, d) =>
+      //     c + parseInt(d.amount_paid.amount) + parseInt(d.amount_paid.charges),
+      //   0
+      // );
+
+      return {
+        deliverers_name: d.full_name,
+        orders: a.length,
+        delivered,
+        not_delivered,
+        cancelled,
+        hostel: d.hall_of_residence,
+      };
+    });
+
+    setSummary(new_arr);
+  }, [orders]);
 
   useEffect(() => {
     if (auth.currentUser?.uid !== "h8o1yv93IdRAls2euKGINJ6qGzj2") {
@@ -186,7 +236,9 @@ const AdminPage = () => {
                     <td className="px-2 py-3 whitespace-nowrap">
                       {f.bank_details?.account_name}
                     </td>
-                    <td className="px-2 py-3 whitespace-nowrap">{f.amount}</td>
+                    <td className="pl-2 pr-4 py-3 whitespace-nowrap">
+                      {f.amount}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -196,6 +248,63 @@ const AdminPage = () => {
           {freeOrders.length === 0 && (
             <p className="w-full text-center my-4 text-gray-400 text-sm">
               There are no free orders for today.
+            </p>
+          )}
+        </div>
+
+        <p className="text-lg mb-2 font-medium">Deliverer&apos;s summary</p>
+
+        <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
+          <table className="w-full text-left rtl:text-right">
+            <thead className="border-b-2">
+              <tr>
+                <th
+                  scope="col"
+                  className="pl-4 pr-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Deliverer&apos;s name
+                </th>
+                <th
+                  scope="col"
+                  className="px-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Hostel
+                </th>
+                <th
+                  scope="col"
+                  className="px-2 py-3 font-medium whitespace-nowrap"
+                >
+                  Orders
+                </th>
+                <th
+                  scope="col"
+                  className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
+                >
+                  (D) (Nd) (C)
+                </th>
+              </tr>
+            </thead>
+            {summary.length > 0 && (
+              <tbody>
+                {summary.map((s, i) => (
+                  <tr className="bg-white border-b text-sm" key={i}>
+                    <td className="pl-4 pr-2 py-3 whitespace-nowrap">
+                      {s.deliverers_name}
+                    </td>
+                    <td className="px-2 py-3 whitespace-nowrap">{s.hostel}</td>
+                    <td className="px-2 py-3 whitespace-nowrap">{s.orders}</td>
+                    <td className="pl-2 pr-4 py-3 whitespace-nowrap">
+                      ({s.delivered}) ({s.not_delivered}) ({s.cancelled})
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            )}{" "}
+          </table>
+
+          {summary.length === 0 && (
+            <p className="w-full text-center my-4 text-gray-400 text-sm">
+              There are no deliverers.
             </p>
           )}
         </div>

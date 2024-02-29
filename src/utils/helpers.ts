@@ -191,15 +191,6 @@ export const getFreeOrderStatus = (orders: number) => {
 
 export const getMealType = () => {
   const time = new Date().getHours();
-  // const todaysDate = new Date().getDate();
-  // const ticketDate = new Date(ticket_date).getDate();
-
-  // if (todaysDate === ticketDate) {
-  //   if (meal_type === "Breakfast") setDisabled(time >= 7 ? true : false);
-  //   else if (meal_type === "Lunch") setDisabled(time >= 12 ? true : false);
-  //   else if (meal_type === "Dinner") setDisabled(time >= 17 ? true : false);
-  //   else setDisabled(false);
-  // } else setDisabled(false);
 
   if (time < 10) return "Breakfast";
   else if (time < 15) return "Lunch";

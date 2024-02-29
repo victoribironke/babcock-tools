@@ -121,13 +121,11 @@ export type Summary = {
   orders: number;
   delivered: number;
   not_delivered: number;
-  amount_paid: number;
-  amount_due: number;
-  profit: number;
-  account_name: string;
-  account_number: string;
-  bank_name: string;
-  email: string;
+  cancelled: number;
+  hostel: string;
+  // amount_paid: number;
+  // amount_due: number;
+  // profit: number;
 };
 
 export type FreeOrderSummary = {
