@@ -186,9 +186,9 @@ const DelivererInstructions = () => {
         <h3 className="text-xl font-bold mb-2 text-blue">Notes:</h3>
         <ul className="list-disc pl-6">
           <li className="mb-1">
-            You qualify for a bonus payment everytime you complete 20
-            deliveries. Your progress will be shown in the &apos;Orders&apos;
-            tab.
+            You qualify for a bonus payment at the end of the month for every
+            delivery you complete. Incomplete and cancelled orders are not
+            counted towards the bonus.
           </li>
           <li className="mb-1">
             Incase of any hiccup, you can cancel an order and the orderer will
