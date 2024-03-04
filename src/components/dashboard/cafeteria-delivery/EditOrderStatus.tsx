@@ -38,22 +38,22 @@ const EditOrderStatus = ({ code }: { code: string }) => {
       setLoading(true);
 
       // give a refund
-      const req = await fetch("https://api.paystack.co/refund", {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({
-          transaction: id,
-        }),
-      });
-      const data = await req.json();
+      // const req = await fetch("https://api.paystack.co/refund", {
+      //   headers: {
+      //     Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+      //     "Content-Type": "application/json",
+      //   },
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     transaction: id,
+      //   }),
+      // });
+      // const data = await req.json();
 
-      if (!data.status) {
-        toast.error("An error occured.");
-        return;
-      }
+      // if (!data.status) {
+      //   toast.error("An error occured.");
+      //   return;
+      // }
 
       await updateDoc(doc(db, "orders", id), {
         status: "Cancelled",
