@@ -12,7 +12,7 @@ import {
   getUsersByHall,
   parseDate,
 } from "@/utils/helpers";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, sum } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
@@ -29,6 +29,7 @@ import {
 const AdminPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [showToday, setShowToday] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [summary, setSummary] = useState<Summary[]>([]);
   const [deliverers, setDeliverers] = useState<Deliverer[]>([]);
@@ -39,7 +40,11 @@ const AdminPage = () => {
   );
 
   useEffect(() => {
-    const grouped_data = orders.reduce((group, order) => {
+    const grouped_data = (
+      showToday
+        ? orders.filter((o) => o.ticket_date === getTodaysDate())
+        : orders
+    ).reduce((group, order) => {
       const { deliverer_id } = order;
 
       group[deliverer_id as keyof typeof group] =
@@ -58,33 +63,35 @@ const AdminPage = () => {
 
     const new_arr: Summary[] = arr.map((a) => {
       const d = deliverers.find((d) => d.uid === a[0].deliverer_id)!;
-      const delivered = a.filter((c) => c.status === "Delivered").length;
+      const delivered = a.filter((c) => c.status === "Delivered");
       const not_delivered = a.filter(
         (c) => c.status === "Not delivered"
       ).length;
       const cancelled = a.filter((c) => c.status === "Cancelled").length;
-      // const amount_due = delivered.reduce(
-      //   (c, d) => c + parseInt(d.amount_paid.amount),
-      //   0
-      // );
-      // const amount_paid = a.reduce(
-      //   (c, d) =>
-      //     c + parseInt(d.amount_paid.amount) + parseInt(d.amount_paid.charges),
-      //   0
-      // );
+      const amount_due = delivered.reduce(
+        (c, d) => c + parseInt(d.amount_paid.amount),
+        0
+      );
 
       return {
         deliverers_name: d.full_name ?? "[Deleted]",
         orders: a.length,
-        delivered,
+        delivered: delivered.length,
         not_delivered,
         cancelled,
         hostel: d.hall_of_residence ?? "[Deleted]",
+        bank_details: {
+          account_name: d.bank_account_details.account_name ?? "[Deleted]",
+          account_number: d.bank_account_details.account_number ?? "[Deleted]",
+          bank_name: d.bank_account_details.bank_name ?? "[Deleted]",
+        },
+        email: d.email,
+        amount_due,
       };
     });
 
     setSummary(new_arr);
-  }, [orders]);
+  }, [orders, showToday]);
 
   useEffect(() => {
     if (auth.currentUser?.uid !== "h8o1yv93IdRAls2euKGINJ6qGzj2") {
@@ -251,7 +258,16 @@ const AdminPage = () => {
           )}
         </div>
 
-        <p className="text-lg mb-2 font-medium">Deliverer&apos;s summary</p>
+        <div className="flex gap-4 items-center mb-2">
+          <p className="text-lg font-medium">Deliverer&apos;s summary</p>
+
+          <button
+            className="bg-blue text-white text-sm py-1 px-3 rounded-md"
+            onClick={() => setShowToday((k) => !k)}
+          >
+            {showToday ? "Show all" : "Show today"}
+          </button>
+        </div>
 
         <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
           <table className="w-full text-left rtl:text-right">
@@ -263,6 +279,40 @@ const AdminPage = () => {
                 >
                   Deliverer&apos;s name
                 </th>
+                {showToday && (
+                  <>
+                    <th
+                      scope="col"
+                      className="px-2 py-3 font-medium whitespace-nowrap"
+                    >
+                      Email address
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-2 py-3 font-medium whitespace-nowrap"
+                    >
+                      Bank name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-2 py-3 font-medium whitespace-nowrap"
+                    >
+                      Account number
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-2 py-3 font-medium whitespace-nowrap"
+                    >
+                      Account name
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-2 py-3 font-medium whitespace-nowrap"
+                    >
+                      Amount due
+                    </th>
+                  </>
+                )}
                 <th
                   scope="col"
                   className="px-2 py-3 font-medium whitespace-nowrap"
@@ -290,6 +340,25 @@ const AdminPage = () => {
                     <td className="pl-4 pr-2 py-3 whitespace-nowrap">
                       {s.deliverers_name}
                     </td>
+                    {showToday && (
+                      <>
+                        <td className="px-2 py-3 whitespace-nowrap">
+                          {s.email}
+                        </td>
+                        <td className="px-2 py-3 whitespace-nowrap">
+                          {s.bank_details.bank_name}
+                        </td>
+                        <td className="px-2 py-3 whitespace-nowrap">
+                          {s.bank_details.account_number}
+                        </td>
+                        <td className="px-2 py-3 whitespace-nowrap">
+                          {s.bank_details.account_name}
+                        </td>
+                        <td className="px-2 py-3 whitespace-nowrap">
+                          ₦ {formatNumber(s.amount_due)}
+                        </td>
+                      </>
+                    )}
                     <td className="px-2 py-3 whitespace-nowrap">{s.hostel}</td>
                     <td className="px-2 py-3 whitespace-nowrap">{s.orders}</td>
                     <td className="pl-2 pr-4 py-3 whitespace-nowrap">

@@ -123,9 +123,13 @@ export type Summary = {
   not_delivered: number;
   cancelled: number;
   hostel: string;
-  // amount_paid: number;
-  // amount_due: number;
-  // profit: number;
+  bank_details: {
+    account_number: string;
+    bank_name: string;
+    account_name: string;
+  };
+  email: string;
+  amount_due: number;
 };
 
 export type FreeOrderSummary = {
