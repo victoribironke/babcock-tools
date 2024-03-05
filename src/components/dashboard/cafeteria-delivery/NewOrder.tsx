@@ -70,9 +70,9 @@ const NewOrder = ({ setTab, deliverers, orders }: NewOrderProps) => {
       process.env.NODE_ENV === "development"
         ? process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY!
         : process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY!,
-    // subaccount: deliverers.find((d) => d.uid === formData.deliverer_id)
-    //   ?.subaccount_code,
-    // transaction_charge: 100 * 100,
+    subaccount: deliverers.find((d) => d.uid === formData.deliverer_id)
+      ?.subaccount_code,
+    transaction_charge: 100 * 100,
   });
 
   const updateFormData = (text: string, which: string) => {
