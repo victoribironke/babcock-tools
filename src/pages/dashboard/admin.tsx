@@ -12,7 +12,7 @@ import {
   getUsersByHall,
   parseDate,
 } from "@/utils/helpers";
-import { collection, onSnapshot, query, sum } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
