@@ -58,7 +58,10 @@ const App = ({ Component, pageProps }: AppProps) => {
           router.pathname.includes("dashboard") && "bg-dark-blue"
         )}
       >
-        <ErrorBoundary FallbackComponent={ErrorMessage}>
+        <ErrorBoundary
+          // onError={(e) => console.log(e)}
+          FallbackComponent={ErrorMessage}
+        >
           {router.pathname.includes("dashboard") ? (
             <DashboardTemplate>
               <Component {...pageProps} />

@@ -1,4 +1,4 @@
-import { delete_deliverer_profile } from "@/atoms/atoms";
+import { deactivate_deliverer_profile } from "@/atoms/atoms";
 import { NumberInput, SelectInput } from "@/components/general/Input";
 import { BANKS } from "@/constants/banks";
 import { DAYS } from "@/constants/dashboard";
@@ -17,7 +17,9 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [firstUpdate, setFirstUpdate] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const setDeleteDelivererProfile = useSetRecoilState(delete_deliverer_profile);
+  const setDeactivateDelivererProfile = useSetRecoilState(
+    deactivate_deliverer_profile
+  );
   const [bankCode, setBankCode] = useState(
     BANKS.find((b) => b.name === deliverer!.bank_account_details.bank_name)!
       .code
@@ -346,12 +348,14 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       )}
 
       <div className="mt-4 flex items-center justify-center gap-4 flex-col-reverse sm:flex-row">
-        <button
-          onClick={() => setDeleteDelivererProfile(formData.subaccount_code)}
+        {/* <button
+          onClick={() =>
+            setDeactivateDelivererProfile(formData.subaccount_code)
+          }
           className="w-full bg-red py-2.5 text-white rounded-md"
         >
-          Delete deliverer profile
-        </button>
+          Deactivate deliverer profile
+        </button> */}
 
         <button
           disabled={disabled}

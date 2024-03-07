@@ -1,7 +1,7 @@
 import {
   create_flashcard,
   create_new_flashcard,
-  delete_deliverer_profile,
+  deactivate_deliverer_profile,
   delete_flashcard,
   edit_flashcard,
   edit_order_status,
@@ -23,7 +23,7 @@ import EditFlashcard from "./digital-flashcards/EditFlashcard";
 import PracticeModal from "./digital-flashcards/PracticeModal";
 import { useRouter } from "next/router";
 import EditOrderStatus from "./cafeteria-delivery/EditOrderStatus";
-import DeleteProfile from "./cafeteria-delivery/DeleteProfile";
+import DeactivateProfile from "./cafeteria-delivery/DeactivateProfile";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
@@ -31,7 +31,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const { course_code } = router.query;
   const [getHelp, setGetHelp] = useRecoilState(get_help);
   const [deleteDelivererProfile, setDeleteDelivererProfile] = useRecoilState(
-    delete_deliverer_profile
+    deactivate_deliverer_profile
   );
   const [editOrderStatus, setEditOrderStatus] =
     useRecoilState(edit_order_status);
@@ -145,7 +145,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
           header="Delete your profile"
           dismiss={() => setDeleteDelivererProfile("")}
         >
-          <DeleteProfile />
+          <DeactivateProfile />
         </Modal>
       )}
     </>

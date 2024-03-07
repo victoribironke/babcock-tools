@@ -48,7 +48,7 @@ export const edit_order_status = atom({
   default: "",
 });
 
-export const delete_deliverer_profile = atom({
-  key: "delete deliverer profile",
+export const deactivate_deliverer_profile = atom({
+  key: "deactivate deliverer profile",
   default: "",
 });
