@@ -1,8 +1,8 @@
 import { deactivate_deliverer_profile } from "@/atoms/atoms";
 // import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { doc, updateDoc } from "firebase/firestore";
+// import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -11,11 +11,12 @@ import { useRecoilState } from "recoil";
 const DeleteProfile = () => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const [deactivateDelivererProfile, setDeactivateDelivererProfile] =
-    useRecoilState(deactivate_deliverer_profile);
+  const [_, setDeactivateDelivererProfile] = useRecoilState(
+    deactivate_deliverer_profile
+  );
 
   const deactivateProfile = async () => {
+    console.log(_.length);
     try {
       setDisabled(true);
       setLoading(true);

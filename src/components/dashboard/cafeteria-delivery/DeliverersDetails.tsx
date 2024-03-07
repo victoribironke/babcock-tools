@@ -1,4 +1,4 @@
-import { deactivate_deliverer_profile } from "@/atoms/atoms";
+// import { deactivate_deliverer_profile } from "@/atoms/atoms";
 import { NumberInput, SelectInput } from "@/components/general/Input";
 import { BANKS } from "@/constants/banks";
 import { DAYS } from "@/constants/dashboard";
@@ -9,7 +9,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useSetRecoilState } from "recoil";
+// import { useSetRecoilState } from "recoil";
 
 const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   const [disabled, setDisabled] = useState(false);
@@ -17,9 +17,9 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [firstUpdate, setFirstUpdate] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const setDeactivateDelivererProfile = useSetRecoilState(
-    deactivate_deliverer_profile
-  );
+  // const setDeactivateDelivererProfile = useSetRecoilState(
+  //   deactivate_deliverer_profile
+  // );
   const [bankCode, setBankCode] = useState(
     BANKS.find((b) => b.name === deliverer!.bank_account_details.bank_name)!
       .code
