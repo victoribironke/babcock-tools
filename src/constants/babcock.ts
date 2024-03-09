@@ -1,4 +1,4 @@
-import { IoFastFoodOutline } from "react-icons/io5";
+import { IoFastFoodOutline, IoTicketOutline } from "react-icons/io5";
 import { BsCardText } from "react-icons/bs";
 import { PAGES } from "./pages";
 
@@ -38,13 +38,13 @@ export const TOOLS = [
     link: PAGES.cafeteria_delivery_instructions,
     is_new: true,
   },
-  // {
-  //   title: "Buy or sell meal tickets",
-  //   desc: "Sell your meal ticket whenever you are unable to use it.",
-  //   icon: IoTicketOutline,
-  //   link: PAGES.meal_ticket,
-  //   is_new: false,
-  // },
+  {
+    title: "Buy or sell meal tickets",
+    desc: "Sell your meal ticket whenever you are unable to use it.",
+    icon: IoTicketOutline,
+    link: PAGES.meal_ticket,
+    is_new: false,
+  },
   {
     title: "Digital flashcards",
     desc: "Create digital flashcards to help you study efficiently.",
