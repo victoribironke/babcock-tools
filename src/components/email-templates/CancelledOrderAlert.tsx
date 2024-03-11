@@ -12,27 +12,29 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface MealTicketDetailsProps {
+interface CancelledOrderAlertProps {
   email: string;
   details: {
-    hall_of_residence: string;
-    phone: string;
     meal_type: string;
+    deliverers_name: string;
+    orderers_name: string;
     ticket_date: string;
-    price: string;
-    full_name: string;
-    matric_no: string;
+    date_ordered: string;
+    room_number: string;
+    amount: string;
   };
+  to_orderer: boolean;
 }
 
-export const MealTicketDetails = ({
+export const CancelledOrderAlert = ({
   email,
   details,
-}: MealTicketDetailsProps) => {
+  to_orderer,
+}: CancelledOrderAlertProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Meal ticket details</Preview>
+      <Preview>Cancelled order alert</Preview>
       <Body style={main}>
         <Container>
           <Section style={content}>
@@ -55,40 +57,47 @@ export const MealTicketDetails = ({
                     textAlign: "center",
                   }}
                 >
-                  Here are the details for the ticket you requested
+                  {to_orderer
+                    ? "An order has been cancelled"
+                    : "You just cancelled an order"}
                 </Heading>
 
                 <Text style={paragraph}>
-                  <b>Owner&apos;s name: </b>
-                  {details.full_name}
-                </Text>
-                <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Owner&apos;s matric no: </b>
-                  {details.matric_no}
-                </Text>
-                <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Owner&apos;s phone number: </b>
-                  {details.phone}
-                </Text>
-                <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Owner&apos;s hostel: </b>
-                  {details.hall_of_residence}
-                </Text>
-                <Text style={{ ...paragraph, marginTop: -5 }}>
                   <b>Meal type: </b>
                   {details.meal_type}
                 </Text>
+                {to_orderer && (
+                  <Text style={{ ...paragraph, marginTop: -5 }}>
+                    <b>Deliverer&apos;s name: </b>
+                    {details.deliverers_name}
+                  </Text>
+                )}
+                {!to_orderer && (
+                  <Text style={{ ...paragraph, marginTop: -5 }}>
+                    <b>Orderer&apos;s name: </b>
+                    {details.orderers_name}
+                  </Text>
+                )}
                 <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Valid date: </b>
+                  <b>Ticket&apos;s date: </b>
                   {details.ticket_date}
                 </Text>
-                <Text style={{ ...paragraph, marginTop: -5 }}>
-                  <b>Ticket&apos;s price: </b>₦{details.price}
-                </Text>
+                {to_orderer && (
+                  <Text style={{ ...paragraph, marginTop: -5 }}>
+                    <b>Date ordered: </b>
+                    {details.date_ordered}
+                  </Text>
+                )}
+                {!to_orderer && (
+                  <Text style={{ ...paragraph, marginTop: -5 }}>
+                    <b>Room number: </b>
+                    {details.room_number}
+                  </Text>
+                )}
 
                 <Text style={paragraph}>
-                  You can use the above info to find the owner and buy the
-                  ticket.
+                  A refund of ₦{details.amount} has been queued and will soon be
+                  processed to {to_orderer ? "you" : "the orderer"}.
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   Thank you for using this tool. If you want to suggest a tool
@@ -104,7 +113,7 @@ export const MealTicketDetails = ({
   );
 };
 
-export default MealTicketDetails;
+export default CancelledOrderAlert;
 
 const main = {
   backgroundColor: "#fff",

@@ -86,7 +86,8 @@ export const OrderDetails = ({ email, details }: OrderDetailsProps) => {
                 </Text>
                 <Text style={{ ...paragraph, marginTop: -5 }}>
                   Thank you for using this tool. If you want to suggest a tool
-                  or give feedback or request help, please reply to this email.
+                  or give feedback or request help, please reply to
+                  babcock.tools@gmail.com.
                 </Text>
               </Column>
             </Row>
