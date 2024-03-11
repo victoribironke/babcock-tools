@@ -88,7 +88,7 @@ const DeleteProfile = () => {
           onClick={deactivateProfile}
           className="w-full bg-red py-2 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
         >
-          Delete
+          De-activate
           {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
         </button>
       </div>
