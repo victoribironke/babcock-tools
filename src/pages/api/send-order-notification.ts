@@ -8,7 +8,12 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, order_id, full_name } = req.query;
+  const { email, order_id, full_name, password } = req.query;
+
+  if ((password as string) !== process.env.NEXT_PUBLIC_API_PASSWORD) {
+    res.status(401).json({ error: "Wrong password or no password found" });
+    return;
+  }
 
   try {
     const order: Order = (

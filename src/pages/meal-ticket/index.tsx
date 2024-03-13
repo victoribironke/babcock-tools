@@ -28,7 +28,7 @@ const MealTicketPage = () => {
 
     try {
       await fetch(
-        `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}`
+        `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}&password=${process.env.NEXT_PUBLIC_API_PASSWORD}`
       );
       toast.success("Please check your email.");
     } catch (e: any) {

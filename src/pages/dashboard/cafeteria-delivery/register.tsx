@@ -117,7 +117,7 @@ const RegisterAsADeliverer = () => {
       await fetch(
         `/api/send-welcome-message?email=${user_info.email}&first_name=${
           user_info.full_name.split(" ")[0]
-        }`
+        }&password=${process.env.NEXT_PUBLIC_API_PASSWORD}`
       ).catch(() => {});
 
       toast.success("Your profile was created.");

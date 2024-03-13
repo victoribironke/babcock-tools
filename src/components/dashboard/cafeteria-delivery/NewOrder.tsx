@@ -150,7 +150,7 @@ const NewOrder = ({ setTab, deliverers, orders }: NewOrderProps) => {
             const user_info = JSON.parse(localStorage.getItem("bt_user_info")!);
 
             fetch(
-              `/api/send-order-notification?email=${email}&order_id=${formData.id}&full_name=${user_info.full_name}`
+              `/api/send-order-notification?email=${email}&order_id=${formData.id}&full_name=${user_info.full_name}&password=${process.env.NEXT_PUBLIC_API_PASSWORD}`
             )
               .then(() => setTab("past"))
               .catch(() => {});
