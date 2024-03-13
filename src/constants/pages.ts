@@ -8,6 +8,9 @@ export const PAGES = {
 
   cafeteria_delivery_instructions: "/cafeteria-delivery/how-it-works",
 
+  events: "/events",
+  new_event: "/dashboard/new-event",
+
   dashboard: "/dashboard",
   account_profile: "/dashboard/profile",
   admin: "/dashboard/admin",

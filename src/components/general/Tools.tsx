@@ -10,7 +10,7 @@ const Tools = () => {
           className="p-3 rounded-xl border bg-white shadow-md flex gap-4 w-full max-w-[600px] pr-6 relative"
           key={i}
         >
-          <div className="bg-opacity-10 text-blue bg-blue p-3.5 grid place-items-center rounded-md text-5xl w-fit">
+          <div className="bg-opacity-10 text-blue bg-blue py-3.5 px-4 grid place-items-center rounded-md text-5xl w-fit">
             <t.icon />
           </div>
 
@@ -23,7 +23,7 @@ const Tools = () => {
               href={t.link}
               className="flex bg-blue text-white py-1 px-3 my-1 rounded-md w-fit"
             >
-              Check out the tool
+              {t.cta}
             </Link>
           </div>
           {t.is_new && (
