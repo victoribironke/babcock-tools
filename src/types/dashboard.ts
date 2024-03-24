@@ -144,3 +144,24 @@ export type FreeOrderSummary = {
   amount: string;
   email: string | undefined;
 };
+
+export type Event = {
+  name: string;
+  location: string;
+  link: string;
+  type: "Physical" | "Virtual";
+  image: string;
+  description: string;
+  date_time: string;
+  is_free: boolean;
+  no_of_tickets: string;
+  price_per_ticket: string;
+  bank_account_details: {
+    account_number: string;
+    bank_name: string;
+    account_name: string;
+  };
+
+  attendees: number;
+  creator: string;
+};

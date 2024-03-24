@@ -34,9 +34,9 @@ const Events = () => {
           </button>
           <Link
             className="flex py-1 px-3 rounded-md w-fit bg-blue text-white items-center justify-center gap-1"
-            href={PAGES.new_event}
+            href={PAGES.events_dashboard}
           >
-            <FiPlus /> Create new event
+            <FiPlus /> New event
           </Link>
         </div>
       </section>

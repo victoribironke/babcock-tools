@@ -245,3 +245,58 @@ export const getFreeOrdersForToday = (
 
   return new_arr;
 };
+
+export const getAccountName = async (acct_no: string, bank_code: string) => {
+  if (!acct_no || acct_no.length < 10 || !bank_code) {
+    return {
+      data: null,
+      error: "The account number or bank name is not correct.",
+    };
+  }
+
+  try {
+    const req = await fetch(
+      `https://api.paystack.co/bank/resolve?account_number=${acct_no}&bank_code=${bank_code}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+        },
+      }
+    );
+    const data = await req.json();
+
+    if (!data.status) {
+      return {
+        data: null,
+        error: "The account number or bank name is not correct.",
+      };
+    }
+
+    return { data: data.data.account_name, error: null };
+  } catch (e) {
+    return { data: null, error: "An error occured." };
+  }
+};
+
+export const isValidUrl = (urlString: string) => {
+  var urlPattern = new RegExp(
+    "^(https?:\\/\\/)?" + // validate protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // validate fragment locator
+
+  return urlPattern.test(urlString);
+};
+
+export const getFeesFromTicketPrice = (price: number) => {
+  let fee = Math.floor((4 / 100) * price);
+
+  if (fee < 100) fee = 100;
+  else if (fee > 1000) fee = 1000;
+
+  return formatNumber(fee + price);
+};

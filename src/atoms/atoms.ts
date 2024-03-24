@@ -52,3 +52,8 @@ export const deactivate_deliverer_profile = atom({
   key: "deactivate deliverer profile",
   default: "",
 });
+
+export const new_event = atom({
+  key: "new event",
+  default: false,
+});

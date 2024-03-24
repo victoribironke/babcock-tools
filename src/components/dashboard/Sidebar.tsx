@@ -64,8 +64,7 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
           className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
         >
           <IoFastFoodOutline />
-          <p className="-mb-0.5 mr-auto">Cafeteria delivery</p>
-          <BsStars className="text-blue" />
+          <p className="-mb-0.5">Cafeteria delivery</p>
         </Link>
         <Link
           href={PAGES.sell_your_meal_ticket}
@@ -80,6 +79,13 @@ const Sidebar = ({ show, setShow }: SidebarProps) => {
         >
           <BsCardText />
           <p className="-mb-0.5 mr-auto">Digital flashcards</p>
+        </Link>
+        <Link
+          href={PAGES.events_dashboard}
+          className="flex items-center gap-2 pt-1.5 pb-2 px-3 rounded-lg text-left text-white bg-opacity-10 bg-blue hover:bg-opacity-20"
+        >
+          <BsStars />
+          <p className="-mb-0.5 mr-auto">Events</p>
         </Link>
       </div>
 

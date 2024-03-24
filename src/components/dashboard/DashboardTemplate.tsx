@@ -6,6 +6,7 @@ import {
   edit_flashcard,
   edit_order_status,
   get_help,
+  new_event,
   start_practice,
 } from "@/atoms/atoms";
 import { PAGES } from "@/constants/pages";
@@ -24,12 +25,14 @@ import PracticeModal from "./digital-flashcards/PracticeModal";
 import { useRouter } from "next/router";
 import EditOrderStatus from "./cafeteria-delivery/EditOrderStatus";
 import DeactivateProfile from "./cafeteria-delivery/DeactivateProfile";
+import NewEvent from "./events/NewEvent";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
   const router = useRouter();
   const { course_code } = router.query;
   const [getHelp, setGetHelp] = useRecoilState(get_help);
+  const [newEvent, setNewEvent] = useRecoilState(new_event);
   const [deleteDelivererProfile, setDeleteDelivererProfile] = useRecoilState(
     deactivate_deliverer_profile
   );
@@ -78,6 +81,12 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
             </Link>
             .
           </p>
+        </Modal>
+      )}
+
+      {newEvent && (
+        <Modal header="Create a new event" dismiss={() => setNewEvent(false)}>
+          <NewEvent />
         </Modal>
       )}
 
