@@ -16,8 +16,14 @@ import { useSetRecoilState } from "recoil";
 const EventsDashboard = () => {
   const [tab, setTab] = useState<"coming" | "past">("coming");
   const setNewEvent = useSetRecoilState(new_event);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
+  const filtered_events = events.filter((e) => {
+    const now = new Date().getTime();
+    const event = new Date(e.date_time).getTime();
+
+    return tab === "coming" ? event > now : now > event;
+  });
 
   useEffect(() => {
     const q = query(
@@ -83,7 +89,7 @@ const EventsDashboard = () => {
       </div>
 
       <div className="mt-6 w-full max-w-5xl flex justify-center lg:justify-start flex-wrap gap-6">
-        {events.map((e, i) => (
+        {filtered_events.map((e, i) => (
           <EventCard event={e} key={i} />
         ))}
       </div>
