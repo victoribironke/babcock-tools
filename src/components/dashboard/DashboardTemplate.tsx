@@ -3,6 +3,7 @@ import {
   create_new_flashcard,
   deactivate_deliverer_profile,
   delete_flashcard,
+  edit_event,
   edit_flashcard,
   edit_order_status,
   get_help,
@@ -26,6 +27,7 @@ import { useRouter } from "next/router";
 import EditOrderStatus from "./cafeteria-delivery/EditOrderStatus";
 import DeactivateProfile from "./cafeteria-delivery/DeactivateProfile";
 import NewEvent from "./events/NewEvent";
+import EditEvent from "./events/EditEvent";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
@@ -33,6 +35,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const { course_code } = router.query;
   const [getHelp, setGetHelp] = useRecoilState(get_help);
   const [newEvent, setNewEvent] = useRecoilState(new_event);
+  const [editEvent, setEditEvent] = useRecoilState(edit_event);
   const [deleteDelivererProfile, setDeleteDelivererProfile] = useRecoilState(
     deactivate_deliverer_profile
   );
@@ -87,6 +90,12 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
       {newEvent && (
         <Modal header="Create a new event" dismiss={() => setNewEvent(false)}>
           <NewEvent />
+        </Modal>
+      )}
+
+      {editEvent && (
+        <Modal header="Edit a event" dismiss={() => setEditEvent(null)}>
+          <EditEvent />
         </Modal>
       )}
 

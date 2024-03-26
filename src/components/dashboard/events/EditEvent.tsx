@@ -1,4 +1,4 @@
-import { new_event } from "@/atoms/atoms";
+import { edit_event, new_event } from "@/atoms/atoms";
 import {
   NumberInput,
   SelectInput,
@@ -8,43 +8,30 @@ import {
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
-import { createSubaccount, getAccountName, isValidURL } from "@/utils/helpers";
+import {
+  createSubaccount,
+  getAccountName,
+  isValidURL,
+  updateSubaccount,
+} from "@/utils/helpers";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
-const NewEvent = () => {
-  // set a subaccount when a paid event is created
-  const initialState = {
-    name: "",
-    location: "",
-    link: "",
-    type: "Physical", // physical or virtual
-    image: "",
-    description: "",
-    date_time: "",
-    is_free: true,
-    no_of_tickets: "",
-    price_per_ticket: "",
-    bank_account_details: {
-      account_number: "",
-      bank_name: "",
-      account_name: "",
-    },
-    public: false,
-  };
-  const eventDetails: Event = JSON.parse(
-    localStorage.getItem("bt-new-event") ?? JSON.stringify(initialState)
+const EditEvent = () => {
+  const [editEvent, setEditEvent] = useRecoilState(edit_event);
+  const [formData, setFormData] = useState(editEvent as Event);
+  const [bankCode, setBankCode] = useState(
+    BANKS.find((b) => b.name === formData.bank_account_details.bank_name)
+      ?.code ?? ""
   );
-  const [formData, setFormData] = useState(eventDetails);
-  const [bankCode, setBankCode] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const setNewEvent = useSetRecoilState(new_event);
+  const [firstUpdate, setFirstUpdate] = useState(true);
 
   const updateFormData = (text: string, which: string) => {
     setFormData((k) => {
@@ -81,7 +68,7 @@ const NewEvent = () => {
     });
   };
 
-  const createEvent = async () => {
+  const saveEvent = async () => {
     const {
       name,
       date_time,
@@ -128,40 +115,57 @@ const NewEvent = () => {
       let code = "";
 
       if (!is_free) {
-        const { account_name, account_number } = bank_account_details;
+        const { account_name, account_number, bank_name } =
+          bank_account_details;
+        const {
+          bank_account_details: { account_number: an, bank_name: bn },
+          subaccount_code,
+        } = editEvent!;
 
-        const { data, error } = await createSubaccount(
-          account_name,
-          bankCode,
-          account_number
-        );
+        if (account_number === an && bank_name === bn)
+          console.log("No updates.");
+        else {
+          if (subaccount_code) {
+            const { error } = await updateSubaccount(subaccount_code, {
+              account_name,
+              account_number,
+              bank_code: bankCode,
+            });
 
-        if (error) {
-          toast.error(error);
-          return;
+            if (error) {
+              toast.error(error);
+              return;
+            }
+
+            code = subaccount_code;
+          } else {
+            const { data, error } = await createSubaccount(
+              account_name,
+              bankCode,
+              account_number
+            );
+
+            if (error) {
+              toast.error(error);
+              return;
+            }
+
+            code = data;
+          }
         }
+      } // checks if the bank details are the same as before and if it isn't, checks if there was already a subaccount, in which case, it would be edited, else, a new one would be created
 
-        code = data;
-      }
-
-      const docRef = await addDoc(collection(db, "events"), {
+      await updateDoc(doc(db, "events", editEvent!.id), {
         ...formData,
 
         no_of_tickets: formData.no_of_tickets
           ? formData.no_of_tickets
           : "Unlimited",
-        attendees: 0,
-        subaccount_code: code,
-        creator: auth.currentUser?.uid,
+        subaccount_code: code ? code : editEvent?.subaccount_code,
       });
 
-      await updateDoc(doc(db, "events", docRef.id), {
-        id: docRef.id,
-      });
-
-      toast.success("Event created.");
-      localStorage.removeItem("bt-new-event");
-      setNewEvent(false);
+      toast.success("Event edited.");
+      setEditEvent(null);
     } catch (e) {
       toast.error("An error occured.");
     } finally {
@@ -171,28 +175,24 @@ const NewEvent = () => {
   };
 
   useEffect(() => {
-    setFormData((k) => {
-      return {
-        ...k,
-        bank_account_details: {
-          ...k.bank_account_details,
-          account_name: "",
-        },
-      };
-    });
+    if (firstUpdate) {
+      setFirstUpdate(false);
+    } else {
+      setFormData((k) => {
+        return {
+          ...k,
+          bank_account_details: {
+            ...k.bank_account_details,
+            account_name: "",
+          },
+        };
+      });
+    }
   }, [formData.bank_account_details.account_number, bankCode]);
-
-  useEffect(() => {
-    localStorage.setItem("bt-new-event", JSON.stringify(formData));
-  }, [formData]);
 
   return (
     <>
-      <p className="text-gray-400 italic">
-        Your progress is saved on this browser, on this device.
-      </p>
-
-      <label className="inline-flex mt-4 items-center cursor-pointer self-start">
+      <label className="inline-flex items-center cursor-pointer self-start">
         <input
           type="checkbox"
           onClick={() =>
@@ -364,13 +364,13 @@ const NewEvent = () => {
       <button
         className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
         disabled={disabled}
-        onClick={createEvent}
+        onClick={saveEvent}
       >
-        Create event
+        Save event
         {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
       </button>
     </>
   );
 };
 
-export default NewEvent;
+export default EditEvent;

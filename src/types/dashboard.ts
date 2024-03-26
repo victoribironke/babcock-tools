@@ -161,7 +161,9 @@ export type Event = {
     bank_name: string;
     account_name: string;
   };
-
+  public: boolean;
   attendees: number;
   creator: string;
+  id: string;
+  subaccount_code: string;
 };

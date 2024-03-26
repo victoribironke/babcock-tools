@@ -1,4 +1,4 @@
-import { FullFlashcard, SummarizedCard } from "@/types/dashboard";
+import { Event, FullFlashcard, SummarizedCard } from "@/types/dashboard";
 import { atom } from "recoil";
 
 export const get_ticket_details = atom({
@@ -56,4 +56,9 @@ export const deactivate_deliverer_profile = atom({
 export const new_event = atom({
   key: "new event",
   default: false,
+});
+
+export const edit_event = atom<Event | null>({
+  key: "edit event",
+  default: null,
 });

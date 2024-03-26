@@ -4,25 +4,25 @@ import HeadTemplate from "@/components/general/HeadTemplate";
 import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { PAGES } from "@/constants/pages";
-import { db } from "@/services/firebase";
+import { auth, db } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import { classNames, generateRandomString } from "@/utils/helpers";
-import { collection, doc, onSnapshot, query } from "firebase/firestore";
+import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { useSetRecoilState } from "recoil";
 
 const EventsDashboard = () => {
-  const [tab, setTab] = useState<"coming" | "past" | "mine">("coming");
+  const [tab, setTab] = useState<"coming" | "past">("coming");
   const setNewEvent = useSetRecoilState(new_event);
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
     const q = query(
-      collection(db, "events")
-      // where("sold", "==", false) use this to filter out events that are not public
+      collection(db, "events"),
+      where("creator", "==", auth.currentUser!.uid)
     );
 
     const unsub = onSnapshot(q, (querySnapshot) => {
@@ -49,7 +49,7 @@ const EventsDashboard = () => {
       <HeadTemplate title="Events" />
 
       <div className="flex justify-between items-center w-full max-w-5xl">
-        <p className="font-medium text-lg">Registered events</p>
+        <p className="font-medium text-lg">My events</p>
 
         <button
           className="flex py-1 px-3 rounded-md w-fit bg-blue text-white items-center justify-center gap-1"
@@ -79,19 +79,10 @@ const EventsDashboard = () => {
           >
             Past
           </button>
-          <button
-            className={classNames(
-              "rounded-lg py-2 px-4",
-              tab === "mine" && "bg-white"
-            )}
-            onClick={() => setTab("mine")}
-          >
-            My events
-          </button>
         </div>
       </div>
 
-      <div className="mt-6 w-full max-w-5xl flex items-cente justify-center flex-wrap gap-6">
+      <div className="mt-6 w-full max-w-5xl flex justify-center lg:justify-start flex-wrap gap-6">
         {events.map((e, i) => (
           <EventCard event={e} key={i} />
         ))}
