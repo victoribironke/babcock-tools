@@ -70,9 +70,7 @@ const EventCard = ({ event }: { event: Event }) => {
           setEditEvent={setEditEvent}
         />
       ) : isPast ? (
-        <p className="w-full text-center border-t pt-2 text-gray-500">
-          This event is over.
-        </p>
+        <></>
       ) : (
         <BottomActions
           event={event}
@@ -80,6 +78,12 @@ const EventCard = ({ event }: { event: Event }) => {
           setEditEvent={setEditEvent}
         />
       )}
+
+      {/* (
+  <p className="w-full text-center border-t pt-2 text-gray-500">
+    This event is over.
+  </p>
+) */}
     </div>
   );
 };

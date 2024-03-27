@@ -161,12 +161,17 @@ const EditEvent = () => {
         no_of_tickets: formData.no_of_tickets
           ? formData.no_of_tickets
           : "Unlimited",
-        subaccount_code: code ? code : editEvent?.subaccount_code,
+        subaccount_code: code
+          ? code
+          : editEvent?.subaccount_code
+          ? editEvent.subaccount_code
+          : "",
       });
 
       toast.success("Event edited.");
       setEditEvent(null);
     } catch (e) {
+      console.log(e);
       toast.error("An error occured.");
     } finally {
       setLoading(false);
