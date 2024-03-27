@@ -3,13 +3,14 @@ import { auth } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import { getFeesFromTicketPrice } from "@/utils/helpers";
 import { BsCalendar3 } from "react-icons/bs";
-import { IoLocationSharp } from "react-icons/io5";
+import { IoLocationSharp, IoTicketOutline } from "react-icons/io5";
 import { MdOutlinePublicOff } from "react-icons/md";
 import { TbWorldPin } from "react-icons/tb";
 import { useSetRecoilState } from "recoil";
 
 const EventCard = ({ event }: { event: Event }) => {
   const setEditEvent = useSetRecoilState(edit_event);
+  const isOwner = event.creator === auth.currentUser?.uid;
 
   return (
     <div className="w-full max-w-[18rem] flex gap-3 justify-center flex-col rounded-xl overflow-hidden shadow-md bg-white py-2 border">
@@ -46,6 +47,15 @@ const EventCard = ({ event }: { event: Event }) => {
         </p>
       </div>
 
+      {isOwner && (
+        <div className="flex items-center gap-2 text-gray-500 px-2">
+          <IoTicketOutline className="text-lg" />
+          <p>
+            {event.attendees} / {event.no_of_tickets}
+          </p>
+        </div>
+      )}
+
       <div className="flex justify-between items-center border-t pt-2 px-2 gap-3">
         <p className="font-medium mr-auto">
           {event.is_free
@@ -60,7 +70,7 @@ const EventCard = ({ event }: { event: Event }) => {
           />
         )}
 
-        {event.creator === auth.currentUser?.uid ? (
+        {isOwner ? (
           <button
             className="bg-blue px-3 py-1 rounded-lg text-white"
             onClick={() => setEditEvent(event)}
