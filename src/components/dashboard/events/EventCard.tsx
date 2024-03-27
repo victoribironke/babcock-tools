@@ -2,15 +2,22 @@ import { edit_event } from "@/atoms/atoms";
 import { auth } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import { getFeesFromTicketPrice } from "@/utils/helpers";
+import { useRouter } from "next/router";
 import { BsCalendar3 } from "react-icons/bs";
 import { IoLocationSharp, IoTicketOutline } from "react-icons/io5";
 import { MdOutlinePublicOff } from "react-icons/md";
 import { TbWorldPin } from "react-icons/tb";
-import { useSetRecoilState } from "recoil";
+import { SetterOrUpdater, useSetRecoilState } from "recoil";
 
 const EventCard = ({ event }: { event: Event }) => {
+  const now = new Date().getTime();
+  const e = new Date(event.date_time).getTime();
+
   const setEditEvent = useSetRecoilState(edit_event);
-  const isOwner = event.creator === auth.currentUser?.uid;
+  const router = useRouter();
+  // const isOwner = event.creator === auth.currentUser?.uid;
+  const isDashboard = router.pathname.includes("dashboard");
+  const isPast = now > e;
 
   return (
     <div className="w-full max-w-[18rem] flex gap-3 justify-center flex-col rounded-xl overflow-hidden shadow-md bg-white py-2 border">
@@ -47,7 +54,7 @@ const EventCard = ({ event }: { event: Event }) => {
         </p>
       </div>
 
-      {isOwner && (
+      {isDashboard && (
         <div className="flex items-center gap-2 text-gray-500 px-2">
           <IoTicketOutline className="text-lg" />
           <p>
@@ -56,33 +63,63 @@ const EventCard = ({ event }: { event: Event }) => {
         </div>
       )}
 
-      <div className="flex justify-between items-center border-t pt-2 px-2 gap-3">
-        <p className="font-medium mr-auto">
-          {event.is_free
-            ? "Free"
-            : `₦${getFeesFromTicketPrice(parseInt(event.price_per_ticket))}`}
+      {isDashboard ? (
+        <BottomActions
+          event={event}
+          isDashboard={isDashboard}
+          setEditEvent={setEditEvent}
+        />
+      ) : isPast ? (
+        <p className="w-full text-center border-t pt-2 text-gray-500">
+          This event is over.
         </p>
+      ) : (
+        <BottomActions
+          event={event}
+          isDashboard={isDashboard}
+          setEditEvent={setEditEvent}
+        />
+      )}
+    </div>
+  );
+};
 
-        {!event.public && (
-          <MdOutlinePublicOff
-            className="text-lg"
-            title="This event is not public"
-          />
-        )}
+const BottomActions = ({
+  event,
+  isDashboard,
+  setEditEvent,
+}: {
+  event: Event;
+  isDashboard: boolean;
+  setEditEvent: SetterOrUpdater<Event | null>;
+}) => {
+  return (
+    <div className="flex justify-between items-center border-t pt-2 px-2 gap-3">
+      <p className="font-medium mr-auto">
+        {event.is_free
+          ? "Free"
+          : `₦${getFeesFromTicketPrice(parseInt(event.price_per_ticket))}`}
+      </p>
 
-        {isOwner ? (
-          <button
-            className="bg-blue px-3 py-1 rounded-lg text-white"
-            onClick={() => setEditEvent(event)}
-          >
-            Edit event
-          </button>
-        ) : (
-          <button className="bg-blue px-3 py-1 rounded-lg text-white">
-            Get tickets
-          </button>
-        )}
-      </div>
+      {!event.public && (
+        <MdOutlinePublicOff
+          className="text-lg"
+          title="This event is not public"
+        />
+      )}
+
+      {isDashboard ? (
+        <button
+          className="bg-blue px-3 py-1 rounded-lg text-white"
+          onClick={() => setEditEvent(event)}
+        >
+          Edit event
+        </button>
+      ) : (
+        <button className="bg-blue px-3 py-1 rounded-lg text-white">
+          Get tickets
+        </button>
+      )}
     </div>
   );
 };
