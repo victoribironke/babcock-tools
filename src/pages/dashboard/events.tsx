@@ -93,6 +93,10 @@ const EventsDashboard = () => {
           <EventCard event={e} key={i} />
         ))}
       </div>
+
+      {filtered_events.length === 0 && (
+        <p className="text-gray-400">You have no events.</p>
+      )}
     </>
   );
 };
