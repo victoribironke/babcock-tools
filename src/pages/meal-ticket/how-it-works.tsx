@@ -1,4 +1,5 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
+import Header from "@/components/general/Header";
 import { PAGES } from "@/constants/pages";
 import Link from "next/link";
 
@@ -6,6 +7,8 @@ const HowItWorksPage = () => {
   return (
     <>
       <HeadTemplate title="How does the meal ticket tool work?" />
+
+      <Header />
 
       <BuyTicketInstructions />
       <SellTicketInstructions />
@@ -15,7 +18,7 @@ const HowItWorksPage = () => {
 
 const BuyTicketInstructions = () => {
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-4 bg-white rounded shadow-md">
+    <div className="max-w-2xl mx-auto p-4 bg-white rounded shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-blue">
         How to Buy a Ticket:
       </h2>

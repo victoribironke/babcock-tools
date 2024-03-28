@@ -71,7 +71,7 @@ const Tickets = () => {
 
   if (noTickets) {
     return (
-      <p className="w-full text-center mt-10 opacity-70">
+      <p className="w-full text-center mt-6 opacity-70">
         There are no available tickets.
       </p>
     );
@@ -84,10 +84,10 @@ const Tickets = () => {
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
         placeholder="Search for a meal type, hostel..."
-        className="w-full max-w-lg border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white mt-6"
+        className="w-full max-w-lg border-2 border-blue self-start outline-none py-2 px-3 rounded-lg bg-white"
       />
 
-      <section className="w-full flex items-center justify-center flex-wrap mt-6 gap-2">
+      <section className="w-full flex items-center justify-center rs:justify-start flex-wrap mt-6 gap-2">
         {filtered_tickets.slice(page * 15 - 15, page * 15).map((tk, i) => {
           const dt = new Date(tk.ticket_date)
             .toDateString()
@@ -140,8 +140,8 @@ const Tickets = () => {
       </section>
 
       {tickets.length > 0 && (
-        <div className="border w-full mt-4 rounded-lg p-4 flex items-center justify-center gap-2 flex-col rs:flex-row">
-          <p className="text-sm rs:mr-auto">
+        <div className="w-full mt-6 flex items-center justify-center rs:justify-start gap-4 flex-col rs:flex-row">
+          <p className="text-sm">
             Showing {page * 15 - 14} to{" "}
             {c
               ? filtered_tickets.length < 15

@@ -1,5 +1,6 @@
 import EventCard from "@/components/dashboard/events/EventCard";
 import HeadTemplate from "@/components/general/HeadTemplate";
+import Header from "@/components/general/Header";
 import PageLoader from "@/components/general/PageLoader";
 import { PAGES } from "@/constants/pages";
 import { db } from "@/services/firebase";
@@ -47,7 +48,9 @@ const Events = () => {
     <>
       <HeadTemplate title="Events" />
 
-      <section className="w-full max-w-5xl px-4 sm:px-8 py-12">
+      <Header />
+
+      <section className="w-full max-w-5xl px-6">
         <div className="w-full flex gap-2 items-center justify-center flex-wrap rs:flex-nowrap">
           <button
             className={classNames(
@@ -67,15 +70,9 @@ const Events = () => {
           >
             Past events
           </button>
-          <Link
-            className="flex py-1 px-3 rounded-md w-fit bg-blue text-white items-center justify-center gap-1"
-            href={PAGES.events_dashboard}
-          >
-            <FiPlus /> New event
-          </Link>
         </div>
 
-        <div className="mt-6 w-full max-w-5xl flex justify-center lg:justify-start flex-wrap gap-6">
+        <div className="mt-6 w-full max-w-5xl flex justify-center md:justify-start flex-wrap gap-6">
           {filtered_events.map((e, i) => (
             <EventCard event={e} key={i} />
           ))}

@@ -1,4 +1,5 @@
 import HeadTemplate from "@/components/general/HeadTemplate";
+import Header from "@/components/general/Header";
 import Hero from "@/components/general/Hero";
 import Tools from "@/components/general/Tools";
 
@@ -7,7 +8,9 @@ const Home = () => {
     <>
       <HeadTemplate />
 
-      <section className="w-full max-w-5xl px-4 sm:px-8 py-12">
+      <Header />
+
+      <section className="w-full max-w-5xl px-6">
         <Hero />
         <Tools />
       </section>
