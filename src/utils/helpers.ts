@@ -15,6 +15,16 @@ export const months = [
   "December",
 ];
 
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export const classNames = (...classes: (string | number | boolean)[]) =>
   classes.filter(Boolean).join(" ");
 
@@ -351,4 +361,53 @@ export const createSubaccount = async (
   }
 
   return { data: data.data.subaccount_code, error: null };
+};
+
+const getNumberSuffix = (day: number) => {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
+export const separateDateTime = (datetimeString: string) => {
+  // Parse the datetime string into a Date object
+  const datetime = new Date(datetimeString);
+
+  // Extract date components
+  const dayOfWeek = daysOfWeek[datetime.getDay()];
+  const monthOfYear = months[datetime.getMonth()];
+  const dayOfMonth = datetime.getDate();
+  const year = datetime.getFullYear();
+  const suffix = getNumberSuffix(dayOfMonth);
+
+  // Format the date
+  const formattedDate = `${dayOfWeek}, ${monthOfYear} ${dayOfMonth}${suffix}, ${year}`;
+
+  // Extract time components
+  let hour = datetime.getHours();
+  const minute = datetime.getMinutes();
+  let period = "AM";
+
+  // Convert to 12-hour format
+  if (hour >= 12) {
+    hour -= 12;
+    period = "PM";
+  }
+  if (hour === 0) {
+    hour = 12;
+  }
+
+  // Format the time
+  const formattedTime = `${hour}:${minute < 10 ? "0" : ""}${minute} ${period}`;
+
+  return { date: formattedDate, time: formattedTime };
 };

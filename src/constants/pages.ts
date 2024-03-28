@@ -9,6 +9,7 @@ export const PAGES = {
   cafeteria_delivery_instructions: "/cafeteria-delivery/how-it-works",
 
   events: "/events",
+  event: (id: string) => `/event/${id}`,
   events_dashboard: "/dashboard/events",
 
   dashboard: "/dashboard",

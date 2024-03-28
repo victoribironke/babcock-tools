@@ -1,9 +1,13 @@
 import { edit_event } from "@/atoms/atoms";
+import { PAGES } from "@/constants/pages";
 import { auth } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import { getFeesFromTicketPrice } from "@/utils/helpers";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { BsCalendar3 } from "react-icons/bs";
+import { FiShare2 } from "react-icons/fi";
 import { IoLocationSharp, IoTicketOutline } from "react-icons/io5";
 import { MdOutlinePublicOff } from "react-icons/md";
 import { TbWorldPin } from "react-icons/tb";
@@ -15,7 +19,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
   const setEditEvent = useSetRecoilState(edit_event);
   const router = useRouter();
-  // const isOwner = event.creator === auth.currentUser?.uid;
+  const isOwner = event.creator === auth.currentUser?.uid;
   const isDashboard = router.pathname.includes("dashboard");
   const isPast = now > e;
 
@@ -66,6 +70,7 @@ const EventCard = ({ event }: { event: Event }) => {
       {isDashboard ? (
         <BottomActions
           event={event}
+          isOwner={isOwner}
           isDashboard={isDashboard}
           setEditEvent={setEditEvent}
         />
@@ -74,6 +79,7 @@ const EventCard = ({ event }: { event: Event }) => {
       ) : (
         <BottomActions
           event={event}
+          isOwner={isOwner}
           isDashboard={isDashboard}
           setEditEvent={setEditEvent}
         />
@@ -91,12 +97,16 @@ const EventCard = ({ event }: { event: Event }) => {
 const BottomActions = ({
   event,
   isDashboard,
+  isOwner,
   setEditEvent,
 }: {
   event: Event;
   isDashboard: boolean;
+  isOwner: boolean;
   setEditEvent: SetterOrUpdater<Event | null>;
 }) => {
+  const eventLink = PAGES.base_url + PAGES.event(event.id);
+
   return (
     <div className="flex justify-between items-center border-t pt-2 px-2 gap-3">
       <p className="font-medium mr-auto">
@@ -104,6 +114,17 @@ const BottomActions = ({
           ? "Free"
           : `₦${getFeesFromTicketPrice(parseInt(event.price_per_ticket))}`}
       </p>
+
+      {isOwner && (
+        <FiShare2
+          className="text-lg cursor-pointer"
+          title="Copy event link"
+          onClick={() => {
+            navigator.clipboard.writeText(eventLink);
+            toast.success("Event link copied to clipboard.");
+          }}
+        />
+      )}
 
       {!event.public && (
         <MdOutlinePublicOff
@@ -120,9 +141,12 @@ const BottomActions = ({
           Edit event
         </button>
       ) : (
-        <button className="bg-blue px-3 py-1 rounded-lg text-white">
+        <Link
+          className="bg-blue px-3 py-1 rounded-lg text-white"
+          href={PAGES.event(event.id)}
+        >
           Get tickets
-        </button>
+        </Link>
       )}
     </div>
   );

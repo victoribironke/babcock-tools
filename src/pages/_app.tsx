@@ -55,9 +55,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         className={classNames(
           gt.className,
           "min-h-screen w-full flex items-center justify-start flex-col relative",
-          router.pathname.includes("dashboard")
-            ? "bg-dark-blue"
-            : "bg-gradient-to-b from-gray-200 to-[#b1cdfb]"
+          router.pathname.includes("dashboard") ? "bg-dark-blue" : "bg-white" //"bg-gradient-to-b from-gray-200 to-[#b1cdfb]"
         )}
       >
         <ErrorBoundary
