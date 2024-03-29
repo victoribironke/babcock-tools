@@ -6,6 +6,7 @@ import {
   edit_event,
   edit_flashcard,
   edit_order_status,
+  event_details,
   get_help,
   new_event,
   start_practice,
@@ -28,6 +29,7 @@ import EditOrderStatus from "./cafeteria-delivery/EditOrderStatus";
 import DeactivateProfile from "./cafeteria-delivery/DeactivateProfile";
 import NewEvent from "./events/NewEvent";
 import EditEvent from "./events/EditEvent";
+import EventDetails from "./events/EventDetails";
 
 const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [show, toggleShow] = useToggle(false);
@@ -36,6 +38,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
   const [getHelp, setGetHelp] = useRecoilState(get_help);
   const [newEvent, setNewEvent] = useRecoilState(new_event);
   const [editEvent, setEditEvent] = useRecoilState(edit_event);
+  const [eventDetails, setEventDetails] = useRecoilState(event_details);
   const [deleteDelivererProfile, setDeleteDelivererProfile] = useRecoilState(
     deactivate_deliverer_profile
   );
@@ -96,6 +99,12 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
       {editEvent && (
         <Modal header="Edit a event" dismiss={() => setEditEvent(null)}>
           <EditEvent />
+        </Modal>
+      )}
+
+      {eventDetails && (
+        <Modal header="Event details" dismiss={() => setEventDetails(null)}>
+          <EventDetails />
         </Modal>
       )}
 

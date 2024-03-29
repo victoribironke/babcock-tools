@@ -308,7 +308,7 @@ export const getFeesFromTicketPrice = (price: number) => {
   if (fee < 100) fee = 100;
   else if (fee > 1000) fee = 1000;
 
-  return formatNumber(fee + price);
+  return fee;
 };
 
 export const updateSubaccount = async (

@@ -50,7 +50,7 @@ const Events = () => {
 
       <Header />
 
-      <section className="w-full max-w-5xl px-6">
+      <section className="w-full max-w-5xl px-6 pb-12">
         <div className="w-full flex gap-2 items-center justify-center flex-wrap rs:flex-nowrap">
           <button
             className={classNames(

@@ -10,7 +10,7 @@ const Home = () => {
 
       <Header />
 
-      <section className="w-full max-w-5xl px-6">
+      <section className="w-full max-w-5xl px-6 pb-12">
         <Hero />
         <Tools />
       </section>

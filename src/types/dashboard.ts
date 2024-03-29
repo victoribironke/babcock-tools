@@ -167,3 +167,15 @@ export type Event = {
   id: string;
   subaccount_code: string;
 };
+
+export type Attendees = {
+  full_name: string;
+  email: string;
+  event_id: string;
+  amount_paid: {
+    ticket_price: number;
+    fee: number;
+  };
+  id: string;
+  date_ordered: string;
+};

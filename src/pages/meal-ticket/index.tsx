@@ -49,7 +49,7 @@ const MealTicketPage = () => {
 
       <Header />
 
-      <section className="w-full max-w-5xl flex items-center justify-center flex-col px-6">
+      <section className="w-full max-w-5xl flex items-center justify-center flex-col px-6 pb-12">
         {/* <Header /> */}
         <Tickets />
       </section>

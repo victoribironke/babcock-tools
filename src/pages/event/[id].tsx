@@ -6,8 +6,9 @@ import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NotFound from "../404";
-import EventDetails from "@/components/dashboard/events/EventDetails";
+import EventInfo from "@/components/dashboard/events/EventInfo";
 import EventForm from "@/components/dashboard/events/EventForm";
+import Header from "@/components/general/Header";
 
 const Event = () => {
   const router = useRouter();
@@ -46,12 +47,14 @@ const Event = () => {
     <>
       <HeadTemplate title={event.name} />
 
-      <section className="w-full max-w-5xl px-4 py-4 lg:py-12 flex flex-col md:flex-row gap-4">
+      <Header />
+
+      <section className="w-full max-w-5xl px-6 pb-12 flex flex-col md:flex-row gap-2">
         <div className="w-full md:w-2/3">
-          <EventDetails event={event} />
+          <EventInfo event={event} />
         </div>
-        <div className="w-full md:w-1/3 bg-white shadow-md border p-2.5 rounded-xl">
-          <EventForm />
+        <div className="w-full md:w-1/3 max-w-md self-start bg-white shadow-md border py-2 px-2.5 rounded-xl">
+          <EventForm event={event} />
         </div>
       </section>
     </>

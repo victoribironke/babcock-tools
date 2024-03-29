@@ -1,4 +1,4 @@
-import { edit_event } from "@/atoms/atoms";
+import { edit_event, event_details } from "@/atoms/atoms";
 import { PAGES } from "@/constants/pages";
 import { auth } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { BsCalendar3 } from "react-icons/bs";
 import { FiShare2 } from "react-icons/fi";
 import { IoLocationSharp, IoTicketOutline } from "react-icons/io5";
+import { LuEye } from "react-icons/lu";
 import { MdOutlinePublicOff } from "react-icons/md";
 import { TbWorldPin } from "react-icons/tb";
 import { SetterOrUpdater, useSetRecoilState } from "recoil";
@@ -105,25 +106,34 @@ const BottomActions = ({
   isOwner: boolean;
   setEditEvent: SetterOrUpdater<Event | null>;
 }) => {
+  const price = parseInt(event.price_per_ticket);
   const eventLink = PAGES.base_url + PAGES.event(event.id);
+  const { pathname } = useRouter();
+  const setEventDetails = useSetRecoilState(event_details);
 
   return (
     <div className="flex justify-between items-center border-t pt-2 px-2 gap-3">
       <p className="font-medium mr-auto">
-        {event.is_free
-          ? "Free"
-          : `₦${getFeesFromTicketPrice(parseInt(event.price_per_ticket))}`}
+        {event.is_free ? "Free" : `₦${price + getFeesFromTicketPrice(price)}`}
       </p>
 
-      {isOwner && (
-        <FiShare2
-          className="text-lg cursor-pointer"
-          title="Copy event link"
-          onClick={() => {
-            navigator.clipboard.writeText(eventLink);
-            toast.success("Event link copied to clipboard.");
-          }}
-        />
+      {isOwner && pathname.includes("dashboard") && (
+        <>
+          <LuEye
+            className="text-lg cursor-pointer"
+            title="View more"
+            onClick={() => setEventDetails(event)}
+          />
+
+          <FiShare2
+            className="text-lg cursor-pointer"
+            title="Copy event link"
+            onClick={() => {
+              navigator.clipboard.writeText(eventLink);
+              toast.success("Event link copied to clipboard.");
+            }}
+          />
+        </>
       )}
 
       {!event.public && (

@@ -62,3 +62,8 @@ export const edit_event = atom<Event | null>({
   key: "edit event",
   default: null,
 });
+
+export const event_details = atom<Event | null>({
+  key: "event details",
+  default: null,
+});
