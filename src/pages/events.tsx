@@ -2,14 +2,11 @@ import EventCard from "@/components/dashboard/events/EventCard";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import Header from "@/components/general/Header";
 import PageLoader from "@/components/general/PageLoader";
-import { PAGES } from "@/constants/pages";
 import { db } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import { classNames } from "@/utils/helpers";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
 
 const Events = () => {
   const [tab, setTab] = useState<"past" | "coming">("coming");

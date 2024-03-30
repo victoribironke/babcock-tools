@@ -1,4 +1,3 @@
-import { IMAGES } from "@/constants/images";
 import { PAGES } from "@/constants/pages";
 import { auth } from "@/services/firebase";
 import Link from "next/link";

@@ -2,14 +2,13 @@ import HeadTemplate from "@/components/general/HeadTemplate";
 import PageLoader from "@/components/general/PageLoader";
 import { db } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
-import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import NotFound from "../404";
 import EventInfo from "@/components/dashboard/events/EventInfo";
 import EventForm from "@/components/dashboard/events/EventForm";
 import Header from "@/components/general/Header";
-import EventOrderNotification from "@/components/email-templates/EventOrderNotification";
 
 const EventPage = () => {
   const router = useRouter();

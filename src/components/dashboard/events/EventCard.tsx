@@ -1,6 +1,5 @@
 import { edit_event, event_details } from "@/atoms/atoms";
 import { PAGES } from "@/constants/pages";
-import { auth } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import { getFeesFromTicketPrice } from "@/utils/helpers";
 import Link from "next/link";
@@ -20,7 +19,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
   const setEditEvent = useSetRecoilState(edit_event);
   const router = useRouter();
-  const isOwner = event.creator === auth.currentUser?.uid;
+  // const isOwner = event.creator === auth.currentUser?.uid;
   const isDashboard = router.pathname.includes("dashboard");
   const isPast = now > e;
 

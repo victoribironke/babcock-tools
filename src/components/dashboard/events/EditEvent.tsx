@@ -1,4 +1,4 @@
-import { edit_event, new_event } from "@/atoms/atoms";
+import { edit_event } from "@/atoms/atoms";
 import {
   NumberInput,
   SelectInput,
@@ -6,7 +6,7 @@ import {
   Textarea,
 } from "@/components/general/Input";
 import { BANKS } from "@/constants/banks";
-import { auth, db } from "@/services/firebase";
+import { db } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
 import {
   createSubaccount,
@@ -14,11 +14,11 @@ import {
   isValidURL,
   updateSubaccount,
 } from "@/utils/helpers";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 const EditEvent = () => {
   const [editEvent, setEditEvent] = useRecoilState(edit_event);

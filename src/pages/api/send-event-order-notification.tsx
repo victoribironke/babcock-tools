@@ -1,5 +1,4 @@
 import EventOrderNotification from "@/components/email-templates/EventOrderNotification";
-import WelcomeEmail from "@/components/email-templates/WelcomeMessage";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
 

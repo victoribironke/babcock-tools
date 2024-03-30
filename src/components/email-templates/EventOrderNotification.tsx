@@ -2,14 +2,11 @@ import { PAGES } from "@/constants/pages";
 import { separateDateTime } from "@/utils/helpers";
 import {
   Body,
-  Button,
   Container,
   Head,
   Hr,
   Html,
-  //   Img,
   Preview,
-  Section,
   Text,
   Link,
 } from "@react-email/components";
@@ -86,19 +83,4 @@ const container = {
 const paragraph = {
   fontSize: "16px",
   lineHeight: "26px",
-};
-
-const btnContainer = {
-  textAlign: "center" as const,
-};
-
-const button = {
-  backgroundColor: "#128c7e",
-  borderRadius: "8px",
-  color: "#fff",
-  fontSize: "16px",
-  textDecoration: "none",
-  textAlign: "center" as const,
-  display: "block",
-  padding: "12px",
 };

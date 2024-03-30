@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { classNames } from "@/utils/helpers";
 import { Toaster } from "react-hot-toast";
-import localFont from "next/font/local";
 import { Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { RecoilRoot } from "recoil";
