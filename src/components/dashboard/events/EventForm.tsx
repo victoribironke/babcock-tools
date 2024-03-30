@@ -126,7 +126,7 @@ const EventForm = ({ event }: { event: Event }) => {
         };
 
         initializePayment(onSuccess, onClose);
-      } else addToDB();
+      } else await addToDB();
     } catch (e) {
       toast.error("An error occured.");
     } finally {
