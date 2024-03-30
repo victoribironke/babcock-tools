@@ -31,7 +31,7 @@ const EventForm = ({ event }: { event: Event }) => {
     email: "",
     email_confirm: "",
   });
-  const { attendees, no_of_tickets, is_free, id } = event;
+  const { attendees, no_of_tickets, is_free, id, date_time, name } = event;
   const input_classes =
     "w-full border-2 border-blue outline-none py-1 px-2 rounded-lg bg-white";
   const initializePayment = usePaystackPayment({
@@ -106,7 +106,13 @@ const EventForm = ({ event }: { event: Event }) => {
           attendees: attendees + 1,
         });
 
-        // Send email with the ticket, have the ticket id in the email
+        await fetch(
+          `/api/send-event-order-notification?email=${email}&date_time=${date_time}&first_name=${
+            full_name.split(" ")[0]
+          }&password=${
+            process.env.NEXT_PUBLIC_API_PASSWORD
+          }&event_name=${name}&ticket_code=${docRef.id}`
+        );
 
         setFormData({ email: "", email_confirm: "", full_name: "" });
         toast.success("You have successfully registered.");

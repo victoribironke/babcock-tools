@@ -9,8 +9,9 @@ import NotFound from "../404";
 import EventInfo from "@/components/dashboard/events/EventInfo";
 import EventForm from "@/components/dashboard/events/EventForm";
 import Header from "@/components/general/Header";
+import EventOrderNotification from "@/components/email-templates/EventOrderNotification";
 
-const Event = () => {
+const EventPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(true);
@@ -65,4 +66,4 @@ const Event = () => {
   );
 };
 
-export default Event;
+export default EventPage;
