@@ -15,6 +15,10 @@ const Event = () => {
   const { id } = router.query;
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState<Event>();
+  const now = new Date().getTime();
+  const e = new Date(event?.date_time ?? "").getTime();
+
+  const isPast = now >= e;
 
   useEffect(() => {
     let unsub;
@@ -41,7 +45,7 @@ const Event = () => {
   }, [router]);
 
   if (loading) return <PageLoader type="full" />;
-  else if (!event?.public) return <NotFound />;
+  else if (!event?.public || isPast) return <NotFound />;
 
   return (
     <>

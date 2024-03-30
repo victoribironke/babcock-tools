@@ -1,26 +1,49 @@
 import { TextInput } from "@/components/general/Input";
+import PageLoader from "@/components/general/PageLoader";
 import { db } from "@/services/firebase";
-import { Event } from "@/types/dashboard";
+import { Attendee, Event } from "@/types/dashboard";
 import {
   getFeesFromTicketPrice,
   getTodaysDate,
   isValidEmail,
 } from "@/utils/helpers";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { usePaystackPayment } from "react-paystack";
 
 const EventForm = ({ event }: { event: Event }) => {
   const price = parseInt(event.price_per_ticket);
   const [loading, setLoading] = useState(false);
+  const [guests, setGuests] = useState<Attendee[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
     email_confirm: "",
   });
+  const { attendees, no_of_tickets, is_free, id } = event;
   const input_classes =
     "w-full border-2 border-blue outline-none py-1 px-2 rounded-lg bg-white";
+  const initializePayment = usePaystackPayment({
+    email: formData.email,
+    amount: (price + getFeesFromTicketPrice(price)) * 100,
+    publicKey:
+      process.env.NODE_ENV === "development"
+        ? process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY!
+        : process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY!,
+    subaccount: event.subaccount_code,
+    transaction_charge: getFeesFromTicketPrice(price) * 100,
+  });
 
   const updateFormData = (text: string, which: string) => {
     setFormData((k) => {
@@ -46,55 +69,86 @@ const EventForm = ({ event }: { event: Event }) => {
       return;
     }
 
+    if (no_of_tickets !== "Unlimited") {
+      if (attendees >= parseInt(no_of_tickets)) {
+        toast.error("There are no more tickets available for this event.");
+        return;
+      }
+    }
+
+    const isUserRegistered = guests.find((g) => g.email === email);
+
+    if (isUserRegistered) {
+      toast.error("You have already registered for this event.");
+      return;
+    }
+
     try {
       setLoading(true);
 
-      const { attendees, no_of_tickets, is_free, id } = event;
+      const addToDB = async () => {
+        const docRef = await addDoc(collection(db, "attendees"), {
+          full_name,
+          email,
+          event_id: id,
+          amount_paid: {
+            ticket_price: is_free ? 0 : price,
+            fee: is_free ? 0 : getFeesFromTicketPrice(price),
+          },
+          date_ordered: getTodaysDate(),
+        });
 
-      if (no_of_tickets !== "Unlimited") {
-        if (attendees >= parseInt(no_of_tickets)) {
-          toast.error("There are no more tickets available for this event.");
-          return;
-        }
-      }
+        await updateDoc(doc(db, "attendees", docRef.id), {
+          id: docRef.id,
+        });
 
-      // If there is:
-      //  - If the event is free, save the details in the backend, update the attendees list, show the success toast and send them an email with the ticket
-      //  - If the event is paid, show the payment thingy, then do the steps above.
+        await updateDoc(doc(db, "events", id), {
+          attendees: attendees + 1,
+        });
+
+        // Send email with the ticket, have the ticket id in the email
+
+        setFormData({ email: "", email_confirm: "", full_name: "" });
+        toast.success("You have successfully registered.");
+      };
 
       if (!is_free) {
-        // payment flow
-      }
+        const onSuccess = () => addToDB();
 
-      const docRef = await addDoc(collection(db, "attendees"), {
-        full_name,
-        email,
-        event_id: id,
-        amount_paid: {
-          ticket_price: is_free ? 0 : price,
-          fee: is_free ? 0 : getFeesFromTicketPrice(price),
-        },
-        date_ordered: getTodaysDate(),
-      });
+        const onClose = () => {
+          toast.error("Payment cancelled.");
+        };
 
-      await updateDoc(doc(db, "attendees", docRef.id), {
-        id: docRef.id,
-      });
-
-      await updateDoc(doc(db, "events", id), {
-        attendees: attendees + 1,
-      });
-
-      // Send email with the ticket, have the ticket id in the email
-
-      setFormData({ email: "", email_confirm: "", full_name: "" });
-      toast.success("You have successfully registered.");
+        initializePayment(onSuccess, onClose);
+      } else addToDB();
     } catch (e) {
       toast.error("An error occured.");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const q = query(collection(db, "attendees"), where("event_id", "==", id));
+
+    const unsub = onSnapshot(q, (querySnapshot) => {
+      setIsLoading(true);
+
+      const full_attendees: Attendee[] = [];
+
+      querySnapshot.forEach((doc) => {
+        full_attendees.push(doc.data() as Attendee);
+      });
+
+      setGuests(full_attendees);
+
+      setIsLoading(false);
+    });
+
+    return unsub;
+  }, []);
+
+  if (isLoading) return <PageLoader type="small" />;
 
   return (
     <>

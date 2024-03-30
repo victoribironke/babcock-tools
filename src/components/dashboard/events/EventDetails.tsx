@@ -1,7 +1,7 @@
 import { event_details } from "@/atoms/atoms";
 import PageLoader from "@/components/general/PageLoader";
 import { db } from "@/services/firebase";
-import { Attendees, Event } from "@/types/dashboard";
+import { Attendee, Event } from "@/types/dashboard";
 import { parseDate } from "@/utils/helpers";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { useRecoilValue } from "recoil";
 const EventDetails = () => {
   const event = useRecoilValue(event_details) as Event;
   const [loading, setLoading] = useState(true);
-  const [attendees, setAttendees] = useState<Attendees[]>([]);
+  const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [page, setPage] = useState(1);
 
   const d = attendees.length / 10;
@@ -27,10 +27,10 @@ const EventDetails = () => {
     const unsub = onSnapshot(q, (querySnapshot) => {
       setLoading(true);
 
-      const full_attendees: Attendees[] = [];
+      const full_attendees: Attendee[] = [];
 
       querySnapshot.forEach((doc) => {
-        full_attendees.push(doc.data() as Attendees);
+        full_attendees.push(doc.data() as Attendee);
       });
 
       setAttendees(full_attendees);
@@ -49,7 +49,7 @@ const EventDetails = () => {
       <p className="mt-1 text-gray-500">{event.description}</p>
 
       <p className="mt-6 mb-2 text-lg font-medium">Guest list</p>
-      <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
+      <div className="overflow-x-scroll rounded-lg border-2 grid grid-cols-1">
         <table className="w-full text-left rtl:text-right">
           <thead className="border-b-2">
             <tr>
@@ -105,7 +105,7 @@ const EventDetails = () => {
       </div>
 
       {attendees.length > 0 && (
-        <div className="flex items-center justify-center gap-2 flex-col rs:flex-row">
+        <div className="flex items-center justify-center mt-4 gap-2 flex-col rs:flex-row">
           <p className="text-sm rs:mr-auto">
             Showing {page * 10 - 9} to{" "}
             {c

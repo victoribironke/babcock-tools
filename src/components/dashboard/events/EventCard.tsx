@@ -71,7 +71,6 @@ const EventCard = ({ event }: { event: Event }) => {
       {isDashboard ? (
         <BottomActions
           event={event}
-          isOwner={isOwner}
           isDashboard={isDashboard}
           setEditEvent={setEditEvent}
         />
@@ -80,7 +79,6 @@ const EventCard = ({ event }: { event: Event }) => {
       ) : (
         <BottomActions
           event={event}
-          isOwner={isOwner}
           isDashboard={isDashboard}
           setEditEvent={setEditEvent}
         />
@@ -98,17 +96,14 @@ const EventCard = ({ event }: { event: Event }) => {
 const BottomActions = ({
   event,
   isDashboard,
-  isOwner,
   setEditEvent,
 }: {
   event: Event;
   isDashboard: boolean;
-  isOwner: boolean;
   setEditEvent: SetterOrUpdater<Event | null>;
 }) => {
   const price = parseInt(event.price_per_ticket);
   const eventLink = PAGES.base_url + PAGES.event(event.id);
-  const { pathname } = useRouter();
   const setEventDetails = useSetRecoilState(event_details);
 
   return (
@@ -117,7 +112,7 @@ const BottomActions = ({
         {event.is_free ? "Free" : `₦${price + getFeesFromTicketPrice(price)}`}
       </p>
 
-      {isOwner && pathname.includes("dashboard") && (
+      {isDashboard && (
         <>
           <LuEye
             className="text-lg cursor-pointer"
@@ -129,8 +124,12 @@ const BottomActions = ({
             className="text-lg cursor-pointer"
             title="Copy event link"
             onClick={() => {
-              navigator.clipboard.writeText(eventLink);
-              toast.success("Event link copied to clipboard.");
+              navigator.clipboard
+                .writeText(eventLink)
+                .then(() => toast.success("Event link copied to clipboard."))
+                .catch(() =>
+                  toast.error("Error copying event link to clipboard.")
+                );
             }}
           />
         </>

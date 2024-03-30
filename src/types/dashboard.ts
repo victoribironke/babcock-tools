@@ -168,7 +168,7 @@ export type Event = {
   subaccount_code: string;
 };
 
-export type Attendees = {
+export type Attendee = {
   full_name: string;
   email: string;
   event_id: string;
