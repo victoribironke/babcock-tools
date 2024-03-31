@@ -28,8 +28,9 @@ const EventCard = ({ event }: { event: Event }) => {
       <div className="rounded-lg px-2">
         <img
           src={
-            event.image ??
-            `https://api.dicebear.com/8.x/shapes/svg?seed=${event.name}`
+            event.image
+              ? event.image
+              : `https://api.dicebear.com/8.x/shapes/svg?seed=${event.name}`
           }
           alt="Event image"
           className="w-full aspect-video object-cover rounded-lg"
