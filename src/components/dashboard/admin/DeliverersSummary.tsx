@@ -14,7 +14,7 @@ const DeliverersSummary = ({
   return (
     <>
       <div className="flex gap-4 items-center mb-2">
-        <p className="text-lg font-medium">Deliverer&apos;s summary</p>
+        <p className="text-lg font-medium">Deliverers summary</p>
 
         <button
           className="bg-blue text-white text-sm py-1 px-3 rounded-md"

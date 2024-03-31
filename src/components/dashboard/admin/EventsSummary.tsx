@@ -3,7 +3,7 @@ import { Event } from "@/types/dashboard";
 const EventsSummary = ({ events }: { events: Event[] }) => {
   return (
     <>
-      <p className="text-lg mb-2 font-medium">Event&apos;s summary</p>
+      <p className="text-lg mb-2 font-medium">Events summary</p>
 
       <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
         <table className="w-full text-left rtl:text-right">
@@ -61,7 +61,7 @@ const EventsSummary = ({ events }: { events: Event[] }) => {
                 </tr>
               ))}
             </tbody>
-          )}{" "}
+          )}
         </table>
 
         {events.length === 0 && (
