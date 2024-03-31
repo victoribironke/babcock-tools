@@ -18,13 +18,6 @@ const Hero = () => {
         >
           Give feedback / suggest a tool
         </Link>
-
-        <Link
-          href={PAGES.login}
-          className="bg-blue text-white py-1 px-3 rounded-md"
-        >
-          Login
-        </Link>
       </div>
     </div>
   );

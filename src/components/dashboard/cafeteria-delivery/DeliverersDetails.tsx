@@ -4,7 +4,7 @@ import { BANKS } from "@/constants/banks";
 import { DAYS } from "@/constants/dashboard";
 import { auth, db } from "@/services/firebase";
 import { DelivererDetailsProps } from "@/types/dashboard";
-import { classNames } from "@/utils/helpers";
+import { classNames, getAccountName, updateSubaccount } from "@/utils/helpers";
 import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -65,25 +65,14 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       setLoading(true);
       setDisabled(true);
 
-      const req = await fetch(
-        `https://api.paystack.co/subaccount/${formData.subaccount_code}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
-            "Content-Type": "application/json",
-          },
-          method: "PUT",
-          body: JSON.stringify({
-            business_name: account_name,
-            bank_code: bankCode,
-            account_number,
-          }),
-        }
-      );
-      const data = await req.json();
+      const { error } = await updateSubaccount(formData.subaccount_code, {
+        account_name,
+        account_number,
+        bank_code: bankCode,
+      });
 
-      if (!data.status) {
-        toast.error("An error occured.");
+      if (error) {
+        toast.error(error);
         return;
       }
 
@@ -107,51 +96,33 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
     }
   };
 
-  const getAccountName = async () => {
-    const {
-      bank_account_details: { account_number },
-    } = formData;
+  const getAccountNameFromAPI = async () => {
+    setIsLoading(true);
+    setIsDisabled(true);
 
-    if (!account_number || account_number.length < 10 || !bankCode) {
-      toast.error("The account number or bank name is not correct.");
+    const { data, error } = await getAccountName(
+      formData.bank_account_details.account_number,
+      bankCode
+    );
+
+    setIsLoading(false);
+    setIsDisabled(false);
+
+    if (error) {
+      toast.error(error);
       return;
     }
 
-    try {
-      setIsLoading(true);
-      setIsDisabled(true);
-
-      const req = await fetch(
-        `https://api.paystack.co/bank/resolve?account_number=${account_number}&bank_code=${bankCode}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
-          },
-        }
-      );
-      const data = await req.json();
-
-      if (!data.status) {
-        toast.error("The account number or bank name is not correct.");
-        return;
-      }
-
-      setFormData((k) => {
-        return {
-          ...k,
-          bank_account_details: {
-            ...k.bank_account_details,
-            account_name: data.data.account_name,
-            bank_name: BANKS.find((b) => b.code === bankCode)!.name,
-          },
-        };
-      });
-    } catch (e) {
-      toast.error("An error occured.");
-    } finally {
-      setIsLoading(false);
-      setIsDisabled(false);
-    }
+    setFormData((k) => {
+      return {
+        ...k,
+        bank_account_details: {
+          ...k.bank_account_details,
+          account_name: data,
+          bank_name: BANKS.find((b) => b.code === bankCode)!.name,
+        },
+      };
+    });
   };
 
   useEffect(() => {
@@ -339,7 +310,7 @@ const DeliverersDetails = ({ deliverer }: DelivererDetailsProps) => {
       ) : (
         <button
           disabled={isDisabled}
-          onClick={getAccountName}
+          onClick={getAccountNameFromAPI}
           className="w-full mt-4 bg-blue py-2.5 text-white rounded-md disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2"
         >
           Get account name{" "}

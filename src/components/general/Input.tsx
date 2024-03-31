@@ -104,7 +104,7 @@ export const Textarea = ({ onChange, value, placeholder }: TextareaProps) => {
   return (
     <textarea
       cols={10}
-      rows={5}
+      rows={3}
       onChange={onChange}
       value={value}
       placeholder={placeholder}

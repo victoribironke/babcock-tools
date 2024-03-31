@@ -15,6 +15,16 @@ export const months = [
   "December",
 ];
 
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export const classNames = (...classes: (string | number | boolean)[]) =>
   classes.filter(Boolean).join(" ");
 
@@ -244,4 +254,160 @@ export const getFreeOrdersForToday = (
   });
 
   return new_arr;
+};
+
+export const getAccountName = async (acct_no: string, bank_code: string) => {
+  if (!acct_no || acct_no.length < 10 || !bank_code) {
+    return {
+      data: null,
+      error: "The account number or bank name is not correct.",
+    };
+  }
+
+  try {
+    const req = await fetch(
+      `https://api.paystack.co/bank/resolve?account_number=${acct_no}&bank_code=${bank_code}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+        },
+      }
+    );
+    const data = await req.json();
+
+    if (!data.status) {
+      return {
+        data: null,
+        error: "The account number or bank name is not correct.",
+      };
+    }
+
+    return { data: data.data.account_name, error: null };
+  } catch (e) {
+    return { data: null, error: "An error occured." };
+  }
+};
+
+export const isValidUrl = (urlString: string) => {
+  var urlPattern = new RegExp(
+    "^(https?:\\/\\/)?" + // validate protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // validate fragment locator
+
+  return urlPattern.test(urlString);
+};
+
+export const getFeesFromTicketPrice = (price: number) => {
+  let fee = Math.floor((4 / 100) * price);
+
+  if (fee < 100) fee = 100;
+  else if (fee > 1000) fee = 1000;
+
+  return fee;
+};
+
+export const updateSubaccount = async (
+  code: string,
+  details: { account_name: string; bank_code: string; account_number: string }
+) => {
+  const req = await fetch(`https://api.paystack.co/subaccount/${code}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+    body: JSON.stringify({
+      business_name: details.account_name,
+      bank_code: details.bank_code,
+      account_number: details.account_number,
+    }),
+  });
+  const data = await req.json();
+
+  if (!data.status) {
+    return { data: null, error: "An error occured." };
+  }
+
+  return { data: "Success", error: null };
+};
+
+export const createSubaccount = async (
+  account_name: string,
+  bank_code: string,
+  account_number: string
+) => {
+  const req = await fetch("https://api.paystack.co/subaccount", {
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_PAYSTACK_LIVE_SECRET_KEY}`,
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
+      business_name: account_name,
+      bank_code,
+      account_number,
+      percentage_charge: 0,
+    }),
+  });
+  const data = await req.json();
+
+  if (!data.status) {
+    return { data: null, error: "An error occured." };
+  }
+
+  return { data: data.data.subaccount_code, error: null };
+};
+
+const getNumberSuffix = (day: number) => {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
+export const separateDateTime = (datetimeString: string) => {
+  // Parse the datetime string into a Date object
+  const datetime = new Date(datetimeString);
+
+  // Extract date components
+  const dayOfWeek = daysOfWeek[datetime.getDay()];
+  const monthOfYear = months[datetime.getMonth()];
+  const dayOfMonth = datetime.getDate();
+  const year = datetime.getFullYear();
+  const suffix = getNumberSuffix(dayOfMonth);
+
+  // Format the date
+  const formattedDate = `${dayOfWeek}, ${monthOfYear} ${dayOfMonth}${suffix}, ${year}`;
+
+  // Extract time components
+  let hour = datetime.getHours();
+  const minute = datetime.getMinutes();
+  let period = "AM";
+
+  // Convert to 12-hour format
+  if (hour >= 12) {
+    hour -= 12;
+    period = "PM";
+  }
+  if (hour === 0) {
+    hour = 12;
+  }
+
+  // Format the time
+  const formattedTime = `${hour}:${minute < 10 ? "0" : ""}${minute} ${period}`;
+
+  return { date: formattedDate, time: formattedTime };
 };

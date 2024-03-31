@@ -4,7 +4,7 @@ import Link from "next/link";
 const NotFound = () => {
   return (
     <>
-      <HeadTemplate />
+      <HeadTemplate title="Page not found" />
 
       <section className="w-full grid min-h-screen place-items-center px-6 lg:px-8">
         <div className="text-center">

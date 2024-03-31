@@ -1,7 +1,7 @@
 import { get_ticket_details } from "@/atoms/atoms";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import Modal from "@/components/general/Modal";
-import Header from "@/components/meal-ticket/Header";
+// import Header from "@/components/meal-ticket/Header";
 import Tickets from "@/components/meal-ticket/Tickets";
 import { useRecoilState } from "recoil";
 import { EmailInput } from "@/components/general/Input";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { toast } from "react-hot-toast";
 import { isValidEmail } from "@/utils/helpers";
+import Header from "@/components/general/Header";
 
 const MealTicketPage = () => {
   const [getTicketDetails, setGetTicketDetails] =
@@ -28,7 +29,7 @@ const MealTicketPage = () => {
 
     try {
       await fetch(
-        `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}`
+        `/api/send-meal-ticket-info?email=${email}&ticket_id=${getTicketDetails.ticket_id}&password=${process.env.NEXT_PUBLIC_API_PASSWORD}`
       );
       toast.success("Please check your email.");
     } catch (e: any) {
@@ -46,8 +47,10 @@ const MealTicketPage = () => {
     <>
       <HeadTemplate title="Buy a meal ticket" />
 
-      <section className="w-full max-w-4xl flex items-center justify-center flex-col px-4 sm:px-8 py-8">
-        <Header />
+      <Header />
+
+      <section className="w-full max-w-5xl flex items-center justify-center flex-col px-6 pb-12">
+        {/* <Header /> */}
         <Tickets />
       </section>
 

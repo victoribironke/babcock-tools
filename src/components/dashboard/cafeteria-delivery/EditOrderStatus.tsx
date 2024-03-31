@@ -59,6 +59,10 @@ const EditOrderStatus = ({ code }: { code: string }) => {
         status: "Cancelled",
       });
 
+      await fetch(
+        `/api/send-cancelled-order-alert?order_id=${id}&password=${process.env.NEXT_PUBLIC_API_PASSWORD}`
+      );
+
       toast.success("Order cancelled.");
       setEditOrderStatus("");
     } catch (e: any) {
