@@ -152,6 +152,7 @@ const AdminPage = () => {
       unsubUsers();
       unsubOrders();
       unsubDeliverers();
+      unsubEvents();
     };
   }, []);
 
