@@ -10,7 +10,7 @@ import DashboardTemplate from "@/components/dashboard/DashboardTemplate";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorMessage from "@/components/hoc/ErrorMessage";
 
-const bg = Bricolage_Grotesque({ subsets: ["latin"] });
+const bg = Bricolage_Grotesque({ subsets: ["latin"], display: "swap" });
 
 // const gt = localFont({
 //   src: [

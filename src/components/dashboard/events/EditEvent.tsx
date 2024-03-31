@@ -226,6 +226,42 @@ const EditEvent = () => {
         placeholder="Event description"
       />
 
+      {formData.image ? (
+        <div className="w-full sm:w-1/2 mt-2">
+          <img
+            src={formData.image}
+            alt="Event image"
+            className="w-full object-cover rounded-lg"
+          />
+          <button
+            className="mt-2 rounded-lg bg-blue text-white py-1 px-2 text-sm"
+            onClick={() => {
+              updateFormData("", "image");
+            }}
+          >
+            Replace banner
+          </button>
+        </div>
+      ) : (
+        <>
+          <p className="mt-2 mb-1">Event banner</p>
+          <input
+            type="file"
+            accept=".png,.jpg,.webp,.jpeg"
+            className="w-full text-black text-sm bg-white border-2 border-blue file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:bg-blue file:text-white file:mr-2 rounded-lg"
+            onChange={(e) => {
+              const file = e.target.files![0];
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                updateFormData(reader.result as string, "image");
+              };
+
+              reader.readAsDataURL(file);
+            }}
+          />
+        </>
+      )}
+
       <label className="inline-flex mt-4 items-center cursor-pointer self-start">
         <input
           type="checkbox"

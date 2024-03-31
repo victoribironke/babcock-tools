@@ -11,7 +11,10 @@ const EventInfo = ({ event }: { event: Event }) => {
   return (
     <>
       <img
-        src={`https://api.dicebear.com/8.x/shapes/svg?seed=${event.name}`}
+        src={
+          event.image ??
+          `https://api.dicebear.com/8.x/shapes/svg?seed=${event.name}`
+        }
         alt="Event image"
         className="w-full aspect-video object-cover rounded-xl"
       />
