@@ -1,36 +1,26 @@
+import Count from "@/components/dashboard/admin/Count";
+import DeliverersSummary from "@/components/dashboard/admin/DeliverersSummary";
+import EventsSummary from "@/components/dashboard/admin/EventsSummary";
+import FreeOrders from "@/components/dashboard/admin/FreeOrders";
+import OrdersByMealType from "@/components/dashboard/admin/OrdersByMealType";
+import UsersByHall from "@/components/dashboard/admin/UsersByHall";
 import HeadTemplate from "@/components/general/HeadTemplate";
 import PageLoader from "@/components/general/PageLoader";
 import { checkAuthentication } from "@/components/hoc/ProtectedRoute";
 import { PAGES } from "@/constants/pages";
 import { auth, db } from "@/services/firebase";
-import { Deliverer, Order, Summary, User } from "@/types/dashboard";
-import {
-  formatNumber,
-  getFreeOrdersForToday,
-  getOrdersByMealType,
-  getTodaysDate,
-  getUsersByHall,
-  parseDate,
-} from "@/utils/helpers";
+import { Deliverer, Event, Order, Summary, User } from "@/types/dashboard";
+import { getFreeOrdersForToday, getTodaysDate } from "@/utils/helpers";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { CgProfile } from "react-icons/cg";
-import { IoFastFoodOutline } from "react-icons/io5";
-import {
-  Bar,
-  BarChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 const AdminPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [showToday, setShowToday] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [summary, setSummary] = useState<Summary[]>([]);
   const [deliverers, setDeliverers] = useState<Deliverer[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -98,7 +88,22 @@ const AdminPage = () => {
       router.push(PAGES.dashboard);
     }
 
-    const unsubDeliverer = onSnapshot(
+    const unsubEvents = onSnapshot(
+      query(collection(db, "events")),
+      (querySnapshot) => {
+        setLoading(true);
+        const temp_events: Event[] = [];
+
+        querySnapshot.forEach((doc) => {
+          temp_events.push(doc.data() as Event);
+        });
+
+        setEvents(temp_events);
+        setLoading(false);
+      }
+    );
+
+    const unsubDeliverers = onSnapshot(
       query(collection(db, "deliverers")),
       (querySnapshot) => {
         setLoading(true);
@@ -146,7 +151,7 @@ const AdminPage = () => {
     return () => {
       unsubUsers();
       unsubOrders();
-      unsubDeliverer();
+      unsubDeliverers();
     };
   }, []);
 
@@ -157,281 +162,21 @@ const AdminPage = () => {
       <HeadTemplate title="Admin" />
 
       <section className="flex w-full flex-col max-w-6xl">
-        <div className="w-full mb-4 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-          <div className="p-5 w-full max-w-[22rem] border-2 rounded-lg flex gap-6 items-center">
-            <div className="bg-blue bg-opacity-10 p-4 rounded-lg">
-              <CgProfile className="text-2xl sm:text-3xl text-blue" />
-            </div>
-            <div>
-              <p className="font-medium">Number of users</p>
-              <p className="font-light">{users.length}</p>
-            </div>
-          </div>
+        <Count orders={orders.length} users={users.length} />
 
-          <div className="p-5 w-full max-w-[22rem] border-2 rounded-lg flex gap-6 items-center">
-            <div className="bg-blue bg-opacity-10 p-4 rounded-lg">
-              <IoFastFoodOutline className="text-2xl sm:text-3xl text-blue" />
-            </div>
-            <div>
-              <p className="font-medium">Number of orders</p>
-              <p className="font-light">{orders.length}</p>
-            </div>
-          </div>
-        </div>
+        <EventsSummary events={events} />
 
-        <p className="text-lg mb-2 font-medium">
-          Free orders for {parseDate(getTodaysDate()) as string}
-        </p>
+        <FreeOrders freeOrders={freeOrders} />
 
-        <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
-          <table className="w-full text-left rtl:text-right">
-            <thead className="border-b-2">
-              <tr>
-                <th
-                  scope="col"
-                  className="pl-4 pr-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Deliverer&apos;s name
-                </th>
-                <th
-                  scope="col"
-                  className="px-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Email address
-                </th>
-                <th
-                  scope="col"
-                  className="px-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Bank name
-                </th>
-                <th
-                  scope="col"
-                  className="px-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Account number
-                </th>
-                <th
-                  scope="col"
-                  className="px-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Account name
-                </th>
-                <th
-                  scope="col"
-                  className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
-                >
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            {freeOrders.length > 0 && (
-              <tbody>
-                {freeOrders.map((f, i) => (
-                  <tr className="bg-white border-b text-sm" key={i}>
-                    <td className="pl-4 pr-2 py-3 whitespace-nowrap">
-                      {f.deliverers_name}
-                    </td>
-                    <td className="px-2 py-3 whitespace-nowrap">{f.email}</td>
-                    <td className="px-2 py-3 whitespace-nowrap">
-                      {f.bank_details?.bank_name}
-                    </td>
-                    <td className="px-2 py-3 whitespace-nowrap">
-                      {f.bank_details?.account_number}
-                    </td>
-                    <td className="px-2 py-3 whitespace-nowrap">
-                      {f.bank_details?.account_name}
-                    </td>
-                    <td className="pl-2 pr-4 py-3 whitespace-nowrap">
-                      {f.amount}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            )}{" "}
-          </table>
+        <DeliverersSummary
+          setShowToday={setShowToday}
+          showToday={showToday}
+          summary={summary}
+        />
 
-          {freeOrders.length === 0 && (
-            <p className="w-full text-center my-4 text-gray-400 text-sm">
-              There are no free orders for today.
-            </p>
-          )}
-        </div>
+        <UsersByHall users={users} />
 
-        <div className="flex gap-4 items-center mb-2">
-          <p className="text-lg font-medium">Deliverer&apos;s summary</p>
-
-          <button
-            className="bg-blue text-white text-sm py-1 px-3 rounded-md"
-            onClick={() => setShowToday((k) => !k)}
-          >
-            {showToday ? "Show all" : "Show today"}
-          </button>
-        </div>
-
-        <div className="overflow-x-scroll rounded-lg mb-4 border-2 grid grid-cols-1">
-          <table className="w-full text-left rtl:text-right">
-            <thead className="border-b-2">
-              <tr>
-                <th
-                  scope="col"
-                  className="pl-4 pr-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Deliverer&apos;s name
-                </th>
-                {showToday && (
-                  <>
-                    <th
-                      scope="col"
-                      className="px-2 py-3 font-medium whitespace-nowrap"
-                    >
-                      Email address
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-2 py-3 font-medium whitespace-nowrap"
-                    >
-                      Bank name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-2 py-3 font-medium whitespace-nowrap"
-                    >
-                      Account number
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-2 py-3 font-medium whitespace-nowrap"
-                    >
-                      Account name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-2 py-3 font-medium whitespace-nowrap"
-                    >
-                      Amount due
-                    </th>
-                  </>
-                )}
-                <th
-                  scope="col"
-                  className="px-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Hostel
-                </th>
-                <th
-                  scope="col"
-                  className="px-2 py-3 font-medium whitespace-nowrap"
-                >
-                  Orders
-                </th>
-                <th
-                  scope="col"
-                  className="pl-2 pr-4 py-3 font-medium whitespace-nowrap"
-                >
-                  (D) (Nd) (C)
-                </th>
-              </tr>
-            </thead>
-            {summary.length > 0 && (
-              <tbody>
-                {summary.map((s, i) => (
-                  <tr className="bg-white border-b text-sm" key={i}>
-                    <td className="pl-4 pr-2 py-3 whitespace-nowrap">
-                      {s.deliverers_name}
-                    </td>
-                    {showToday && (
-                      <>
-                        <td className="px-2 py-3 whitespace-nowrap">
-                          {s.email}
-                        </td>
-                        <td className="px-2 py-3 whitespace-nowrap">
-                          {s.bank_details.bank_name}
-                        </td>
-                        <td className="px-2 py-3 whitespace-nowrap">
-                          {s.bank_details.account_number}
-                        </td>
-                        <td className="px-2 py-3 whitespace-nowrap">
-                          {s.bank_details.account_name}
-                        </td>
-                        <td className="px-2 py-3 whitespace-nowrap">
-                          ₦ {formatNumber(s.amount_due)}
-                        </td>
-                      </>
-                    )}
-                    <td className="px-2 py-3 whitespace-nowrap">{s.hostel}</td>
-                    <td className="px-2 py-3 whitespace-nowrap">{s.orders}</td>
-                    <td className="pl-2 pr-4 py-3 whitespace-nowrap">
-                      ({s.delivered}) ({s.not_delivered}) ({s.cancelled})
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            )}{" "}
-          </table>
-
-          {summary.length === 0 && (
-            <p className="w-full text-center my-4 text-gray-400 text-sm">
-              There are no deliverers.
-            </p>
-          )}
-        </div>
-
-        <div className="w-full pt-4 mb-5 pr-6 pb-2 rounded-lg border-2">
-          <p className="w-full pl-10 pb-4 font-medium text-lg">
-            Number of users by hall
-          </p>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={getUsersByHall(users)}>
-              <XAxis
-                dataKey="name"
-                stroke="#888888"
-                fontSize={16}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                stroke="#888888"
-                fontSize={16}
-                tickLine={false}
-                axisLine={false}
-              />
-              <Tooltip
-                cursor={false}
-                formatter={(k) => formatNumber(k as number)}
-              />
-              <Bar dataKey="total" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="w-full pt-4 mb-5 pr-6 pb-2 rounded-lg border-2">
-          <p className="w-full pl-10 pb-4 font-medium text-lg">
-            Number of orders by meal type
-          </p>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={getOrdersByMealType(orders)}>
-              <XAxis
-                dataKey="name"
-                stroke="#888888"
-                fontSize={16}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                stroke="#888888"
-                fontSize={16}
-                tickLine={false}
-                axisLine={false}
-              />
-              <Tooltip
-                cursor={false}
-                formatter={(k) => formatNumber(k as number)}
-              />
-              <Bar dataKey="total" fill="#3b82f6" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <OrdersByMealType orders={orders} />
       </section>
     </>
   );
