@@ -166,6 +166,7 @@ export type Event = {
   creator: string;
   id: string;
   subaccount_code: string;
+  support_email: string;
 };
 
 export type Attendee = {

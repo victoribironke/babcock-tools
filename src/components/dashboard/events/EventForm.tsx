@@ -30,7 +30,15 @@ const EventForm = ({ event }: { event: Event }) => {
     email: "",
     email_confirm: "",
   });
-  const { attendees, no_of_tickets, is_free, id, date_time, name } = event;
+  const {
+    attendees,
+    no_of_tickets,
+    is_free,
+    id,
+    date_time,
+    name,
+    support_email,
+  } = event;
   const input_classes =
     "w-full border-2 border-blue outline-none py-1 px-2 rounded-lg bg-white";
   const initializePayment = usePaystackPayment({
@@ -110,7 +118,9 @@ const EventForm = ({ event }: { event: Event }) => {
             full_name.split(" ")[0]
           }&password=${
             process.env.NEXT_PUBLIC_API_PASSWORD
-          }&event_name=${name}&ticket_code=${docRef.id}`
+          }&event_name=${name}&ticket_code=${
+            docRef.id
+          }&support_email=${support_email}`
         );
 
         setFormData({ email: "", email_confirm: "", full_name: "" });

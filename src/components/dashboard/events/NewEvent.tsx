@@ -8,7 +8,12 @@ import {
 import { BANKS } from "@/constants/banks";
 import { auth, db } from "@/services/firebase";
 import { Event } from "@/types/dashboard";
-import { createSubaccount, getAccountName, isValidURL } from "@/utils/helpers";
+import {
+  createSubaccount,
+  getAccountName,
+  isValidEmail,
+  isValidURL,
+} from "@/utils/helpers";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -34,6 +39,7 @@ const NewEvent = () => {
       account_name: "",
     },
     public: false,
+    support_email: "",
   };
   const eventDetails: Event = JSON.parse(
     localStorage.getItem("bt-new-event") ?? JSON.stringify(initialState)
@@ -92,9 +98,10 @@ const NewEvent = () => {
       type,
       bank_account_details,
       price_per_ticket,
+      support_email,
     } = formData;
 
-    if (!name || !date_time || !description) {
+    if (!name || !date_time || !description || !support_email) {
       toast.error("Please fill in the required fields.");
       return;
     }
@@ -106,6 +113,11 @@ const NewEvent = () => {
 
     if (type === "Virtual" && (!link || !isValidURL(link))) {
       toast.error("Please input a valid link.");
+      return;
+    }
+
+    if (!isValidEmail(support_email)) {
+      toast.error("Please input a valid email address.");
       return;
     }
 
@@ -300,6 +312,13 @@ const NewEvent = () => {
         onChange={(e) => updateFormData(e.target.value, "date_time")}
         value={formData.date_time}
         className="w-full border-2 border-blue outline-none py-2 px-3 rounded-lg bg-white"
+      />
+
+      <p className="mb-1 mt-4">Support email *</p>
+      <TextInput
+        onChange={(e) => updateFormData(e.target.value, "support_email")}
+        value={formData.support_email}
+        placeholder="Support email"
       />
 
       <p className="mt-4">Number of available tickets</p>

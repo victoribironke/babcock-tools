@@ -18,6 +18,7 @@ interface EventOrderNotificationProps {
   ticket_code: string;
   date_time: string;
   email: string;
+  support_email: string;
 }
 
 export const EventOrderNotification = ({
@@ -26,6 +27,7 @@ export const EventOrderNotification = ({
   ticket_code,
   email,
   date_time,
+  support_email,
 }: EventOrderNotificationProps) => {
   const { date, time } = separateDateTime(date_time);
 
@@ -50,6 +52,13 @@ export const EventOrderNotification = ({
 
           <Text style={paragraph}>
             Event time: <b>{time}</b>
+          </Text>
+
+          <Hr />
+
+          <Text>
+            If you have any questions about this event, send an email to{" "}
+            {support_email}.
           </Text>
 
           <Hr />

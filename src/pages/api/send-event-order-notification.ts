@@ -5,8 +5,15 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { email, first_name, password, date_time, ticket_code, event_name } =
-    req.query;
+  const {
+    email,
+    first_name,
+    password,
+    date_time,
+    ticket_code,
+    event_name,
+    support_email,
+  } = req.query;
 
   if ((password as string) !== process.env.NEXT_PUBLIC_API_PASSWORD) {
     res.status(401).json({ error: "Wrong password or no password found" });
@@ -24,6 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         date_time: date_time as string,
         event_name: event_name as string,
         ticket_code: ticket_code as string,
+        support_email: support_email as string,
       }),
     });
 
