@@ -1,11 +1,15 @@
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/constants/constants";
 import { HeadTemplateProps } from "@/types/general";
 import Head from "next/head";
 
 const HeadTemplate = ({ title }: HeadTemplateProps) => {
   return (
     <Head>
-      <title>{title ? `${title} — Babcock Tools` : "Babcock Tools"}</title>
+      <title>
+        {title
+          ? `${title} ~ Daily Herbal Supplements International`
+          : "Daily Herbal Supplements International"}
+      </title>
       <link rel="shortcut-icon" href={IMAGES.logo.src} type="image/x-icon" />
       <link rel="icon" href={IMAGES.logo.src} type="image/x-icon" />
       <meta

@@ -1,21 +1,15 @@
-import HeadTemplate from "@/components/general/HeadTemplate";
-import Header from "@/components/general/Header";
-import Hero from "@/components/general/Hero";
-import Tools from "@/components/general/Tools";
+import { PAGES } from "@/constants/constants";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Home = () => {
-  return (
-    <>
-      <HeadTemplate />
+  const { push } = useRouter();
 
-      <Header />
+  useEffect(() => {
+    push(PAGES.dashboard);
+  }, []);
 
-      <section className="w-full max-w-5xl px-6 pb-12">
-        <Hero />
-        <Tools />
-      </section>
-    </>
-  );
+  return <></>;
 };
 
 export default Home;
