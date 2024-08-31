@@ -37,11 +37,6 @@ export const SIDEBAR_LINKS = [
     icon: BsStars,
     link: PAGES.dashboard_events,
   },
-  {
-    title: "Cafeteria delivery",
-    icon: IoFastFoodOutline,
-    link: PAGES.cafeteria_delivery,
-  },
 ];
 
 export const INITIAL_STATE: Event = {
