@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { is } from "../_app";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const Signup = () => {
   const { push } = useRouter();
@@ -105,10 +106,7 @@ const Signup = () => {
             value={formData.password}
             type={showPassword ? "text" : "password"}
           />
-          <button
-            className="absolute right-2 text-main"
-            onClick={toggleShowPassword}
-          >
+          <button className="absolute right-2" onClick={toggleShowPassword}>
             {showPassword ? (
               <LuEyeOff className="text-lg" />
             ) : (
@@ -126,14 +124,14 @@ const Signup = () => {
           </p>
         </div>
 
-        <button
+        <Button
           disabled={loading}
           onClick={signUpUser}
           className="w-full mt-4 bg-main hover:bg-main/90 py-2.5 text-white rounded-md flex items-center justify-center gap-2"
         >
           Create account
           {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
-        </button>
+        </Button>
       </div>
     </>
   );

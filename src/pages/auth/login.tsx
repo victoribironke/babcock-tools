@@ -65,10 +65,7 @@ const Login = () => {
             value={formData.password}
             type={showPassword ? "text" : "password"}
           />
-          <button
-            className="absolute right-2 text-main"
-            onClick={toggleShowPassword}
-          >
+          <button className="absolute right-2" onClick={toggleShowPassword}>
             {showPassword ? (
               <LuEyeOff className="text-lg" />
             ) : (
