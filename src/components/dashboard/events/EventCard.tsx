@@ -23,7 +23,7 @@ const EventCard = ({ event }: { event: Event }) => {
   const isPast = now > e;
 
   return (
-    <div className="w-full flex gap-3 justify-center flex-col rounded-xl overflow-hidden shadow-md bg-white py-2 border">
+    <div className="w-full flex gap-3 justify-center flex-col rounded-xl overflow-hidden bg-white py-2 border">
       <div className="rounded-lg px-2">
         <img
           src={
@@ -36,21 +36,21 @@ const EventCard = ({ event }: { event: Event }) => {
         />
       </div>
 
-      <p className="text-xl font-medium mb-auto px-2">
+      <p className="font-medium mb-auto px-2">
         {event.name.slice(0, 50)}
         {event.name.length >= 50 && "..."}
       </p>
 
-      <div className="flex items-center gap-2 text-gray-500 px-2">
-        <BsCalendar3 className="text-xl" />
+      <div className="flex items-center gap-2 text-gray-500 px-2 text-sm">
+        <BsCalendar3 />
         <p>{new Date(event.date_time).toLocaleString()}</p>
       </div>
 
-      <div className="flex items-center gap-2 text-gray-500 px-2">
+      <div className="flex items-center gap-2 text-gray-500 px-2 text-sm">
         {event.type === "physical" ? (
-          <IoLocationSharp className="text-xl" />
+          <IoLocationSharp className="text-lg" />
         ) : (
-          <TbWorldPin className="text-xl" />
+          <TbWorldPin className="text-lg" />
         )}
         <p>
           {event.type === "physical"
@@ -62,7 +62,7 @@ const EventCard = ({ event }: { event: Event }) => {
       </div>
 
       {isDashboard && (
-        <div className="flex items-center gap-2 text-gray-500 px-2">
+        <div className="flex items-center gap-2 text-gray-500 px-2 text-sm">
           <IoTicketOutline className="text-lg" />
           <p>
             {event.attendees} / {event.no_of_tickets || "Unlimited"}
@@ -70,7 +70,9 @@ const EventCard = ({ event }: { event: Event }) => {
         </div>
       )}
 
-      {!isPast && <BottomActions e={event} isDash={isDashboard} />}
+      {(!isPast || isDashboard) && (
+        <BottomActions e={event} isDash={isDashboard} />
+      )}
     </div>
   );
 };
@@ -80,19 +82,19 @@ const BottomActions = ({ e, isDash }: { e: Event; isDash: boolean }) => {
   const eventLink = PAGES.base_url + PAGES.event(e.id);
 
   return (
-    <div className="flex justify-between items-center border-t pt-2 px-2 gap-3">
-      <p className="font-medium mr-auto">
+    <div className="flex justify-between items-center border-t pt-2 px-3 gap-4">
+      <p className="mr-auto">
         {e.is_free ? "Free" : `₦${price + getFeesFromTicketPrice(price)}`}
       </p>
 
       {isDash && (
         <>
           <Link href={PAGES.dashboard_event(e.id)}>
-            <LuEye className="text-lg cursor-pointer" title="View more" />
+            <LuEye className="cursor-pointer" title="View more" />
           </Link>
 
           <FiShare2
-            className="text-lg cursor-pointer"
+            className="cursor-pointer"
             title="Copy event link"
             onClick={() => {
               navigator.clipboard
@@ -106,19 +108,10 @@ const BottomActions = ({ e, isDash }: { e: Event; isDash: boolean }) => {
         </>
       )}
 
-      {!e.public && (
-        <MdOutlinePublicOff
-          className="text-lg"
-          title="This event is not public"
-        />
-      )}
+      {!e.public && <MdOutlinePublicOff title="This event is not public" />}
 
       {isDash ? (
-        <EditEvent event={e}>
-          <button className="bg-main px-3 py-1 rounded-lg text-white text-sm">
-            Edit event
-          </button>
-        </EditEvent>
+        <EditEvent event={e} />
       ) : (
         <Link
           className="bg-main px-3 py-1 rounded-lg text-white"

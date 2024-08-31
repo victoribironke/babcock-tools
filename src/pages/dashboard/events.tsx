@@ -29,23 +29,27 @@ const Events = () => {
   if (loading) return <PageLoader type="full" />;
 
   return (
-    <section className="w-full max-w-[1280px] flex flex-col items-start gap-4">
-      <NewEvent />
+    <>
+      <HeadTemplate title="Events" />
 
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center justify-center gap-4">
-        {events.map((e, i) => (
-          <EventCard event={e} key={i} />
-        ))}
-      </div>
+      <section className="w-full max-w-[1280px] flex flex-col items-start gap-4">
+        <NewEvent />
 
-      {events.length === 0 && (
-        <div className="w-full flex items-center justify-center flex-col px-6 py-12 gap-8">
-          <p className="text-gray-400">You do not have any events.</p>
-
-          <NewEvent />
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center justify-center gap-4">
+          {events.map((e, i) => (
+            <EventCard event={e} key={i} />
+          ))}
         </div>
-      )}
-    </section>
+
+        {events.length === 0 && (
+          <div className="w-full flex items-center justify-center flex-col px-6 py-12 gap-8">
+            <p className="text-gray-400">You do not have any events.</p>
+
+            <NewEvent />
+          </div>
+        )}
+      </section>
+    </>
   );
 };
 

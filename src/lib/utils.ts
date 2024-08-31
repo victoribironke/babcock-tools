@@ -67,7 +67,7 @@ export const createSubaccount = async (
     method: "POST",
     body: JSON.stringify({
       business_name: account_name,
-      bank_code,
+      settlement_bank: bank_code,
       account_number,
       percentage_charge: 0,
     }),
@@ -95,7 +95,7 @@ export const updateSubaccount = async (
     method: "PUT",
     body: JSON.stringify({
       business_name: account_name,
-      bank_code: bank_code,
+      settlement_bank: bank_code,
       account_number: account_number,
     }),
   });

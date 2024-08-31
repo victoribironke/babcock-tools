@@ -37,7 +37,7 @@ const DashboardTemplate = ({ children }: DashboardTemplateProps) => {
           )}
         </div>
 
-        <div className="w-full bg-white flex items-center flex-col justify-center p-4">
+        <div className="w-full bg-white flex items-start flex-col justify-center p-4">
           {children}
         </div>
       </div>

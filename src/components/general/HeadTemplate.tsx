@@ -5,11 +5,7 @@ import Head from "next/head";
 const HeadTemplate = ({ title }: HeadTemplateProps) => {
   return (
     <Head>
-      <title>
-        {title
-          ? `${title} ~ Daily Herbal Supplements International`
-          : "Daily Herbal Supplements International"}
-      </title>
+      <title>{title ? `${title} ~ Babcock Tools` : "Babcock Tools"}</title>
       <link rel="shortcut-icon" href={IMAGES.logo.src} type="image/x-icon" />
       <link rel="icon" href={IMAGES.logo.src} type="image/x-icon" />
       <meta

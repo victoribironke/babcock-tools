@@ -30,13 +30,7 @@ import {
 import { editEvent } from "@/lib/firebase";
 import { Event } from "@/types/dashboard";
 
-const EditEvent = ({
-  event,
-  children,
-}: {
-  event: Event;
-  children?: React.ReactNode;
-}) => {
+const EditEvent = ({ event }: { event: Event }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,12 +86,9 @@ const EditEvent = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        {children || (
-          <Button className="bg-blue font-normal text-white w-full max-w-[10rem] hover:bg-blue/90 flex items-center justify-center gap-2">
-            <FiEdit2 className="text-lg" />
-            Edit event
-          </Button>
-        )}
+        {/* <Button className="bg-main font-normal text-white w-full max-w-[10rem] hover:bg-main/90 flex items-center justify-center gap-2"> */}
+        <FiEdit2 />
+        {/* </Button> */}
       </DialogTrigger>
       <DialogContent className={cn("w-full border", is.className)}>
         <DialogHeader>

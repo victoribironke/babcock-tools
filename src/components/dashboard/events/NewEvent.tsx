@@ -83,8 +83,8 @@ const NewEvent = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button className="bg-main font-normal text-white w-full max-w-[10rem] hover:bg-main/90 flex items-center justify-center gap-2">
-          <FiPlus className="text-lg" />
+        <Button className="bg-main text-sm font-normal text-white w-full max-w-[10rem] hover:bg-main/90 flex items-center justify-center gap-2">
+          <FiPlus />
           New event
         </Button>
       </DialogTrigger>
